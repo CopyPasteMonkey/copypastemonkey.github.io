@@ -1,0 +1,16 @@
+Nimbus Sans L webfont conversion for the Eli Doggart portfolio
+2026-10-09
+
+The regular, bold, and italic fonts were converted from the actual URW Type 1
+fonts used by the current LaTeX resume (NimbusSanL-Regu, NimbusSanL-Bold,
+NimbusSanL-ReguItal). Original outlines and advance widths are retained;
+Type 1 hinting is not carried into the converted CFF outlines. Unicode mapping
+uses Adobe glyph names. Web-family naming distinguishes the conversion.
+
+Copyright (URW)++, Copyright 1999 by (URW)++ Design & Development.
+License: GNU GPL v2. See COPYING and upstream README.base35. The upstream
+README states that each font is individually covered, rather than part of a
+larger entity for licensing purposes. The webfont conversions retain that license.
+
+Upstream package: https://ctan.org/pkg/urw-base35
+Upstream license files: https://mirrors.ctan.org/fonts/urw/base35.zip
