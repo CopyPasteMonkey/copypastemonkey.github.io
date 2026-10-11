@@ -20,11 +20,11 @@ The allowed blocks are section, text, citation, gallery, figure, resource group,
 
 The preview uses the exact same renderer and stylesheet as the build. It supports the site's section navigation, expandable entries, keyboard focus and mobile layout. Invalid content leaves the last valid preview visible and reports a validation error.
 
-**Save Draft** always saves valid content in this browser first. The loopback preview saves locally. On the approved production domain, signing in also enables saving a public draft branch and pull request, leaving the live site unchanged. A failed remote save explicitly reports that the local copy is safe. Uploaded images are optimized to static WebP (maximum 2400 px, 2 MB) and stored in browser IndexedDB, with metadata stripped by canvas re-encoding. Export the draft ZIP to keep a portable backup with the content JSON and all newly uploaded images. Existing site images stay referenced. Browser/site-data clearing removes local drafts. Changes since the last save trigger a leave-page warning. Multiple tabs detect newer saved drafts; export a conflicting tab before reloading.
+**Save Draft** always saves valid content in this browser first. The loopback preview saves locally. On the approved production domain, signing in also enables saving a public draft branch and pull request, leaving the live site unchanged. A failed remote save explicitly reports that the local copy is safe. Uploaded images are optimized to static WebP (maximum 2400 px, 2 MB) and stored in browser IndexedDB, with metadata stripped by canvas re-encoding. Export the draft ZIP to keep a portable backup with the content JSON and all newly uploaded images and the selected resume PDF. Existing site images stay referenced. Browser/site-data clearing removes local drafts. Changes since the last save trigger a leave-page warning. Multiple tabs detect newer saved drafts; export a conflicting tab before reloading.
 
 **Import draft** accepts exported ZIP files or the content JSON (new image files must already exist or be included). ZIP imports do not extract paths to disk. **Publish…** requires a connected session on the approved production domain. Publish checks the saved draft's exact revision, permitted changed files, successful required validation and GitHub mergeability, then asks for explicit confirmation of that revision. A merge rejection never falls back to force merging. A confirmed merge is shown separately from a successful Pages deployment.
 
-On the production editor, use **Sign in with GitHub** on a compatible computer; GitHub handles the phone/passkey interaction. Use **Load GitHub draft** to resume a remote draft and its optimized images on another computer. Export local changes before replacing them with remote content. A newer remote draft or changed main blocks saving until reconciled. Tokens stay only in memory and are cleared on logout, expiry or revocation; local drafts survive. This public repository's draft branches and pull requests are public.
+On the production editor, use **Sign in with GitHub** on a compatible computer; GitHub handles the phone/passkey interaction. Use **Load GitHub draft** to resume a remote draft and its uploaded files on another computer. Export local changes before replacing them with remote content. A newer remote draft or changed main blocks saving until reconciled. Tokens stay only in memory and are cleared on logout, expiry or revocation; local drafts survive. This public repository's draft branches and pull requests are public.
 
 To validate an exported ZIP without changing source files:
 
@@ -39,7 +39,18 @@ npm run draft -- /path/to/portfolio-draft.zip --apply
 npm run build
 ```
 
-The importer validates content and every referenced local asset before applying, checks uploaded filenames against their bytes, and refuses to overwrite different existing assets. It changes only `content/portfolio.json` and new image assets. It does not commit, push, deploy or edit the resume source. The optional CLI media optimizer is `npm run media -- /path/to/image.jpg`.
+The importer validates content and every referenced local asset before applying, checks uploaded filenames against their bytes, and refuses to overwrite different existing assets. It changes only `content/portfolio.json` and new uploaded assets. It does not commit, push, deploy or edit the resume source. The optional CLI media optimizer is `npm run media -- /path/to/image.jpg`.
+
+## Replace the resume PDF
+
+1. Open **Resume**, choose **Upload resume PDF**, and select the PDF exported from your LaTeX editor or word processor.
+2. In **Review replacement resume**, use **Open PDF preview** to inspect the exact file, then choose **Use this PDF in draft**. Cancel or Escape leaves the previous resume selected.
+3. **Save Draft** retains the PDF with the browser draft and, when signed in, uploads it to the public GitHub draft. **Load GitHub draft** restores that PDF on another computer. **Export draft** includes it in the portable ZIP.
+4. Choose **Publish…** and confirm the reviewed, validated draft. The public Download resume link changes only after deployment succeeds.
+
+PDFs must be at most 5 MB, contain 1–20 pages, and have a safe `.pdf` filename. The shared PDF parser rejects malformed, incomplete, password-protected, scripted, attached-file, and interactive-form documents. It checks object streams as well as ordinary dictionaries. The uploaded bytes remain unchanged, with a hash-based immutable filename; the former resume and Git history remain recoverable. No LaTeX source or local resume file is edited. A browser preview link opens the PDF in a separate tab using the browser's viewer.
+
+The same validation runs in required CI. The GitHub transport only adds hashed resume PDFs alongside controlled content and optimized images. No new provider permission or service is needed. Public draft PDFs are public even before publication. Native LaTeX editing would additionally need source/asset management, a compiler with a fixed package set, bounded and isolated execution, error reporting, and compiled-PDF review; it is outside this upload feature.
 
 ## Source organization
 

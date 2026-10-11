@@ -19,3 +19,7 @@ Browser contract tests instantiate the actual bundled Decap API against mocked G
 Full interface tests exercise the real popup handshake, explicit Save Draft versus Publish, cancellation recovery, logout and the distinction between merge and deployment. Live GitHub App compatibility still requires approved setup and the acceptance checks in [auth/README.md](../auth/README.md).
 
 Rerun `npm audit`, the build graph checks and the integration tests after dependency changes. Zero current advisories does not replace live acceptance or code review.
+
+## Resume PDF validation
+
+`pdf-lib@1.17.1` is pinned for shared Node/browser validation of resume PDFs. It parses PDFs without executing document scripts, and the validator rejects encrypted/malformed documents, scripts, attachments and interactive forms. The editor receives a same-origin bundled module built with esbuild; the public portfolio does not load it. Original PDF bytes are preserved. The MIT license is included at `lib/pdf-lib-LICENSE.txt`. No LaTeX compiler or remote PDF service is added.
