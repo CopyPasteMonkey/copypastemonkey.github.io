@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "repository": "elidoggart/elidoggart.github.io",
+  "branch": "main",
+  "authOrigin": "https://portfolio-editor-auth.elidoggart.workers.dev",
+  "repositoryId": 1412250381,
+  "allowedUserId": 183743177,
+  "note": "Production setup and full rollout approved by the owner. Fixed origins and numeric identities are enforced. No credentials belong here.",
+  "editorOrigin": "https://www.elidoggart.com",
+  "requiredCheck": "validate"
+}
