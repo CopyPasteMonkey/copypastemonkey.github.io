@@ -1,0 +1,4183 @@
+{
+  "portfolio": {
+    "version": 1,
+    "site": {
+      "name": "Eli Doggart",
+      "profession": "Mechanical Design & Manufacturing Engineer",
+      "description": "Engineering work, projects, skills, and photography by Eli Doggart.",
+      "introduction": "I design, build, and test mechanical systems. My work spans fuel-cell development, prototype fabrication, and laboratory improvements.",
+      "resume": "assets/documents/Eli-Doggart-Resume.pdf",
+      "resumeFilename": "Eli-Doggart-Resume.pdf",
+      "resumeLabel": "Download resume, one-page PDF",
+      "email": "elidoggart@gmail.com",
+      "phone": "(860) 235-1046",
+      "phoneLink": "tel:+18602351046",
+      "footer": "Eli Doggart · 2026"
+    },
+    "sections": [
+      {
+        "id": "work",
+        "subtitle": "Professional experience",
+        "entries": [
+          {
+            "id": "nimbus",
+            "title": "Nimbus Power Systems",
+            "intro": "Fuel-cell design and fabrication, with earlier internship work building test equipment and improving laboratory capabilities.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "nimbus-12",
+                "alt": "Extruded-aluminum test-cart frame built during the Nimbus internship.",
+                "caption": "Test-cart construction · Internship",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "nimbus-current",
+                "label": "Current Work",
+                "role": "Mechanical Design and Manufacturing Engineer",
+                "date": "May 2023–Present",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Nimbus Power Systems · Current work · May 2023–Present",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Fuel-cell design & fabrication",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I designed, simulated, and optimized a hydrogen fuel cell, then worked with component suppliers and developed in-house procedures and facilities to produce an engine-sized prototype.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "text",
+                        "text": "Further current-work details and photographs to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "nimbus-internship",
+                "label": "Internship",
+                "role": "Engineering Intern",
+                "date": "May–August 2022",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Nimbus Power Systems · Engineering Internship · May–August 2022",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Skills Developed",
+                    "level": 4,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "LabView",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I programmed external heaters and an oxygen sensor, filtered noisy measurements, and added a safety-mode interlock to the LabVIEW test software.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-00",
+                            "alt": "LabView: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: LabView: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-01",
+                            "alt": "LabView: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: LabView: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-02",
+                            "alt": "LabView: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: LabView: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-03",
+                            "alt": "LabView: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: LabView: archived work image 4",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Wiring and Plumbing",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I wired power distribution, relays, CAN connections, and instrumentation, and plumbed test equipment using several connector and fitting types.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-04",
+                            "alt": "Wiring and Plumbing: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Wiring and Plumbing: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-05",
+                            "alt": "Wiring and Plumbing: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Wiring and Plumbing: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-06",
+                            "alt": "Wiring and Plumbing: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Wiring and Plumbing: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Documentation",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I created bills of materials, wiring diagrams, instructions, and checklists, including documentation for previously undocumented equipment.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-07",
+                            "alt": "Documentation: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Documentation: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-08",
+                            "alt": "Documentation: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Documentation: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-09",
+                            "alt": "Documentation: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Documentation: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Projects",
+                    "level": 4,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "New 20 Cell Cart",
+                    "level": 5,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "Power Distribution Unit",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I sourced, purchased, assembled, and wired the distribution unit, working around component lead times and the project budget.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-10",
+                            "alt": "Power Distribution Unit: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Power Distribution Unit: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-11",
+                            "alt": "Power Distribution Unit: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Power Distribution Unit: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "8020 Frame",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I planned, sourced, and assembled the frame and prepared its bill of materials, balancing cost, lead times, and assembly work.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-12",
+                            "alt": "8020 Frame: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 8020 Frame: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-13",
+                            "alt": "8020 Frame: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 8020 Frame: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Hydrogen Safety System",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I sourced, built, wired, and tested a system connecting emergency stops, sensors, a shutoff valve, and an alarm. I also made a holder for the manual-valve keys.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-14",
+                            "alt": "Hydrogen Safety System: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hydrogen Safety System: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-15",
+                            "alt": "Hydrogen Safety System: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hydrogen Safety System: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Load Bank Cart",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I designed, sourced, built, wired, and tested a cooling loop for a 12 kW load bank, including its radiator, shroud, fans, and pump.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-16",
+                            "alt": "Load Bank Cart: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Load Bank Cart: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-17",
+                            "alt": "Load Bank Cart: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Load Bank Cart: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-18",
+                            "alt": "Load Bank Cart: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Load Bank Cart: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Anti-smell plug",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I made a printed adapter and trap loop for a shop-machine drain.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-19",
+                            "alt": "Anti-smell plug: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Anti-smell plug: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-20",
+                            "alt": "Anti-smell plug: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Anti-smell plug: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-21",
+                            "alt": "Anti-smell plug: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Anti-smell plug: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Safety Tag System",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I introduced visible orange flags for components and temporary jumpers that needed to be removed before particular test operations.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-22",
+                            "alt": "Safety Tag System: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Safety Tag System: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-23",
+                            "alt": "Safety Tag System: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Safety Tag System: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-24",
+                            "alt": "Safety Tag System: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Safety Tag System: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "5 Cell Test Cart Improvements",
+                    "level": 5,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "Oxygen Sensor",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I integrated an oxygen sensor into the plumbing, wiring, and LabVIEW software to measure oxygen at the cell inlet or exhaust.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "nimbus-25",
+                            "alt": "Oxygen Sensor: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Oxygen Sensor: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Hydrogen Sensor",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I designed, modeled, programmed, and machined an adapter block so the hydrogen sensor could connect to SAE fittings on the test cart.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "nimbus-26",
+                            "alt": "Hydrogen Sensor: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hydrogen Sensor: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Heater",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I plumbed in an additional heater and a deionized-water refill valve.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "nimbus-27",
+                            "alt": "Heater: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Heater: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Feet",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I made nonconductive supports for the fuel cell.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-28",
+                            "alt": "Feet: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Feet: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-29",
+                            "alt": "Feet: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Feet: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Insulating Jacket",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I made an insulating jacket to retain heat and help keep the temperature even through the stack.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "nimbus-30",
+                            "alt": "Insulating Jacket: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Insulating Jacket: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Workbenches",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I built shop workbenches using plans found online.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-31",
+                            "alt": "Workbenches: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Workbenches: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-32",
+                            "alt": "Workbenches: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Workbenches: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Crates for Carts",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I fabricated protective plywood enclosures so two test carts could be shipped to customers.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nimbus-33",
+                            "alt": "Crates for Carts: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Crates for Carts: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nimbus-34",
+                            "alt": "Crates for Carts: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Crates for Carts: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "accelerate",
+            "title": "Accelerate Design LLC",
+            "intro": "Optical-component prototyping, CAD, 3D printing, and practical improvements to the lab.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "accelerate-00",
+                "alt": "Printed optical component from work at Accelerate Design.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "accelerate",
+                "label": "",
+                "role": "Design Engineering Intern",
+                "date": "January–March 2022",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Accelerate Design LLC · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "3D printing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used SLA printing for optical components and FDM printing for other parts. I also printed a fixture to hold a part at an angle while it was worked with hand tools.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "accelerate-00",
+                            "alt": "3D printing: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-01",
+                            "alt": "3D printing: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-02",
+                            "alt": "3D printing: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-03",
+                            "alt": "3D printing: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 4",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-04",
+                            "alt": "3D printing: archived work image 5",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 5",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "3D Printer Maintenance",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I maintained the resin printer, replacing its FEP film, LCD, and screen protector.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "accelerate-05",
+                            "alt": "3D Printer Maintenance: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D Printer Maintenance: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "CAD",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used SOLIDWORKS and Onshape to prepare printable files, machining quotes, and customer drawings.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "accelerate-06",
+                            "alt": "CAD: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CAD: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Lab Improvements",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I arranged a dedicated printing workspace, made a resin-draining stand, assembled desks, and reorganized the office.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "accelerate-07",
+                            "alt": "Lab Improvements: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Lab Improvements: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-08",
+                            "alt": "Lab Improvements: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Lab Improvements: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "electric-boat",
+            "title": "General Dynamics Electric Boat",
+            "intro": "Reviewed supplier requests against design specifications in the pumps department.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "columbia-class",
+                "alt": "U.S. Navy concept rendering of a Columbia-class submarine.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "electric-boat",
+                "label": "",
+                "role": "Engineering Intern",
+                "date": "June–August 2021",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "General Dynamics Electric Boat · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Component engineering",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I worked with a group specializing in pumps and heat exchangers for the Columbia-class submarine. I reviewed vendor information requests against specifications, originated part numbers, and helped with training activities.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Workplace documentation",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "The archived description stays high-level because the work was partly confidential. The representative class rendering above is a public U.S. Navy illustration.",
+                        "style": "body"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "mott",
+            "title": "Mott Corporation",
+            "intro": "Characterized porous materials, prepared samples, and improved laboratory processes.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "mott-00",
+                "alt": "Bubble-point test equipment used to characterize porous materials.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "mott",
+                "label": "",
+                "role": "R&D Co-op",
+                "date": "January–June 2021",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Mott Corporation · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Technical skills developed",
+                    "level": 4,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "Bubble point test",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used bubble-point testing to characterize porous materials.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-00",
+                            "alt": "Bubble point test: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Bubble point test: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Capillary flow porometer",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used a capillary flow porometer to characterize pore sizes in porous materials.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-01",
+                            "alt": "Capillary flow porometer: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Capillary flow porometer: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-02",
+                            "alt": "Capillary flow porometer: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Capillary flow porometer: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Tensile tester",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used the tensile tester to compare adhesive bonds and welds in shear.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-03",
+                            "alt": "Tensile tester: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Tensile tester: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Hirox digital microscope KH-8700",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used the digital microscope for inspection, three-dimensional surface measurements, and porosity work. A screw served as a learning example for building an image from 136 slices.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-04",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-05",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-06",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-07",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 4",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-08",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 5",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 5",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-09",
+                            "alt": "Hirox digital microscope KH-8700: archived work image 6",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Hirox digital microscope KH-8700: archived work image 6",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Stereoscopes",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used Nikon Epiphot and Olympus microscopes to inspect parts and evaluate polished samples.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-10",
+                            "alt": "Stereoscopes: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Stereoscopes: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-11",
+                            "alt": "Stereoscopes: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Stereoscopes: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-12",
+                            "alt": "Stereoscopes: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Stereoscopes: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Permeability stand",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I set up and ran nitrogen-flow and pressure measurements to characterize material permeability.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-13",
+                            "alt": "Permeability stand: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Permeability stand: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      },
+                      {
+                        "type": "figure",
+                        "layout": "chart",
+                        "image": {
+                          "media": "mott-permeability-chart",
+                          "alt": "Permeability data: pressure differential in PSID versus flow rate in SLPM, with 90 psi, 30 psi, 60 psi inlet and atmospheric series. Exact values are available in the CSV below.",
+                          "caption": "Original published permeability chart. Select the image to view it at full size.",
+                          "credit": "",
+                          "linked": true,
+                          "linkLabel": "Open full-size permeability chart in a new tab",
+                          "lazy": true
+                        }
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-1"
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-2"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Flow stand",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used the flow stand to test porous materials.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-14",
+                            "alt": "Flow stand: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Flow stand: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "High-performance liquid chromatography (HPLC)",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used the offset in UV-visible measurements together with flow rate to measure internal volume.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-15",
+                            "alt": "High-performance liquid chromatography (HPLC): archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: High-performance liquid chromatography (HPLC): archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-16",
+                            "alt": "High-performance liquid chromatography (HPLC): archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: High-performance liquid chromatography (HPLC): archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Cut/mount/polish",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I prepared brittle porous-metal and ceramic samples by cutting, mounting, and polishing them for inspection.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-17",
+                            "alt": "Cut/mount/polish: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Cut/mount/polish: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-18",
+                            "alt": "Cut/mount/polish: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Cut/mount/polish: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-19",
+                            "alt": "Cut/mount/polish: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Cut/mount/polish: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Solidworks",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I modeled fixtures and laboratory tools. The archive shows a grabber, a fixture, and a furnace holder; production CAD is not shown.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-20",
+                            "alt": "Solidworks: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Solidworks: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-21",
+                            "alt": "Solidworks: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Solidworks: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-22",
+                            "alt": "Solidworks: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Solidworks: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-23",
+                            "alt": "Solidworks: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Solidworks: archived work image 4",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Metal 3D printer",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I did not operate the metal printer. I studied printed-part density, porosity, and thermal expansion, and helped remove supports, clean parts, and prepare them for the furnace.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-24",
+                            "alt": "Metal 3D printer: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Metal 3D printer: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-25",
+                            "alt": "Metal 3D printer: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Metal 3D printer: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-26",
+                            "alt": "Metal 3D printer: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Metal 3D printer: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Light data analysis",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I analyzed test data and made plots comparing ash measurements from two filter setups.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-27",
+                            "alt": "Light data analysis: archived chart or laboratory image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Light data analysis: archived chart or laboratory image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-28",
+                            "alt": "Light data analysis: archived chart or laboratory image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Light data analysis: archived chart or laboratory image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Improvements",
+                    "level": 4,
+                    "chapter": true,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "Equipment scheduling",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I made a shared scheduling spreadsheet for frequently used bubble-point and flow equipment so people could plan their work around existing reservations.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-29",
+                            "alt": "Equipment scheduling: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Equipment scheduling: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Epoxy Project",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I designed two experiments to test whether heating the existing epoxy could speed curing and reduce its viscosity.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Heating the epoxy to make it cure quicker",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I tested warmer curing conditions and compared cure time and yellowing. The archived photographs show the test setup and resulting mounts.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-30",
+                            "alt": "Heating the epoxy to make it cure quicker: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Heating the epoxy to make it cure quicker: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-31",
+                            "alt": "Heating the epoxy to make it cure quicker: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Heating the epoxy to make it cure quicker: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-32",
+                            "alt": "Heating the epoxy to make it cure quicker: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Heating the epoxy to make it cure quicker: archived work image 3",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Heating the epoxy to decrease viscosity for pouring",
+                    "level": 6,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I warmed and mixed epoxy in a water bath before pouring it. It flowed more readily, although the additional steps made this approach less practical for routine use.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "mott-33",
+                            "alt": "Heating the epoxy to decrease viscosity for pouring: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Heating the epoxy to decrease viscosity for pouring: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Data consolidation",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I brought build variables and test results into one spreadsheet so related results could be found and compared more easily.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Fiber study",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I tested adhesive bonding as an alternative to welding fibrous metal. After tensile tests under several curing conditions, I constructed a full-scale tube for further evaluation.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "mott-34",
+                            "alt": "Fiber study: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Fiber study: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-35",
+                            "alt": "Fiber study: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Fiber study: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-36",
+                            "alt": "Fiber study: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Fiber study: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-37",
+                            "alt": "Fiber study: archived chart or laboratory image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Fiber study: archived chart or laboratory image 4",
+                            "lazy": true
+                          },
+                          {
+                            "media": "mott-38",
+                            "alt": "Fiber study: archived chart or laboratory image 5",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Fiber study: archived chart or laboratory image 5",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ecpm",
+            "title": "East Coast Precision Manufacturing",
+            "intro": "Operated CNC lathes and mills, inspected polymer parts, and adjusted work offsets.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "ecpm-02",
+                "alt": "CNC lathe machining a polymer part.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "ecpm",
+                "label": "",
+                "role": "Machine Operator",
+                "date": "December 2020–January 2021",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "East Coast Precision Manufacturing · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "CNC Lathe",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I operated CNC lathes, loaded and unloaded polymer parts, and inspected dimensions and finish. I used gauges and measuring tools to decide when work offsets needed adjustment.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "ecpm-00",
+                            "alt": "CNC Lathe: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Lathe: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-01",
+                            "alt": "CNC Lathe: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Lathe: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-02",
+                            "alt": "CNC Lathe: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Lathe: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-03",
+                            "alt": "CNC Lathe: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Lathe: archived work image 4",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "CNC Mill",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I operated CNC mills and checked polymer parts using calipers, micrometers, gauges, and a dial indicator.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "ecpm-04",
+                            "alt": "CNC Mill: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Mill: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-05",
+                            "alt": "CNC Mill: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Mill: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-06",
+                            "alt": "CNC Mill: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Mill: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-07",
+                            "alt": "CNC Mill: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Mill: archived work image 4",
+                            "lazy": true
+                          },
+                          {
+                            "media": "ecpm-08",
+                            "alt": "CNC Mill: archived work image 5",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CNC Mill: archived work image 5",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Vapor polishing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I worked with vapor polishing. Process details are omitted because they were covered by a nondisclosure agreement. The archived example image came from the company website.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "ecpm-09",
+                            "alt": "Vapor polishing: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Vapor polishing: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Deburring",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I removed burrs from machined parts, including delicate features, and monitored tool wear and part finish.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "ecpm-10",
+                            "alt": "Deburring: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Deburring: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "nomad",
+            "title": "Nomad Metallurgy",
+            "intro": "Prepared metallurgical samples and performed microscopy, hardness, and density testing.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "nomad-00",
+                "alt": "Water-displacement density rig on a laboratory balance.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "nomad",
+                "label": "",
+                "role": "Metallurgical Lab Assistant",
+                "date": "June 2016–2020",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Nomad Metallurgy · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Density testing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I worked intermittently at the failure-analysis laboratory, learning density and hardness testing. I built and used a water-displacement density rig.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "nomad-00",
+                            "alt": "Density testing: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Density testing: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Sample preparation",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I cut, mounted, and polished samples for analysis. The final photograph shows examples of prepared samples at the lab; the original page does not claim that I prepared those particular samples.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "nomad-01",
+                            "alt": "Sample preparation: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Sample preparation: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "nomad-02",
+                            "alt": "Sample preparation: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Sample preparation: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "niantic",
+            "title": "Niantic Bay Bicycles",
+            "intro": "Built, repaired, and tuned bicycles; helped customers and handled parts orders and warranty claims.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "niantic-00",
+                "alt": "Turquoise bicycle being assembled in the shop.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "niantic",
+                "label": "",
+                "role": "Bike Mechanic",
+                "date": "May 2016–August 2020",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Niantic Bay Bicycles · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Bike builds",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I progressed from washing bikes to builds, tune-ups, and repairs. Partly assembled bikes needed assembly and adjustment before they were ready to ride.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "niantic-00",
+                            "alt": "Bike builds: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Bike builds: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Repairs and shop responsibilities",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I repaired bikes, including the classic Schwinn shown here, and assisted customers with sales. Later responsibilities included parts orders, website maintenance, and warranty claims.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "niantic-01",
+                            "alt": "Repairs and shop responsibilities: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Repairs and shop responsibilities: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "frc",
+            "title": "FIRST Robotics Team 236",
+            "intro": "Led mechanism subgroups and helped prototype, manufacture, and maintain competition robots.",
+            "divider": "Additional team experience",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "frc-00",
+                "alt": "Team members beside a FIRST Robotics Team 236 robot.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "frc",
+                "label": "",
+                "role": "Student Team Member & Subgroup Leader",
+                "date": "2018–2019",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "FIRST Robotics Team 236 · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "2018 Season",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I led the climbing-mechanism subgroup and served on the student leadership team.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Scissor Climber Prototype",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "We developed a scissor-climber prototype. It was not used in competition. The photograph shows the robot before its final climber.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "frc-00",
+                            "alt": "Scissor Climber Prototype: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Scissor Climber Prototype: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-3"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Final Telescoping Climber",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "The final mechanism used a telescoping design.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "frc-01",
+                            "alt": "Final Telescoping Climber: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Final Telescoping Climber: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "frc-02",
+                            "alt": "Final Telescoping Climber: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Final Telescoping Climber: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "2019 Season",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I led the hatch-placement subgroup, continued on the leadership team, and joined the drive team as the human player.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Our First Functional Prototype for Hatch Placement",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "We prototyped the mechanism used to pick up and place hatch panels.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-4"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Final T Shaped Pneumatic Hatch Placement",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "We developed a pneumatic hatch mechanism, then redesigned it after encountering a competition-rule issue.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-5"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "The Final Hatch Design We Went to World Competitions With",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "We took the final design to the world competition. I also worked as a robot mechanic, including repairs and troubleshooting at Hartford.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "frc-03",
+                            "alt": "The Final Hatch Design We Went to World Competitions With: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: The Final Hatch Design We Went to World Competitions With: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "frc-04",
+                            "alt": "The Final Hatch Design We Went to World Competitions With: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: The Final Hatch Design We Went to World Competitions With: archived work image 2",
+                            "lazy": true
+                          }
+                        ]
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "resource-6"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "projects",
+        "subtitle": "WPI qualifying projects",
+        "entries": [
+          {
+            "id": "mqp",
+            "title": "Active-suspension longboard",
+            "intro": "A team project to design, build, and optimize an active suspension system for a longboard.",
+            "divider": "",
+            "role": "MQP · Major Qualifying Project",
+            "date": "March–December 2022",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "mqp",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "MQP · WPI capstone",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I worked in a team of four on the design, fabrication, and optimization of the suspension system.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "resources",
+                        "blocks": [
+                          {
+                            "type": "heading",
+                            "title": "Project report",
+                            "level": 5
+                          },
+                          {
+                            "type": "citation",
+                            "title": "Torsion Suspension with Activated Damper",
+                            "suffix": " · December 2022."
+                          },
+                          {
+                            "type": "resource",
+                            "resource": "resource-7"
+                          },
+                          {
+                            "type": "resource",
+                            "resource": "resource-8"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Project photographs to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "iqp",
+            "title": "Climate preparation research",
+            "intro": "A proposal to study climate preparation and prevention through interviews with decision-makers in New Zealand.",
+            "divider": "",
+            "role": "IQP · Interactive Qualifying Project",
+            "date": "",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "iqp",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "IQP · Interactive Qualifying Project",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "The proposal focused on analyzing those approaches for lessons relevant to the United States. The original proposal and report draft are linked below.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "resources",
+                        "blocks": [
+                          {
+                            "type": "heading",
+                            "title": "Proposal",
+                            "level": 5
+                          },
+                          {
+                            "type": "resource",
+                            "resource": "resource-9"
+                          },
+                          {
+                            "type": "heading",
+                            "title": "Report draft",
+                            "level": 5
+                          },
+                          {
+                            "type": "resource",
+                            "resource": "resource-10"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Project photographs and a summary of the final findings to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "skills",
+        "subtitle": "",
+        "entries": [
+          {
+            "id": "design",
+            "title": "Design & analysis",
+            "intro": "SOLIDWORKS CAD, Flow Simulation, and CAM · Fusion CAD and CAM · GD&T",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "design",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Work examples",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Selected examples and photographs to come.",
+                        "style": "note"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Certifications & training",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Relevant certificate details and supporting documents to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "fabrication",
+            "title": "Fabrication",
+            "intro": "CNC and manual lathe and mill · FDM, SLA, and DMLS 3D printing · Basic MIG/TIG welding",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "fabrication",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Work examples",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Selected examples and photographs to come.",
+                        "style": "note"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Certifications & training",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Relevant certificate details and supporting documents to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "instrumentation",
+            "title": "Instrumentation & documentation",
+            "intro": "LabVIEW · Wiring · LaTeX",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "instrumentation",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Work examples",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Selected examples and photographs to come.",
+                        "style": "note"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Certifications & training",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Relevant certificate details and supporting documents to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "certifications",
+            "title": "Certifications",
+            "intro": "Training listed in my current resume.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "certifications",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Listed training",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "list",
+                        "items": [
+                          "Six Sigma Black Belt",
+                          "Trimech SOLIDWORKS Flow",
+                          "Summit Toyotalift Forklift"
+                        ]
+                      },
+                      {
+                        "type": "text",
+                        "text": "Certificate details and images to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "passions",
+        "subtitle": "",
+        "entries": [
+          {
+            "id": "film",
+            "title": "Film Photography",
+            "intro": "22 photographs from my original film collection.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "photo-00",
+                "alt": "Stars above a dark tree line and illuminated grass.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "film",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "gallery",
+                    "layout": "photos",
+                    "images": [
+                      {
+                        "media": "photo-00",
+                        "alt": "Stars above a dark tree line and illuminated grass.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Stars above a dark tree line and illuminated grass.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-01",
+                        "alt": "Stars above trees and a softly lit horizon.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Stars above trees and a softly lit horizon.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-02",
+                        "alt": "A tree and grass illuminated against the night sky.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A tree and grass illuminated against the night sky.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-03",
+                        "alt": "A pink flower with a red film-edge light leak.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A pink flower with a red film-edge light leak.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-04",
+                        "alt": "People beside a fire at night.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: People beside a fire at night.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-05",
+                        "alt": "Water and a distant shoreline beneath a cloudy sky.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Water and a distant shoreline beneath a cloudy sky.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-06",
+                        "alt": "A curved shoreline with rocks beneath clouds.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A curved shoreline with rocks beneath clouds.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-07",
+                        "alt": "Sunlight filtering through bare branches.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Sunlight filtering through bare branches.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-08",
+                        "alt": "Sunlight along a residential street.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Sunlight along a residential street.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-09",
+                        "alt": "A colorful parked car beside a road and railway bridge.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A colorful parked car beside a road and railway bridge.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-10",
+                        "alt": "A light-colored dog photographed close up.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A light-colored dog photographed close up.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-11",
+                        "alt": "A dark brick arch beneath a bridge.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A dark brick arch beneath a bridge.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-12",
+                        "alt": "Glowing logs in a fire.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Glowing logs in a fire.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-13",
+                        "alt": "A student working beside a robot marked 236.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A student working beside a robot marked 236.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-14",
+                        "alt": "Students gathered around a competition robot.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Students gathered around a competition robot.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-15",
+                        "alt": "A robotics team beside a competition field.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A robotics team beside a competition field.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-16",
+                        "alt": "Dense plants and trees around a path.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Dense plants and trees around a path.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-17",
+                        "alt": "A domed building beyond a crowded street.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A domed building beyond a crowded street.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-18",
+                        "alt": "A tall pointed building silhouetted against clouds.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A tall pointed building silhouetted against clouds.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-19",
+                        "alt": "A black-and-white view down a residential street.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A black-and-white view down a residential street.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-20",
+                        "alt": "A grainy black-and-white city panorama.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A grainy black-and-white city panorama.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-21",
+                        "alt": "Three people silhouetted against the evening sky.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Three people silhouetted against the evening sky.",
+                        "lazy": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "digital",
+            "title": "Digital Photography",
+            "intro": "20 photographs from my original digital collection.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "photo-22",
+                "alt": "Stars above illuminated trees and water.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "digital",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "gallery",
+                    "layout": "photos",
+                    "images": [
+                      {
+                        "media": "photo-22",
+                        "alt": "Stars above illuminated trees and water.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Stars above illuminated trees and water.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-23",
+                        "alt": "A person in the driver’s seat of a car beneath a bridge.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A person in the driver’s seat of a car beneath a bridge.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-24",
+                        "alt": "The sun’s corona emerging beside a dark eclipsed disk.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: The sun’s corona emerging beside a dark eclipsed disk.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-25",
+                        "alt": "A dark eclipsed sun surrounded by a bright corona.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A dark eclipsed sun surrounded by a bright corona.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-26",
+                        "alt": "A fox on a path beside green vegetation.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A fox on a path beside green vegetation.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-27",
+                        "alt": "Silhouetted people beneath an orange sunset.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Silhouetted people beneath an orange sunset.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-28",
+                        "alt": "Two dogs resting together on a stone surface.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Two dogs resting together on a stone surface.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-29",
+                        "alt": "A pink flower with yellow stamens.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A pink flower with yellow stamens.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-30",
+                        "alt": "A white building with arched windows beneath a blue sky.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A white building with arched windows beneath a blue sky.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-31",
+                        "alt": "A tram beside a large yellow stone building.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A tram beside a large yellow stone building.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-32",
+                        "alt": "A rocky ridge above a wooded valley.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A rocky ridge above a wooded valley.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-33",
+                        "alt": "Coastal water seen through trees.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Coastal water seen through trees.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-34",
+                        "alt": "A lake framed by trees at dusk.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A lake framed by trees at dusk.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-35",
+                        "alt": "A person reflected in a circular window.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A person reflected in a circular window.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-36",
+                        "alt": "A gray-backed bird viewed from behind.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A gray-backed bird viewed from behind.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-37",
+                        "alt": "Concentric trails of golden sparks against darkness.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Concentric trails of golden sparks against darkness.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-38",
+                        "alt": "A seated person watching the sunset from rocks.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A seated person watching the sunset from rocks.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-39",
+                        "alt": "A flying insect above small pale flowers.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A flying insect above small pale flowers.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-40",
+                        "alt": "Seals resting on shoreline rocks beside the water.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: Seals resting on shoreline rocks beside the water.",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-41",
+                        "alt": "A person standing beneath a dark evening sky.",
+                        "caption": "",
+                        "credit": "",
+                        "linked": true,
+                        "linkLabel": "Open image: A person standing beneath a dark evening sky.",
+                        "lazy": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "figure",
+                    "layout": "code",
+                    "image": {
+                      "media": "photo-42",
+                      "alt": "A Spotify code graphic from the archived photography page.",
+                      "caption": "Music code retained from the end of the original Digital Photography section.",
+                      "credit": "",
+                      "linked": false,
+                      "linkLabel": "",
+                      "lazy": true
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "hiking",
+            "title": "Hiking",
+            "intro": "Photographs and notes to come.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [],
+            "placeholder": "Hiking photograph",
+            "roles": [
+              {
+                "id": "hiking",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "On the trail",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Hiking photographs and notes to come.",
+                        "style": "note"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "education": {
+      "heading": "Education",
+      "school": "Worcester Polytechnic Institute",
+      "date": "May 2023",
+      "degree": "Bachelor of Science in Mechanical Engineering"
+    },
+    "media": [
+      {
+        "id": "nimbus-12",
+        "src": "assets/images/nimbus-12.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nimbus-00",
+        "src": "assets/images/nimbus-00.webp",
+        "width": 1280,
+        "height": 616
+      },
+      {
+        "id": "nimbus-01",
+        "src": "assets/images/nimbus-01.webp",
+        "width": 1280,
+        "height": 782
+      },
+      {
+        "id": "nimbus-02",
+        "src": "assets/images/nimbus-02.webp",
+        "width": 1280,
+        "height": 831
+      },
+      {
+        "id": "nimbus-03",
+        "src": "assets/images/nimbus-03.webp",
+        "width": 1280,
+        "height": 831
+      },
+      {
+        "id": "nimbus-04",
+        "src": "assets/images/nimbus-04.webp",
+        "width": 960,
+        "height": 960
+      },
+      {
+        "id": "nimbus-05",
+        "src": "assets/images/nimbus-05.webp",
+        "width": 960,
+        "height": 960
+      },
+      {
+        "id": "nimbus-06",
+        "src": "assets/images/nimbus-06.webp",
+        "width": 960,
+        "height": 960
+      },
+      {
+        "id": "nimbus-07",
+        "src": "assets/images/nimbus-07.webp",
+        "width": 1280,
+        "height": 1333
+      },
+      {
+        "id": "nimbus-08",
+        "src": "assets/images/nimbus-08.webp",
+        "width": 1123,
+        "height": 1600
+      },
+      {
+        "id": "nimbus-09",
+        "src": "assets/images/nimbus-09.webp",
+        "width": 1280,
+        "height": 1046
+      },
+      {
+        "id": "nimbus-10",
+        "src": "assets/images/nimbus-10.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "nimbus-11",
+        "src": "assets/images/nimbus-11.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "nimbus-13",
+        "src": "assets/images/nimbus-13.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nimbus-14",
+        "src": "assets/images/nimbus-14.webp",
+        "width": 570,
+        "height": 960
+      },
+      {
+        "id": "nimbus-15",
+        "src": "assets/images/nimbus-15.webp",
+        "width": 724,
+        "height": 960
+      },
+      {
+        "id": "nimbus-16",
+        "src": "assets/images/nimbus-16.webp",
+        "width": 960,
+        "height": 903
+      },
+      {
+        "id": "nimbus-17",
+        "src": "assets/images/nimbus-17.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nimbus-18",
+        "src": "assets/images/nimbus-18.webp",
+        "width": 960,
+        "height": 960
+      },
+      {
+        "id": "nimbus-19",
+        "src": "assets/images/nimbus-19.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "nimbus-20",
+        "src": "assets/images/nimbus-20.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nimbus-21",
+        "src": "assets/images/nimbus-21.webp",
+        "width": 960,
+        "height": 491
+      },
+      {
+        "id": "nimbus-22",
+        "src": "assets/images/nimbus-22.webp",
+        "width": 665,
+        "height": 960
+      },
+      {
+        "id": "nimbus-23",
+        "src": "assets/images/nimbus-23.webp",
+        "width": 665,
+        "height": 960
+      },
+      {
+        "id": "nimbus-24",
+        "src": "assets/images/nimbus-24.webp",
+        "width": 912,
+        "height": 960
+      },
+      {
+        "id": "nimbus-25",
+        "src": "assets/images/nimbus-25.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "nimbus-26",
+        "src": "assets/images/nimbus-26.webp",
+        "width": 960,
+        "height": 915
+      },
+      {
+        "id": "nimbus-27",
+        "src": "assets/images/nimbus-27.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "nimbus-28",
+        "src": "assets/images/nimbus-28.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "nimbus-29",
+        "src": "assets/images/nimbus-29.webp",
+        "width": 959,
+        "height": 960
+      },
+      {
+        "id": "nimbus-30",
+        "src": "assets/images/nimbus-30.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "nimbus-31",
+        "src": "assets/images/nimbus-31.webp",
+        "width": 695,
+        "height": 960
+      },
+      {
+        "id": "nimbus-32",
+        "src": "assets/images/nimbus-32.webp",
+        "width": 960,
+        "height": 731
+      },
+      {
+        "id": "nimbus-33",
+        "src": "assets/images/nimbus-33.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nimbus-34",
+        "src": "assets/images/nimbus-34.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "accelerate-00",
+        "src": "assets/images/accelerate-00.webp",
+        "width": 960,
+        "height": 608
+      },
+      {
+        "id": "accelerate-01",
+        "src": "assets/images/accelerate-01.webp",
+        "width": 960,
+        "height": 451
+      },
+      {
+        "id": "accelerate-02",
+        "src": "assets/images/accelerate-02.webp",
+        "width": 902,
+        "height": 960
+      },
+      {
+        "id": "accelerate-03",
+        "src": "assets/images/accelerate-03.webp",
+        "width": 570,
+        "height": 960
+      },
+      {
+        "id": "accelerate-04",
+        "src": "assets/images/accelerate-04.webp",
+        "width": 850,
+        "height": 960
+      },
+      {
+        "id": "accelerate-05",
+        "src": "assets/images/accelerate-05.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "accelerate-06",
+        "src": "assets/images/accelerate-06.webp",
+        "width": 960,
+        "height": 665
+      },
+      {
+        "id": "accelerate-07",
+        "src": "assets/images/accelerate-07.webp",
+        "width": 960,
+        "height": 781
+      },
+      {
+        "id": "accelerate-08",
+        "src": "assets/images/accelerate-08.webp",
+        "width": 701,
+        "height": 960
+      },
+      {
+        "id": "columbia-class",
+        "src": "assets/images/columbia-class.webp",
+        "width": 960,
+        "height": 693
+      },
+      {
+        "id": "mott-00",
+        "src": "assets/images/mott-00.webp",
+        "width": 738,
+        "height": 960
+      },
+      {
+        "id": "mott-01",
+        "src": "assets/images/mott-01.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "mott-02",
+        "src": "assets/images/mott-02.webp",
+        "width": 506,
+        "height": 270
+      },
+      {
+        "id": "mott-03",
+        "src": "assets/images/mott-03.webp",
+        "width": 960,
+        "height": 695
+      },
+      {
+        "id": "mott-04",
+        "src": "assets/images/mott-04.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "id": "mott-05",
+        "src": "assets/images/mott-05.webp",
+        "width": 1280,
+        "height": 831
+      },
+      {
+        "id": "mott-06",
+        "src": "assets/images/mott-06.webp",
+        "width": 1280,
+        "height": 831
+      },
+      {
+        "id": "mott-07",
+        "src": "assets/images/mott-07.webp",
+        "width": 1280,
+        "height": 925
+      },
+      {
+        "id": "mott-08",
+        "src": "assets/images/mott-08.webp",
+        "width": 1280,
+        "height": 862
+      },
+      {
+        "id": "mott-09",
+        "src": "assets/images/mott-09.webp",
+        "width": 1280,
+        "height": 887
+      },
+      {
+        "id": "mott-10",
+        "src": "assets/images/mott-10.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "mott-11",
+        "src": "assets/images/mott-11.webp",
+        "width": 960,
+        "height": 755
+      },
+      {
+        "id": "mott-12",
+        "src": "assets/images/mott-12.webp",
+        "width": 952,
+        "height": 960
+      },
+      {
+        "id": "mott-13",
+        "src": "assets/images/mott-13.webp",
+        "width": 960,
+        "height": 708
+      },
+      {
+        "id": "mott-permeability-chart",
+        "src": "assets/media/mott-permeability-chart.jpg",
+        "width": 1334,
+        "height": 712
+      },
+      {
+        "id": "mott-14",
+        "src": "assets/images/mott-14.webp",
+        "width": 960,
+        "height": 575
+      },
+      {
+        "id": "mott-15",
+        "src": "assets/images/mott-15.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "mott-16",
+        "src": "assets/images/mott-16.webp",
+        "width": 960,
+        "height": 361
+      },
+      {
+        "id": "mott-17",
+        "src": "assets/images/mott-17.webp",
+        "width": 960,
+        "height": 578
+      },
+      {
+        "id": "mott-18",
+        "src": "assets/images/mott-18.webp",
+        "width": 960,
+        "height": 578
+      },
+      {
+        "id": "mott-19",
+        "src": "assets/images/mott-19.webp",
+        "width": 960,
+        "height": 665
+      },
+      {
+        "id": "mott-20",
+        "src": "assets/images/mott-20.webp",
+        "width": 1280,
+        "height": 1280
+      },
+      {
+        "id": "mott-21",
+        "src": "assets/images/mott-21.webp",
+        "width": 1280,
+        "height": 1281
+      },
+      {
+        "id": "mott-22",
+        "src": "assets/images/mott-22.webp",
+        "width": 887,
+        "height": 759
+      },
+      {
+        "id": "mott-23",
+        "src": "assets/images/mott-23.webp",
+        "width": 849,
+        "height": 742
+      },
+      {
+        "id": "mott-24",
+        "src": "assets/images/mott-24.webp",
+        "width": 960,
+        "height": 620
+      },
+      {
+        "id": "mott-25",
+        "src": "assets/images/mott-25.webp",
+        "width": 960,
+        "height": 905
+      },
+      {
+        "id": "mott-26",
+        "src": "assets/images/mott-26.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "mott-27",
+        "src": "assets/images/mott-27.webp",
+        "width": 588,
+        "height": 367
+      },
+      {
+        "id": "mott-28",
+        "src": "assets/images/mott-28.webp",
+        "width": 583,
+        "height": 341
+      },
+      {
+        "id": "mott-29",
+        "src": "assets/images/mott-29.webp",
+        "width": 1280,
+        "height": 447
+      },
+      {
+        "id": "mott-30",
+        "src": "assets/images/mott-30.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "mott-31",
+        "src": "assets/images/mott-31.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "mott-32",
+        "src": "assets/images/mott-32.webp",
+        "width": 789,
+        "height": 960
+      },
+      {
+        "id": "mott-33",
+        "src": "assets/images/mott-33.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "mott-34",
+        "src": "assets/images/mott-34.webp",
+        "width": 960,
+        "height": 851
+      },
+      {
+        "id": "mott-35",
+        "src": "assets/images/mott-35.webp",
+        "width": 535,
+        "height": 960
+      },
+      {
+        "id": "mott-36",
+        "src": "assets/images/mott-36.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "mott-37",
+        "src": "assets/images/mott-37.webp",
+        "width": 663,
+        "height": 416
+      },
+      {
+        "id": "mott-38",
+        "src": "assets/images/mott-38.webp",
+        "width": 622,
+        "height": 381
+      },
+      {
+        "id": "ecpm-02",
+        "src": "assets/images/ecpm-02.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "ecpm-00",
+        "src": "assets/images/ecpm-00.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "ecpm-01",
+        "src": "assets/images/ecpm-01.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "ecpm-03",
+        "src": "assets/images/ecpm-03.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "ecpm-04",
+        "src": "assets/images/ecpm-04.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "ecpm-05",
+        "src": "assets/images/ecpm-05.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "ecpm-06",
+        "src": "assets/images/ecpm-06.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "ecpm-07",
+        "src": "assets/images/ecpm-07.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "ecpm-08",
+        "src": "assets/images/ecpm-08.webp",
+        "width": 720,
+        "height": 960
+      },
+      {
+        "id": "ecpm-09",
+        "src": "assets/images/ecpm-09.webp",
+        "width": 400,
+        "height": 400
+      },
+      {
+        "id": "ecpm-10",
+        "src": "assets/images/ecpm-10.webp",
+        "width": 828,
+        "height": 960
+      },
+      {
+        "id": "nomad-00",
+        "src": "assets/images/nomad-00.webp",
+        "width": 887,
+        "height": 960
+      },
+      {
+        "id": "nomad-01",
+        "src": "assets/images/nomad-01.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "nomad-02",
+        "src": "assets/images/nomad-02.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "niantic-00",
+        "src": "assets/images/niantic-00.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "niantic-01",
+        "src": "assets/images/niantic-01.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "frc-00",
+        "src": "assets/images/frc-00.webp",
+        "width": 960,
+        "height": 644
+      },
+      {
+        "id": "frc-01",
+        "src": "assets/images/frc-01.webp",
+        "width": 960,
+        "height": 708
+      },
+      {
+        "id": "frc-02",
+        "src": "assets/images/frc-02.webp",
+        "width": 960,
+        "height": 597
+      },
+      {
+        "id": "frc-03",
+        "src": "assets/images/frc-03.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "frc-04",
+        "src": "assets/images/frc-04.webp",
+        "width": 840,
+        "height": 960
+      },
+      {
+        "id": "photo-00",
+        "src": "assets/images/photo-00.webp",
+        "width": 683,
+        "height": 452
+      },
+      {
+        "id": "photo-01",
+        "src": "assets/images/photo-01.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-02",
+        "src": "assets/images/photo-02.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-03",
+        "src": "assets/images/photo-03.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-04",
+        "src": "assets/images/photo-04.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-05",
+        "src": "assets/images/photo-05.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-06",
+        "src": "assets/images/photo-06.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-07",
+        "src": "assets/images/photo-07.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-08",
+        "src": "assets/images/photo-08.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-09",
+        "src": "assets/images/photo-09.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-10",
+        "src": "assets/images/photo-10.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-11",
+        "src": "assets/images/photo-11.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-12",
+        "src": "assets/images/photo-12.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-13",
+        "src": "assets/images/photo-13.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-14",
+        "src": "assets/images/photo-14.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-15",
+        "src": "assets/images/photo-15.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-16",
+        "src": "assets/images/photo-16.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-17",
+        "src": "assets/images/photo-17.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-18",
+        "src": "assets/images/photo-18.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-19",
+        "src": "assets/images/photo-19.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-20",
+        "src": "assets/images/photo-20.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-21",
+        "src": "assets/images/photo-21.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-22",
+        "src": "assets/images/photo-22.webp",
+        "width": 960,
+        "height": 647
+      },
+      {
+        "id": "photo-23",
+        "src": "assets/images/photo-23.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-24",
+        "src": "assets/images/photo-24.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-25",
+        "src": "assets/images/photo-25.webp",
+        "width": 960,
+        "height": 629
+      },
+      {
+        "id": "photo-26",
+        "src": "assets/images/photo-26.webp",
+        "width": 960,
+        "height": 647
+      },
+      {
+        "id": "photo-27",
+        "src": "assets/images/photo-27.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-28",
+        "src": "assets/images/photo-28.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-29",
+        "src": "assets/images/photo-29.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-30",
+        "src": "assets/images/photo-30.webp",
+        "width": 960,
+        "height": 632
+      },
+      {
+        "id": "photo-31",
+        "src": "assets/images/photo-31.webp",
+        "width": 960,
+        "height": 735
+      },
+      {
+        "id": "photo-32",
+        "src": "assets/images/photo-32.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "photo-33",
+        "src": "assets/images/photo-33.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "photo-34",
+        "src": "assets/images/photo-34.webp",
+        "width": 960,
+        "height": 720
+      },
+      {
+        "id": "photo-35",
+        "src": "assets/images/photo-35.webp",
+        "width": 725,
+        "height": 960
+      },
+      {
+        "id": "photo-36",
+        "src": "assets/images/photo-36.webp",
+        "width": 960,
+        "height": 637
+      },
+      {
+        "id": "photo-37",
+        "src": "assets/images/photo-37.webp",
+        "width": 960,
+        "height": 638
+      },
+      {
+        "id": "photo-38",
+        "src": "assets/images/photo-38.webp",
+        "width": 960,
+        "height": 638
+      },
+      {
+        "id": "photo-39",
+        "src": "assets/images/photo-39.webp",
+        "width": 960,
+        "height": 638
+      },
+      {
+        "id": "photo-40",
+        "src": "assets/images/photo-40.webp",
+        "width": 960,
+        "height": 638
+      },
+      {
+        "id": "photo-41",
+        "src": "assets/images/photo-41.webp",
+        "width": 960,
+        "height": 623
+      },
+      {
+        "id": "photo-42",
+        "src": "assets/images/photo-42.webp",
+        "width": 640,
+        "height": 153
+      }
+    ],
+    "resources": [
+      {
+        "id": "resource-1",
+        "url": "assets/media/mott-permeability-data.csv",
+        "label": "Download permeability data (CSV)",
+        "note": "",
+        "download": "Mott-Permeability-Data.csv",
+        "newTab": false
+      },
+      {
+        "id": "resource-2",
+        "url": "https://docs.google.com/spreadsheets/d/e/2CAIWO3em5zxOpL2Gfh1_5Zn5_vbD74M09C64V5shmZMvvcDZRFBlOlYQB40jXzQpTj3ktv4lAxLGx2bzMkw/gviz/chartiframe?autosize=true&oid=235515963",
+        "label": "View the original published chart",
+        "note": "",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-3",
+        "url": "https://www.youtube.com/watch?v=-xZQwMEpxKI",
+        "label": "Watch scissor climber prototype on YouTube",
+        "note": "Original video · Eli Doggart",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-4",
+        "url": "https://www.youtube.com/watch?v=BLYfb50WjbI",
+        "label": "Watch hatch placement prototype on YouTube",
+        "note": "Original video · Eli Doggart",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-5",
+        "url": "https://www.youtube.com/watch?v=mclK_TEa4u0",
+        "label": "Watch T-shaped pneumatic hatch placement on YouTube",
+        "note": "Original video · Eli Doggart",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-6",
+        "url": "https://www.youtube.com/watch?v=sxFOp6J1drs",
+        "label": "Watch final hatch design on YouTube",
+        "note": "Original video · Eli Doggart",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-7",
+        "url": "https://digital.wpi.edu/downloads/9880vv37t?locale=it",
+        "label": "Read the MQP report (PDF)",
+        "note": "68 pages · 44.5 MB · Hosted by WPI",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-8",
+        "url": "https://digital.wpi.edu/concern/student_works/fj236542r?locale=it",
+        "label": "View the WPI project record",
+        "note": "",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-9",
+        "url": "https://docs.google.com/document/d/1NZxrDTLC3dRFp3T1uUzg9NO4NV0tr2wjOQZDGgRmKLU/preview",
+        "label": "Read the IQP proposal (Google Docs)",
+        "note": "Original document: Professional proposal",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "resource-10",
+        "url": "https://docs.google.com/document/d/17YpoSgoDXrykJU90CeElKGVNWEDx73TRvWXSDun6jd0/preview",
+        "label": "Read the IQP report draft (Google Docs)",
+        "note": "Original document: Full Report Draft",
+        "download": "",
+        "newTab": true
+      }
+    ]
+  }
+}

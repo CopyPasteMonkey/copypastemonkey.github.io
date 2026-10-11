@@ -1,0 +1,678 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Eli Doggart portfolio content",
+  "$ref": "#/$defs/portfolio",
+  "$defs": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "media": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1,
+          "x-reference": "media"
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 0
+        },
+        "credit": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 0
+        },
+        "linked": {
+          "type": "boolean"
+        },
+        "linkLabel": {
+          "type": "string",
+          "maxLength": 1200,
+          "minLength": 0
+        },
+        "lazy": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "media",
+        "alt",
+        "caption",
+        "credit",
+        "linked",
+        "linkLabel",
+        "lazy"
+      ],
+      "additionalProperties": false
+    },
+    "media": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "description": "Stable link ID. Existing IDs stay fixed when titles change."
+        },
+        "src": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^assets/(images|media)/[A-Za-z0-9][A-Za-z0-9._-]*\\.(webp|jpg|jpeg|png)$"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2400
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2400
+        }
+      },
+      "required": [
+        "id",
+        "src",
+        "width",
+        "height"
+      ],
+      "additionalProperties": false
+    },
+    "resource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "description": "Stable link ID. Existing IDs stay fixed when titles change."
+        },
+        "url": {
+          "type": "string",
+          "maxLength": 2048,
+          "minLength": 1,
+          "x-url": true
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 500,
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 2000,
+          "minLength": 0
+        },
+        "download": {
+          "type": "string",
+          "maxLength": 128,
+          "minLength": 0,
+          "pattern": "^$|^[A-Za-z0-9][A-Za-z0-9._-]*\\.(pdf|csv|webp|jpg|jpeg|png)$"
+        },
+        "newTab": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "label",
+        "note",
+        "download",
+        "newTab"
+      ],
+      "additionalProperties": false
+    },
+    "block": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "section",
+              "type": "string"
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "level": {
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 6
+            },
+            "chapter": {
+              "type": "boolean"
+            },
+            "blocks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/block"
+              },
+              "maxItems": 100,
+              "minItems": 0
+            }
+          },
+          "required": [
+            "type",
+            "title",
+            "level",
+            "chapter",
+            "blocks"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "citation",
+              "type": "string"
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 1
+            },
+            "suffix": {
+              "type": "string",
+              "maxLength": 2000,
+              "minLength": 0
+            }
+          },
+          "required": [
+            "type",
+            "title",
+            "suffix"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "text",
+              "type": "string"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 10000,
+              "minLength": 1
+            },
+            "style": {
+              "type": "string",
+              "enum": [
+                "body",
+                "note",
+                "source",
+                "context",
+                "italic"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "text",
+            "style"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "gallery",
+              "type": "string"
+            },
+            "layout": {
+              "type": "string",
+              "enum": [
+                "grid",
+                "single",
+                "photos"
+              ]
+            },
+            "images": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/image"
+              },
+              "maxItems": 100,
+              "minItems": 1
+            }
+          },
+          "required": [
+            "type",
+            "layout",
+            "images"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "figure",
+              "type": "string"
+            },
+            "layout": {
+              "type": "string",
+              "enum": [
+                "plain",
+                "chart",
+                "code"
+              ]
+            },
+            "image": {
+              "$ref": "#/$defs/image"
+            }
+          },
+          "required": [
+            "type",
+            "layout",
+            "image"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "resources",
+              "type": "string"
+            },
+            "blocks": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/block"
+              },
+              "maxItems": 100,
+              "minItems": 0
+            }
+          },
+          "required": [
+            "type",
+            "blocks"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "resource",
+              "type": "string"
+            },
+            "resource": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1,
+              "x-reference": "resources"
+            }
+          },
+          "required": [
+            "type",
+            "resource"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "heading",
+              "type": "string"
+            },
+            "title": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "level": {
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 6
+            }
+          },
+          "required": [
+            "type",
+            "title",
+            "level"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "list",
+              "type": "string"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 2000,
+                "minLength": 1
+              },
+              "maxItems": 100,
+              "minItems": 1
+            }
+          },
+          "required": [
+            "type",
+            "items"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "description": "Stable link ID. Existing IDs stay fixed when titles change."
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 0
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 0
+        },
+        "date": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 0
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          },
+          "maxItems": 100,
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "role",
+        "date",
+        "blocks"
+      ],
+      "additionalProperties": false
+    },
+    "entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+          "description": "Stable link ID. Existing IDs stay fixed when titles change."
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1
+        },
+        "intro": {
+          "type": "string",
+          "maxLength": 3000,
+          "minLength": 1
+        },
+        "divider": {
+          "type": "string",
+          "maxLength": 200,
+          "minLength": 0
+        },
+        "role": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 0
+        },
+        "date": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 0
+        },
+        "image": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/image"
+          },
+          "maxItems": 1,
+          "minItems": 0
+        },
+        "placeholder": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 0
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/role"
+          },
+          "maxItems": 20,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "intro",
+        "divider",
+        "role",
+        "date",
+        "image",
+        "placeholder",
+        "roles"
+      ],
+      "additionalProperties": false
+    },
+    "section": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "enum": [
+            "work",
+            "projects",
+            "skills",
+            "passions"
+          ]
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 0
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entry"
+          },
+          "maxItems": 80,
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "subtitle",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "portfolio": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "const": 1
+        },
+        "site": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "profession": {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 400,
+              "minLength": 1
+            },
+            "introduction": {
+              "type": "string",
+              "maxLength": 3000,
+              "minLength": 1
+            },
+            "resume": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^assets/documents/[A-Za-z0-9][A-Za-z0-9._-]*\\.pdf$"
+            },
+            "resumeFilename": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.pdf$"
+            },
+            "resumeLabel": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "email": {
+              "type": "string",
+              "maxLength": 254,
+              "minLength": 1,
+              "pattern": "^[^\\s@<>]+@[^\\s@<>]+\\.[^\\s@<>]+$"
+            },
+            "phone": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1
+            },
+            "phoneLink": {
+              "type": "string",
+              "maxLength": 32,
+              "minLength": 1,
+              "pattern": "^tel:\\+[0-9]{7,15}$"
+            },
+            "footer": {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "name",
+            "profession",
+            "description",
+            "introduction",
+            "resume",
+            "resumeFilename",
+            "resumeLabel",
+            "email",
+            "phone",
+            "phoneLink",
+            "footer"
+          ],
+          "additionalProperties": false
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/section"
+          },
+          "maxItems": 4,
+          "minItems": 4
+        },
+        "education": {
+          "type": "object",
+          "properties": {
+            "heading": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "school": {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            },
+            "date": {
+              "type": "string",
+              "maxLength": 100,
+              "minLength": 1
+            },
+            "degree": {
+              "type": "string",
+              "maxLength": 300,
+              "minLength": 1
+            }
+          },
+          "required": [
+            "heading",
+            "school",
+            "date",
+            "degree"
+          ],
+          "additionalProperties": false
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/media"
+          },
+          "maxItems": 500,
+          "minItems": 0
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resource"
+          },
+          "maxItems": 200,
+          "minItems": 0
+        }
+      },
+      "required": [
+        "version",
+        "site",
+        "sections",
+        "education",
+        "media",
+        "resources"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

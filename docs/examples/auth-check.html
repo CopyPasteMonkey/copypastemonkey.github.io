@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src https://api.github.com; base-uri 'none'; form-action 'none'">
+  <title>Portfolio sign-in check</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Portfolio sign-in check</h1>
+    <p>This temporary page checks sign-in and reads your GitHub identity and portfolio repository access. It cannot save drafts or publish changes.</p>
+    <button class="expand-button" id="check" type="button" disabled>Run sign-in check</button>
+    <p id="status" role="status" aria-live="polite">Loading the sign-in check…</p>
+    <p>The temporary session is discarded after the check. No credentials are displayed or saved.</p>
+    <p><a href="/">Return to portfolio</a></p>
+  </main>
+  <script type="module" src="./auth-check.mjs"></script>
+</body>
+</html>

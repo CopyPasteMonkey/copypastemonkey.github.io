@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="136" viewBox="0 -38 136 136"><title>Eli Doggart — original résumé logo</title><defs>
+    <path id="e-channel" d="M49 18H22Q19 18 19 21V57Q19 60 22 60H46Q49 60 49 57V53Q49 50 46 50H33Q30 50 30 47V42Q30 39 33 39H43Q46 39 46 36V32Q46 29 43 29H30" />
+    <path id="d-channel" d="M62 60V18H80C95 18 96 27 96 39S95 60 80 60H73V29H80C85 29 85 34 85 39S85 49 80 49" />
+    <clipPath id="plate-interior"><rect x="10" y="11" width="92" height="56" /></clipPath>
+  </defs>
+  <path d="M9 2H127L134 9V51L127 58H9L2 51V9Z" fill="white" /><g fill="none" stroke="#AC2B37" stroke-linecap="round" stroke-linejoin="round">
+    <g id="edge-to-edge-flow-field" transform="translate(12 -9)" clip-path="url(#plate-interior)">
+    <g id="radiating-channel-15" stroke-width="63.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-15" stroke="white" stroke-width="62.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-14" stroke-width="59.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-14" stroke="white" stroke-width="58.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-13" stroke-width="55.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-13" stroke="white" stroke-width="54.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-12" stroke-width="51.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-12" stroke="white" stroke-width="50.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-11" stroke-width="47.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-11" stroke="white" stroke-width="46.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-10" stroke-width="43.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-10" stroke="white" stroke-width="42.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-9" stroke-width="39.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-9" stroke="white" stroke-width="38.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-8" stroke-width="35.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-8" stroke="white" stroke-width="34.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-7" stroke-width="31.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-7" stroke="white" stroke-width="30.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-6" stroke-width="27.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-6" stroke="white" stroke-width="26.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-5" stroke-width="23.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-5" stroke="white" stroke-width="22.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-4" stroke-width="19.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-4" stroke="white" stroke-width="18.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-3" stroke-width="15.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-3" stroke="white" stroke-width="14.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-2" stroke-width="11.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-2" stroke="white" stroke-width="10.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="radiating-channel-1" stroke-width="7.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+    <g id="channel-clearance-1" stroke="white" stroke-width="6.1">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+    </g>
+      <g id="main-initial-strokes" stroke-width="3.5">
+      <use href="#e-channel" />
+      <use href="#d-channel" />
+      </g>
+    </g>
+        
+    <g id="manifold-ports" fill="white" stroke-width="1.1">
+      <g>
+        <path id="fluid-1-left" d="M10.3876 5.3500H19.4500V15.3500H5.3500V10.3876Z" />
+        <path id="fluid-2-left" d="M5.3500 18.4500H19.4500V28.4500H5.3500Z" />
+        <path id="fluid-3-left" d="M5.3500 31.5500H19.4500V41.5500H5.3500Z" />
+        <path id="fluid-4-left" d="M5.3500 44.6500H19.4500V54.6500H10.3876L5.3500 49.6124Z" />
+      </g>
+      <g transform="translate(136 0) scale(-1 1)">
+        <path id="fluid-1-right" d="M10.3876 5.3500H19.4500V15.3500H5.3500V10.3876Z" />
+        <path id="fluid-2-right" d="M5.3500 18.4500H19.4500V28.4500H5.3500Z" />
+        <path id="fluid-3-right" d="M5.3500 31.5500H19.4500V41.5500H5.3500Z" />
+        <path id="fluid-4-right" d="M5.3500 44.6500H19.4500V54.6500H10.3876L5.3500 49.6124Z" />
+      </g>
+    </g>
+    <path id="plate" stroke-width="1.6" d="M9 2H127L134 9V51L127 58H9L2 51V9Z" />
+  </g>
+</svg>
