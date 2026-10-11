@@ -20,7 +20,7 @@ test('mobile navigation, resume access and no horizontal overflow',async({page})
  await page.screenshot({path:'.local/portfolio-mobile.png',fullPage:false});
 });
 test('editor save/reload, undo, validation, import/export and faithful interactive preview',async({page})=>{
- const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/editor/');await expect(page.locator('#status')).toContainText('Ready');
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/editor/form.html');await expect(page.locator('#status')).toContainText('Ready');
  await page.getByRole('button',{name:'Site & contact',exact:true}).click();const name=page.getByRole('textbox',{name:'Name',exact:true});await name.fill('Eli Draft Test');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');await page.reload();await expect(page.locator('#status')).toContainText('Restored');
  await page.getByRole('button',{name:'Site & contact',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Eli Draft Test');
  await page.getByRole('textbox',{name:'Name',exact:true}).fill('Second name');await page.waitForTimeout(450);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Eli Draft Test');
@@ -31,27 +31,27 @@ test('editor save/reload, undo, validation, import/export and faithful interacti
  await page.screenshot({path:'.local/editor-desktop.png',fullPage:false});expect(errors).toEqual([]);
 });
 test('entry removal undo, reorder and stable ID',async({page})=>{
- await page.goto('/editor/');const summaries=page.locator('#fields > div > div > .list > details > summary');await expect(page.locator('#fields summary').first()).toHaveText('Nimbus Power Systems');
+ await page.goto('/editor/form.html');const summaries=page.locator('#fields > div > div > .list > details > summary');await expect(page.locator('#fields summary').first()).toHaveText('Nimbus Power Systems');
  await page.locator('#fields summary').first().click();await page.getByRole('button',{name:'Move Nimbus Power Systems down',exact:true}).click();await expect(page.locator('#fields summary').first()).toHaveText('Accelerate Design LLC');
  await page.getByRole('button',{name:'Remove Nimbus Power Systems',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(0);await page.waitForTimeout(400);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(1);
 });
 test('image upload creates optimized stable media and draft package',async({page})=>{
- await page.goto('/editor/');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('#status')).toContainText('Image optimized');await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
+ await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('#status')).toContainText('Image optimized');await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
  await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export draft',exact:true}).click();await (await download).saveAs('.local/with-image.zip');await page.reload();await page.getByRole('button',{name:'Media',exact:true}).click();await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
 });
-test('one editor keeps GitHub setup gated and redirects the retired demo',async({page})=>{
- await page.goto('/editor/cms.html');await expect(page).toHaveURL(/\/editor\/$/);await page.getByRole('button',{name:'GitHub setup',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('GitHub App installed only on elidoggart/elidoggart.github.io');
+test('default visual editor keeps local publishing gated and redirects previous routes',async({page})=>{
+ for(const path of ['/editor/','/editor/cms.html','/editor/visual.html']){await page.goto(path);await expect(page).toHaveURL(/\/editor\/$/);await expect(page.locator('body')).toHaveClass(/visual-editor/);await expect(page.getByRole('button',{name:'Publish…',exact:true})).toBeDisabled();await expect(page.locator('#publish-note')).toContainText('www.elidoggart.com');}
 });
 
 test('editor keyboard focus survives automatic preview updates and mobile editing fits',async({page})=>{
- await page.goto('/editor/');await page.getByRole('button',{name:'Site & contact',exact:true}).click();const name=page.getByRole('textbox',{name:'Name',exact:true});await name.fill('Typing here');await page.waitForTimeout(1000);await expect(name).toBeFocused();
+ await page.goto('/editor/form.html');await page.getByRole('button',{name:'Site & contact',exact:true}).click();const name=page.getByRole('textbox',{name:'Name',exact:true});await name.fill('Typing here');await page.waitForTimeout(1000);await expect(name).toBeFocused();
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:'.local/editor-mobile.png',fullPage:false});
 });
 test('two open editor tabs detect stale draft saves instead of overwriting',async({page,context})=>{
- await page.goto('/editor/');const other=await context.newPage();await other.goto('/editor/');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await other.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('First tab');await other.getByRole('textbox',{name:'Name',exact:true}).fill('Second tab');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await other.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(other.locator('#status')).toContainText('newer draft');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio.site.name)).toBe('First tab');
+ await page.goto('/editor/form.html');const other=await context.newPage();await other.goto('/editor/form.html');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await other.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('First tab');await other.getByRole('textbox',{name:'Name',exact:true}).fill('Second tab');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await other.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(other.locator('#status')).toContainText('newer draft');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio.site.name)).toBe('First tab');
 });
 test('invalid image and draft paths are refused without changing content',async({page})=>{
- await page.goto('/editor/');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles({name:'fake.png',mimeType:'image/png',buffer:Buffer.from('<svg onload="alert(1)"></svg>')});await expect(page.locator('#status')).toContainText('not a supported image');
+ await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles({name:'fake.png',mimeType:'image/png',buffer:Buffer.from('<svg onload="alert(1)"></svg>')});await expect(page.locator('#status')).toContainText('not a supported image');
  await page.locator('#import').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"portfolio":{"html":"<script>bad</script>"}}')});await expect(page.locator('#status')).toContainText('Import failed');
 });
 
