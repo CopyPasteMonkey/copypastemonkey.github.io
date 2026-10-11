@@ -67,7 +67,7 @@
       else link.removeAttribute('aria-current');
     });
     sectionSelect.value = route.section;
-    document.title = route.section[0].toUpperCase() + route.section.slice(1) + ' | Eli Doggart';
+    document.title = route.section[0].toUpperCase() + route.section.slice(1) + ' | ' + document.querySelector('.name').textContent;
     route.entries.forEach(id => setExpanded(id, true));
     const lastEntry = route.entries[route.entries.length - 1];
     const target = lastEntry ? triggers.find(button => button.dataset.expand === lastEntry)
@@ -87,7 +87,7 @@
       revealTarget(heading);
       return;
     }
-    history.pushState(null, '', '#' + section);
+    history.pushState(null, '', location.href.split('#')[0] + '#' + section);
     renderRoute();
   }
 

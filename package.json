@@ -1,0 +1,24 @@
+{
+  "name": "eli-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/build.mjs --validate",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "dev": "node scripts/serve.mjs",
+    "media": "node scripts/import-media.mjs",
+    "schema": "node scripts/schema.mjs",
+    "draft": "node scripts/import-draft.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "sharp": "0.35.5",
+    "decap-cms-backend-github": "3.8.3",
+    "esbuild": "0.28.2"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
+  }
+}
