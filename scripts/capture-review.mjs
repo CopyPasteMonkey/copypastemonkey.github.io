@@ -1,0 +1,7 @@
+import {chromium} from '@playwright/test';import fs from 'node:fs/promises';
+await fs.mkdir('docs/review',{recursive:true});const browser=await chromium.launch();
+try{const page=await browser.newPage({viewport:{width:1600,height:1000}});await page.goto('http://127.0.0.1:4173/editor/');await page.getByRole('button',{name:'Save Draft',exact:true}).waitFor();await page.locator('#fields summary').first().click();await page.evaluate(()=>document.fonts.ready);await page.frameLocator('#preview').locator('.name').waitFor();await page.screenshot({path:'docs/review/editor-desktop.png'});
+await page.goto('http://127.0.0.1:4173/');await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.screenshot({path:'docs/review/portfolio-desktop.png'});
+await page.setViewportSize({width:390,height:844});await page.goto('http://127.0.0.1:4173/');await page.evaluate(()=>document.fonts.ready);await page.screenshot({path:'docs/review/portfolio-mobile.png'});
+await page.goto('http://127.0.0.1:4173/editor/');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.screenshot({path:'docs/review/editor-mobile.png'});
+console.log('Saved four review screenshots in docs/review/.');}finally{await browser.close();}
