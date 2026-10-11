@@ -1,3 +1,4 @@
+import {isResumeUpload,isImageUpload,verifyResume,maxResumeBytes} from '../lib/pdf.mjs';
 import {assertValid} from '../lib/schema.mjs';
 const contentPath='content/portfolio.json';
 const decode=content=>new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(atob(content.replace(/\s/g,'')),c=>c.charCodeAt(0)));
@@ -22,7 +23,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    const draftRef='/git/refs/heads/'+encodeURIComponent(draftBranch);
    const allowed=simple||(method==='POST'&&suffix==='/git/refs'&&body.ref==='refs/heads/'+draftBranch)||(method==='POST'&&suffix==='/pulls'&&body.head===owner+':'+draftBranch&&body.base===config.branch)||(method==='PATCH'&&suffix===draftRef&&body.force===false)||(method==='PUT'&&/^\/pulls\/\d+\/merge$/.test(suffix)&&sha(body.sha));
    if(!allowed)throw Error('Blocked write outside the portfolio draft workflow.');
-   if(suffix==='/git/trees'&&(!Array.isArray(body.tree)||body.tree.some(f=>f.path!==contentPath&&!/^assets\/images\/upload-[a-f0-9]{20}\.webp$/.test(f.path))))throw Error('Only portfolio content and optimized image uploads may be changed.');
+   if(suffix==='/git/trees'&&(!Array.isArray(body.tree)||body.tree.some(f=>f.path!==contentPath&&!isImageUpload(f.path)&&!isResumeUpload(f.path))))throw Error('Only portfolio content, optimized images, and validated resume PDFs may be changed.');
   }
   const url=new URL('https://api.github.com'+path);for(const [k,v] of Object.entries(options.params||{}))url.searchParams.set(k,String(v));
   const response=await fetcher(url.href,{method,body:options.body,headers:{Accept:'application/vnd.github+json','Content-Type':'application/json',Authorization:'Bearer '+token,'X-GitHub-Api-Version':'2026-03-10'},cache:'no-store',redirect:'error',signal:controller.signal});
@@ -68,6 +69,9 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
     if(bytes.length>2_000_000||m.src!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('Only optimized, hash-verified WebP uploads are accepted.');
     assets.push({path:m.src,toBase64:async()=>base64(bytes)});
    }
+   if(images.has(data.site.resume)){
+    const blob=images.get(data.site.resume);await verifyResume(data.site.resume,blob);const bytes=new Uint8Array(await blob.arrayBuffer());assets.push({path:data.site.resume,toBase64:async()=>base64(bytes)});
+   }else if(data.site.resume!==JSON.parse(publishedData).site.resume&&data.site.resume!==current?.data.site.resume)throw Error('Missing uploaded resume PDF. Upload it or load the complete GitHub draft.');
    const files=[{path:contentPath,slug:draftBranch.split('/').at(-1),raw:JSON.stringify({portfolio:data},null,2)+'\n'}];
    if(current){
     // Append to the checked draft head, without Decap's implicit force-rebase fallback.
@@ -81,7 +85,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
  async function review(data){
   data=structuredClone(data);
   check();if(fingerprint(data)!==savedData)throw Error('Save the current changes to the GitHub draft before publishing.');const draft=await findDraft();if(!draft||draft.head!==expectedHead)throw Error('The GitHub draft changed. Load and review the latest version.');
-  const files=await request(repo+'/pulls/'+draft.pr.number+'/files',{params:{per_page:100}});if(files.length>=100||files.some(f=>!['added','modified'].includes(f.status)||(f.filename!==contentPath&&(!/^assets\/images\/upload-[a-f0-9]{20}\.webp$/.test(f.filename)||!data.media.some(m=>m.src===f.filename)))))throw Error('This pull request changes files outside the approved portfolio content. Review it in GitHub.');
+  const files=await request(repo+'/pulls/'+draft.pr.number+'/files',{params:{per_page:100}});if(files.length>=100||files.some(f=>!['added','modified'].includes(f.status)||(f.filename!==contentPath&&!isResumeUpload(f.filename)&&(!isImageUpload(f.filename)||!data.media.some(m=>m.src===f.filename)))))throw Error('This pull request changes files outside the approved portfolio content. Review it in GitHub.');
   const checks=await publicJSON('/commits/'+draft.head+'/check-runs?per_page=100&filter=latest');const required=checks.check_runs?.filter(c=>c.name===config.requiredCheck&&c.app?.slug==='github-actions'&&c.head_sha===draft.head)||[];
   if(required.length!==1||required[0].status!=='completed'||required[0].conclusion!=='success')throw Error('Publication is blocked until the required validation check succeeds for this exact draft.');
   const pr=await request(repo+'/pulls/'+draft.pr.number);if(pr.head?.sha!==expectedHead||pr.mergeable!==true||pr.mergeable_state!=='clean'||pr.state!=='open')throw Error('GitHub has not marked this draft ready to merge. Review conflicts, checks and branch rules.');
@@ -98,6 +102,14 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   const bytes=Uint8Array.from(atob(r.content.replace(/\s/g,'')),c=>c.charCodeAt(0));const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);
   if(bytes.length>2_000_000||m.id!=='upload-'+hash||m.src!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('GitHub image bytes do not match their stable filename.');
   const blob=new Blob([bytes],{type:'image/webp'}),bitmap=await createImageBitmap(blob);const valid=bitmap.width===m.width&&bitmap.height===m.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!valid)throw Error('GitHub image dimensions do not match the draft.');results.set(m.src,blob);
- }return results;}
+ }
+ if(isResumeUpload(data.site.resume)){
+  let r=await request(repo+'/contents/'+data.site.resume,{params:{ref}});
+  if(r.size>maxResumeBytes)throw Error('GitHub resume exceeds 5 MB.');
+  if(r.encoding==='none'&&sha(r.sha))r=await request(repo+'/git/blobs/'+r.sha);
+  if(r.encoding!=='base64'||r.size>maxResumeBytes||typeof r.content!=='string'||r.content.length>7_000_000)throw Error('Invalid resume PDF response.');
+  const blob=new Blob([Uint8Array.from(atob(r.content.replace(/\s/g,'')),c=>c.charCodeAt(0))],{type:'application/pdf'});await verifyResume(data.site.resume,blob);results.set(data.site.resume,blob);
+ }
+ return results;}
  return {connect,adopt,snapshot,saveDraft,review,publish,deployment,media,end,isConnected:()=>!!token&&expires>now()};
 }

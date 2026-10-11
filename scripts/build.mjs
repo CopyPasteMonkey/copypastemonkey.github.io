@@ -17,6 +17,7 @@ await fs.writeFile(path.join(output,'content/schema.json'),JSON.stringify(schema
 // Build the narrow, pinned Decap backend from source; no prebuilt CMS bundle/CDN.
 const {build}=await import('esbuild');
 const bundled=await build({entryPoints:[path.join(root,'build/decap-api.mjs')],outfile:path.join(output,'editor/vendor/decap-api.mjs'),bundle:true,format:'esm',platform:'browser',minify:true,metafile:true,legalComments:'eof',define:{'process.env.NODE_ENV':'"production"'}});
+await build({entryPoints:[path.join(root,'lib/pdf.mjs')],outfile:path.join(output,'lib/pdf.mjs'),bundle:true,format:'esm',platform:'browser',minify:true,legalComments:'eof'});
 await fs.mkdir(path.join(root,'.local'),{recursive:true});
 await fs.writeFile(path.join(root,'.local/backend-metafile.json'),JSON.stringify(bundled.metafile,null,2));
 for(const banned of ['@platejs/','/trim/','/sprintf-js/','/uuid/','decap-cms-core/','decap-cms-lib-auth/','decap-cms-widget-'])if(Object.keys(bundled.metafile.inputs).some(p=>p.includes(banned)))throw Error('Unexpected editor dependency in backend bundle: '+banned);

@@ -1,3 +1,4 @@
+import {isResumeUpload,isImageUpload,maxResumeBytes} from '../lib/pdf.mjs';
 // Browser-local storage only. This module never calls a write API.
 export const draftKey='eli-portfolio-draft-v1';
 const database=()=>new Promise((resolve,reject)=>{const r=indexedDB.open('eli-portfolio-media-v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('images');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
@@ -42,12 +43,13 @@ export async function readZip(file){
  const bytes=new Uint8Array(await file.arrayBuffer()),view=new DataView(bytes.buffer);let offset=0;const files=new Map();
  while(offset+30<=bytes.length&&view.getUint32(offset,true)===0x04034b50){
   const flags=view.getUint16(offset+6,true),method=view.getUint16(offset+8,true),crc=view.getUint32(offset+14,true),size=view.getUint32(offset+18,true),unpacked=view.getUint32(offset+22,true),nameLen=view.getUint16(offset+26,true),extra=view.getUint16(offset+28,true);
-  if(method!==0||(flags&9)||size!==unpacked||size>2_000_000)throw Error('Import an unmodified draft ZIP exported by this editor.');
+  if(method!==0||(flags&9)||size!==unpacked||size>maxResumeBytes)throw Error('Import an unmodified draft ZIP exported by this editor.');
   const start=offset+30+nameLen+extra;if(start+size>bytes.length)throw Error('Incomplete draft package.');
   const path=new TextDecoder('utf-8',{fatal:true}).decode(bytes.slice(offset+30,offset+30+nameLen));
-  if(path!=='content/portfolio.json'&&!/^assets\/images\/upload-[a-f0-9]{20}\.webp$/.test(path))throw Error('Unexpected file in draft package.');
+  if(path!=='content/portfolio.json'&&!isImageUpload(path)&&!isResumeUpload(path))throw Error('Unexpected file in draft package.');
+  if(!isResumeUpload(path)&&size>2_000_000)throw Error('Content and image files must be smaller than 2 MB.');
   if(files.has(path)||files.size>500)throw Error('Duplicate files or too many files in draft package.');
-  const data=bytes.slice(start,start+size);if(crc32(data)!==crc)throw Error('Damaged draft package.');files.set(path,new Blob([data],{type:path.endsWith('.webp')?'image/webp':'application/json'}));offset=start+size;
+  const data=bytes.slice(start,start+size);if(crc32(data)!==crc)throw Error('Damaged draft package.');files.set(path,new Blob([data],{type:path.endsWith('.webp')?'image/webp':path.endsWith('.pdf')?'application/pdf':'application/json'}));offset=start+size;
  }
  if(!files.has('content/portfolio.json'))throw Error('Missing portfolio content in draft package.');return files;
 }
