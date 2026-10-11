@@ -1,5 +1,7 @@
 ELI DOGGART — PORTFOLIO
 
+Custom website and editor code generated and assembled using OpenAI tools.
+
 ASSET CREDITS
 
 Columbia-class submarine concept rendering — U.S. Navy.
