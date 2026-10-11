@@ -1,0 +1,34 @@
+# Visual portfolio editor
+
+The owner approved this visual editor for publication on 2026-10-11. It is the default at `/editor/`; `/editor/visual.html` redirects there. The previous form interface remains available at `/editor/form.html` for compatibility.
+
+Open `http://127.0.0.1:4173/editor/` after `npm run build` and `npm run dev`. Publishing is disabled in this loopback preview. No account or permission change is required to review it.
+
+## Editing your portfolio
+
+- Click text on the page to edit it. Use the page tabs or the **Go to** chooser to find a company, project, skill group, interest, or role. The small buttons above the selection let you return to its company, role, section, or gallery.
+- **Edit details** shows the content that belongs to the selected item. Internal IDs, image paths, heading levels, and layout settings are handled automatically. Your existing fonts, colors, borders, and layout stay consistent.
+- **Add job**, **Add project**, **Add skill group**, and **Add interest** follow the current page tab and also appear directly below each list. The bottom buttons insert a complete blank layout on the page; the top buttons also open its details panel. **Add role** creates another role under a company. For other pages this is called **Add details section**. New layouts contain empty name and summary fields, an image space, category-specific role/date fields, and an expandable details area with optional text, images, and links. Existing items expose the same spaces, populated from their current content or blank where absent. Labels and empty slots exist only in editing mode.
+- Select a role or section, then use **Add paragraph**, **Add image**, or **Add content**. Add content offers a heading, section, bullet list, photo gallery, or link. Empty sections explain how to start.
+- **Add image / Replace image** opens searchable thumbnail previews of the available images and a clear **Upload from device** button. Choose an image, review the larger preview, and fill in its description. Captions and credits are optional. Existing descriptions and credits are carried forward. Back returns to the library without losing the selected image's edits. Cancel or Escape leaves the draft unchanged, including during an upload.
+- JPEG, PNG, and WebP uploads use the existing validation and optimization: safe filenames, up to 12 MB / 40 megapixels, still images only, resized to 2400 pixels and re-encoded to WebP under 2 MB with metadata removed. Reusing an uploaded image does not create duplicate media records.
+- **Move up / Move down** appear on every item as well as in the top controls. They reorder the item, stop at list boundaries, and keep keyboard focus on it. **Remove** names what will be removed, asks for confirmation, and can be reversed with **Undo**. Required final roles and gallery images remain protected. Referenced links cannot be deleted from the links library until removed from the page.
+- **Links & downloads** manages link text and addresses. Existing site files appear as readable links. Use **Add content → Link** to place a saved link in a role or section. Resume, Site & contact, Education, and Images remain available above the page.
+- **Save Draft** keeps work in this browser and, when signed in, saves complete validated content to a public GitHub draft; the header shows saved or unsaved state. **Download backup / Restore backup** move drafts and uploaded files between compatible computers. Restoring asks before replacing the current draft. New templates can be saved unfinished, with a clear reminder to complete their name and summary before publishing. Other invalid content still points to the field that needs attention and retains the last valid preview. Visitor preview omits unfinished templates and all editor-only slots; optional empty fields never generate placeholder text on the public page.
+- **Preview / Back to editing** switches between visitor behavior and editing controls. Publication remains a separate, explicitly confirmed step after saving and reviewing a validated GitHub draft.
+
+## Compatibility and scope
+
+The editor uses the same content schema, public renderer, font files, styles, image references, browser draft storage, undo/redo, import/export, and guarded remote workflow. The public content schema is unchanged: existing drafts and backups retain all original IDs and links. The visual editor stores a small list of newly created template IDs outside the portfolio content in browser drafts. Unfinished backups carry this metadata and should be restored in the visual editor. Complete backups retain the ordinary content format. Blank values remain blank in saved data; labels and instructions are never saved as authored text. Publishing still uses strict public validation, and unfinished drafts are kept locally rather than sent to the GitHub publishing workflow. New IDs are generated automatically and checked for uniqueness; renaming and reordering never regenerate them. This remains a fixed-style portfolio editor, not a general website builder.
+
+Editing bindings exist only in the editor iframe. The public renderer, HTML, CSS, JavaScript, content, media, credits, resource links, and original resume files remain unchanged. Authentication and publishing permissions have not been expanded. The default `/editor/` uses the visual interface and the existing approved publishing configuration.
+
+## Verification
+
+- 22 Node tests and 39 browser tests, including the original editor, authentication/publishing contract mocks, resume replacement, public page parity, keyboard navigation, and phone layouts.
+- New end-to-end cases cover thumbnail search/review/Back, keyboard cancellation, valid/invalid/interrupted uploads, repeated additions, image reuse, captions/credits, undo, reload, original saved-draft compatibility, backup restore, duplicate company names with persistent links, new projects/skills/interests/links, safe removal, gallery insertion, complete blank job/project creation, consistent existing-entry slots, unfinished-draft save/backup/restore, strict publication rejection, inline image selection/upload, and accessible entry reordering.
+- Two consecutive builds produced identical hashes for all 197 files. Public files and the entire `assets/` tree remain byte-identical to `origin/main`.
+
+Latest template screenshots: `.local/template-job-review.png`, `.local/template-existing-review.png`, `.local/template-job-phone.png`. Earlier usability screenshots: `.local/friendly-editor-desktop.png`, `.local/image-library-desktop.png`, `.local/image-library-phone.png`, `.local/image-review-desktop.png`, and `.local/image-review-phone-actions.png`.
+
+Publication uses the existing repository-only authentication and protected pull-request workflow. No new credentials, providers, permissions, or paid services are required. Public content is unchanged by this editor rollout.
