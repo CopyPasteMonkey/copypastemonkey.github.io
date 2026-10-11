@@ -86,6 +86,7 @@ window.addEventListener('beforeunload',event=>{if(data&&JSON.stringify(data)!==s
 window.addEventListener('storage',event=>{if(event.key===draftKey)status('Another tab saved a draft. Export your changes before reloading.',true);});
 try{
  publishing=await (await fetch('publishing.json')).json();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
+ if(publishingReady(publishing,location.origin))$('#publish-note').textContent='Sign in with GitHub to save public drafts and publish validated changes. Until then, drafts save only in this browser.';
  const response=await fetch('../content/portfolio.json');if(!response.ok)throw Error('Could not load portfolio content.');baseline=(await response.json()).portfolio;data=clone(baseline);
  let draft;try{draft=localStorage.getItem(draftKey);}catch{status('Browser draft storage is unavailable. Use Export draft to keep your changes.',true);}
  if(draft){const stored=JSON.parse(draft);if(!validate(stored.portfolio).length){data=stored.portfolio;draftRevision=stored.draftRevision;status('Restored the draft saved in this browser. Nothing has been published.');}else status('Saved draft is invalid. Loaded the published content.',true);}else status('Ready. Changes stay in this browser until you save or export.');
