@@ -1,3 +1,5 @@
+import {resumeForm} from './resume.mjs';
+import {assetPaths,isResumeUpload,verifyResume} from '../lib/pdf.mjs';
 import {schema,validate} from '../lib/schema.mjs';
 import {createRemote,publishingReady} from './remote.mjs';
 import {signIn} from './auth-client.mjs';
@@ -23,6 +25,12 @@ function settleHistory(){if(changeTimer){clearTimeout(changeTimer);changeTimer=n
 function updateButtons(){$('#undo').disabled=!history.length;$('#redo').disabled=!future.length;}
 function form(){
  const root=$('#fields');root.replaceChildren();const heading=element('h2',{text:active==='site'?'Site & contact':active==='media'?'Media library':active[0].toUpperCase()+active.slice(1)});root.append(heading);
+ if(active==='resume'){
+  resumeForm(root,{site:data.site,url:src=>urls.get(src)||'../'+src,onChange:changed,status,setBusy:value=>{busy=value;},onAccept:async candidate=>{
+   await putImage(candidate.src,candidate.blob);images.set(candidate.src,candidate.blob);if(urls.has(candidate.src))URL.revokeObjectURL(urls.get(candidate.src));urls.set(candidate.src,URL.createObjectURL(candidate.blob));
+   settleHistory();data.site.resume=candidate.src;data.site.resumeFilename=candidate.filename;data.site.resumeLabel='Download resume, '+(candidate.pages===1?'one-page PDF':candidate.pages+'-page PDF');changed();form();updatePreview();status('Resume PDF added to the draft. Save Draft to keep it; Publish updates the live download.');
+  }});return;
+ }
  if(active==='media'){
   root.append(element('p',{class:'help',text:'Upload a JPEG, PNG or WebP (up to 12 MB / 40 megapixels). It is resized to 2400 px and converted to WebP with metadata removed. Add alt text and credits when placing it in an entry.'}));
   const upload=element('input',{type:'file',accept:'.jpg,.jpeg,.png,.webp','aria-label':'Upload image'});
@@ -35,7 +43,7 @@ function form(){
  }
  const section=data.sections.find(s=>s.id===active);const value=section||data[active];const def=section?schema.$defs.section:schema.$defs.portfolio.properties[active];const path=section?`portfolio.sections[${data.sections.indexOf(section)}]`:`portfolio.${active}`;
  root.append(element('p',{class:'help',text:section?'Expand an entry to edit. Move up/down to reorder. Undo restores removed items. Stable IDs preserve existing links.':'Edit content fields below. The portfolio’s typography, colors and layout remain controlled by templates.'}));
- const body=element('div');root.append(body);mountForm(body,{data:value,def,path,referenceData:data,onChange:changed});
+ const body=element('div');root.append(body);mountForm(body,{data:value,def,path,referenceData:data,onChange:changed,omit:['portfolio.site.resume','portfolio.site.resumeFilename','portfolio.site.resumeLabel']});
 }
 function updatePreview(){
  clearTimeout(previewTimer);const errors=valid();
@@ -51,19 +59,20 @@ async function save(){
  finally{button.disabled=false;button.textContent='Save Draft';}
 }
 async function saveLocked(){
- if(busy){status('Wait for the image upload to finish.',true);return;}
- const errors=valid();if(errors.length){status(`Draft not saved: ${describeError(errors[0],data)}`,true);return;}
+ if(busy){status('Wait for the file operation to finish.',true);return;}
+ const errors=valid();if(isResumeUpload(data.site.resume)&&data.site.resume!==baseline.site.resume&&!images.has(data.site.resume)){status('Resume PDF is missing from browser storage. Upload it again or load the GitHub draft.',true);return;}if(errors.length){status(`Draft not saved: ${describeError(errors[0],data)}`,true);return;}
  try{const current=localStorage.getItem(draftKey);if(current&&JSON.parse(current).draftRevision!==draftRevision){status('A newer draft was saved in another tab. Export your changes before reloading.',true);return;}
   const json=JSON.stringify({portfolio:data,draftRevision:Date.now(),savedAt:new Date().toISOString()});localStorage.setItem(draftKey,json);draftRevision=JSON.parse(json).draftRevision;saved=JSON.stringify(data);status('Draft saved in this browser. Nothing has been published.');
   if(remote?.isConnected()){try{if(!remoteAdopted)throw Error('Load the GitHub draft before saving remotely.');const result=await remote.saveDraft(data,images);showDraft(result);status('Draft saved to a public GitHub branch. The live site has not changed.');}catch(e){status('Saved locally. '+e.message,true);}}
  }catch{status('Browser storage is unavailable or full. Export your draft to keep a copy.',true);}
 }
 async function download(){
- if(busy){status('Wait for the image upload to finish.',true);return;}
+ if(busy){status('Wait for the file operation to finish.',true);return;}
  const errors=valid();if(errors.length){status('Export blocked: '+errors[0].message,true);return;}
+ if(data.site.resume!==baseline.site.resume&&!images.has(data.site.resume)){status('Export blocked: resume PDF is missing. Upload it again or load the GitHub draft.',true);return;}
  const files=new Map([['content/portfolio.json',new Blob([JSON.stringify({portfolio:data},null,2)+'\n'],{type:'application/json'})]]);
- for(const m of data.media)if(images.has(m.src))files.set(m.src,images.get(m.src));
- const zip=await makeZip(files),url=URL.createObjectURL(zip),a=element('a',{href:url,download:'portfolio-draft.zip'});a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);status('Exported content and uploaded images. Existing site images remain referenced. Nothing has been published.');
+ for(const src of assetPaths(data))if(images.has(src))files.set(src,images.get(src));
+ const zip=await makeZip(files),url=URL.createObjectURL(zip),a=element('a',{href:url,download:'portfolio-draft.zip'});a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);status('Exported content and uploaded files. Existing site assets remain referenced. Nothing has been published.');
 }
 $('#save').onclick=save;$('#export').onclick=()=>download().catch(e=>status(e.message,true));$('#publish').onclick=reviewPublish;$('#refresh').onclick=updatePreview;
 $('#viewport').onchange=e=>$('#preview').classList.toggle('mobile',e.target.value==='mobile');
@@ -75,7 +84,10 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try
  else{if(file.size>2_000_000)throw Error('Content JSON must be smaller than 2 MB.');next=JSON.parse(await file.text()).portfolio;}
  const errors=validate(next);if(errors.length)throw Error(errors[0].path+': '+errors[0].message);
  for(const m of next.media){if(!baseline.media.some(x=>x.src===m.src)&&!images.has(m.src)&&!files?.has(m.src))throw Error('Missing uploaded image '+m.src+'. Import the complete exported ZIP.');}
+ if(next.site.resume!==baseline.site.resume&&!images.has(next.site.resume)&&!files?.has(next.site.resume))throw Error('Missing resume PDF. Import the complete exported ZIP.');
  if(files)for(const [p,blob] of files)if(p!=='content/portfolio.json'){
+  if(isResumeUpload(p)){if(p!==next.site.resume)throw Error('Unreferenced resume PDF in draft package.');await verifyResume(p,blob);await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));continue;}
+  if(blob.size>2_000_000)throw Error('Uploaded images must be smaller than 2 MB.');
   const bytes=new Uint8Array(await blob.arrayBuffer());const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);if(p!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('Uploaded image does not match its stable filename or WebP format.');
   const bitmap=await createImageBitmap(blob);const record=next.media.find(m=>m.src===p);const ok=record&&bitmap.width===record.width&&bitmap.height===record.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!ok)throw Error('Image dimensions do not match the draft.');
   await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));
@@ -90,9 +102,9 @@ try{
  const response=await fetch('../content/portfolio.json');if(!response.ok)throw Error('Could not load portfolio content.');baseline=(await response.json()).portfolio;data=clone(baseline);
  let draft;try{draft=localStorage.getItem(draftKey);}catch{status('Browser draft storage is unavailable. Use Export draft to keep your changes.',true);}
  if(draft){const stored=JSON.parse(draft);if(!validate(stored.portfolio).length){data=stored.portfolio;draftRevision=stored.draftRevision;status('Restored the draft saved in this browser. Nothing has been published.');}else status('Saved draft is invalid. Loaded the published content.',true);}else status('Ready. Changes stay in this browser until you save or export.');
- try{images=await getImages();}catch{status('Image storage is unavailable in this browser. Existing content can still be edited and exported.',true);}
+ try{images=await getImages();}catch{status('Uploaded-file storage is unavailable in this browser. Existing content can still be edited and exported.',true);}
  for(const [src,blob] of images)urls.set(src,URL.createObjectURL(blob));saved=JSON.stringify(data);prior=saved;
- for(const key of ['work','projects','skills','passions','site','education','media','resources']){
+ for(const key of ['work','projects','skills','passions','resume','site','education','media','resources']){
   const button=element('button',{text:key==='site'?'Site & contact':key[0].toUpperCase()+key.slice(1),'aria-current':key===active?'page':undefined,onclick:()=>{settleHistory();active=key;$('#editor-nav').querySelectorAll('button').forEach(b=>b.removeAttribute('aria-current'));button.setAttribute('aria-current','page');form();}});$('#editor-nav').append(button);
  }
  form();updatePreview();

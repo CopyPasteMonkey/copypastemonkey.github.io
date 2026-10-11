@@ -12,14 +12,14 @@ function newValue(def){
  if(value?.type==='text')value.text='Add your text.';
  return value;
 }
-export function mountForm(container,{data,def,path='portfolio',onChange,referenceData=data,lockedIds=true}){
+export function mountForm(container,{data,def,path='portfolio',onChange,referenceData=data,lockedIds=true,omit=[]}){
  container.replaceChildren();
  function field(value,d,p,set,key=''){
   d=resolve(d,value);
   if(d.type==='object'){
    const group=element('div');
    for(const [k,sub] of Object.entries(d.properties)){
-    if(k==='type'||k==='version'||(k==='id'&&sub.enum))continue;
+    if(omit.includes(p+'.'+k)||k==='type'||k==='version'||(k==='id'&&sub.enum))continue;
     if(value.roles&&['role','date'].includes(k)&&referenceData.sections?.some(s=>s.id==='work'&&s.entries.includes(value)))continue;
     const sd=resolve(sub,value[k]);
     if(sd.type==='array'||sd.type==='object')group.append(element('h3',{class:'group-title',text:names[k]||label(k)}));
