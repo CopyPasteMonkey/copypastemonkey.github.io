@@ -63,7 +63,7 @@ function updatePreview(){
  iframe.srcdoc=render(friendly?editorData(data,templateIDs,{visitor:functional||canvas?.isPreview()}):data,{base:new URL('../',location.href).href,mediaURL:src=>urls.get(src)||src});$('#preview-status').textContent='Preview is up to date. Navigate and expand entries inside it.';
 }
 function revealError(error){
- const part=error.path.match(/^portfolio\.(sections\[(\d+)\]|site|education|resources)/);if(part)active=part[2]!==undefined?data.sections[Number(part[2])].id:part[1];forms?.openPath(error.path);form();valid();
+ const part=error.path.match(/^portfolio\.(sections\[(\d+)\]|site|education|resources)/);if(part)active=part[2]!==undefined?data.sections[Number(part[2])].id:part[1];forms?.openPath(error.path);if(functional)$('#editor-section').value=active;form();valid();
  $('#editor-nav').querySelectorAll('button').forEach(b=>{if(b.dataset.group===active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  let attempts=0;
  const reveal=()=>{
@@ -130,8 +130,10 @@ try{
  try{images=await getImages();}catch{status('Uploaded-file storage is unavailable in this browser. Existing content can still be edited and exported.',true);}
  for(const [src,blob] of images)urls.set(src,URL.createObjectURL(blob));saved=JSON.stringify(data);prior=saved;
  for(const key of ['work','projects','skills','passions','resume','site','education','media','resources']){
-  const button=element('button',{text:key==='site'?'Site & contact':friendly&&key==='media'?'Images':friendly&&key==='resources'?'Links & downloads':key[0].toUpperCase()+key.slice(1),'aria-current':key===active?'page':undefined,onclick:()=>{settleHistory();fieldSelection=null;if(visual)$('#fields').hidden=false;active=key;$('#editor-nav').querySelectorAll('button').forEach(b=>b.removeAttribute('aria-current'));button.setAttribute('aria-current','page');form();}});button.dataset.group=key;$('#editor-nav').append(button);
+  if(functional&&['work','resume','media'].includes(key))$('#editor-nav').append(element('span',{class:'nav-label',text:{work:'Website sections',resume:'Profile',media:'Library'}[key]}));
+  const button=element('button',{text:key==='site'?'Site & contact':friendly&&key==='media'?'Images':friendly&&key==='resources'?'Links & downloads':key[0].toUpperCase()+key.slice(1),'aria-current':key===active?'page':undefined,onclick:()=>{settleHistory();fieldSelection=null;if(visual)$('#fields').hidden=false;active=key;$('#editor-nav').querySelectorAll('button').forEach(b=>b.removeAttribute('aria-current'));button.setAttribute('aria-current','page');if(functional)$('#editor-section').value=key;form();}});button.dataset.group=key;$('#editor-nav').append(button);if(functional)$('#editor-section').append(element('option',{value:key,text:button.textContent}));
  }
+ if(functional)$('#editor-section').onchange=event=>$('#editor-nav').querySelector('[data-group="'+event.target.value+'"]').click();
  if(visual){
   canvas=createCanvas({iframe:$('#preview'),getData:()=>data,isTemplate:id=>templateIDs.has(id),markTemplate:id=>templateIDs.add(id),changed,refresh:updatePreview,settle:settleHistory,status,showFields:record=>{fieldSelection=['resume','resources'].includes(record.kind)?null:record;if(['resume','resources'].includes(record.kind))active=record.kind;$('#fields').hidden=false;form();$('#fields').querySelector('input:not([readonly]),textarea,select')?.focus();},uploadImage:{url:src=>urls.get(src)||'../'+src,add:async file=>{const {record,blob}=await optimizeImage(file);await putImage(record.src,blob);images.set(record.src,blob);urls.set(record.src,URL.createObjectURL(blob));return record;}}});
  }
