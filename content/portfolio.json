@@ -28,9 +28,9 @@
             "date": "",
             "image": [
               {
-                "media": "nimbus-12",
-                "alt": "Extruded-aluminum test-cart frame built during the Nimbus internship.",
-                "caption": "Test-cart construction · Internship",
+                "media": "nimbus-fuel-cell-stack",
+                "alt": "Fuel-cell stack beside a Nimbus Power Systems sign.",
+                "caption": "Fuel-cell stack · Nimbus Power Systems",
                 "credit": "",
                 "linked": false,
                 "linkLabel": "",
@@ -4095,6 +4095,12 @@
         "src": "assets/images/photo-42.webp",
         "width": 640,
         "height": 153
+      },
+      {
+        "id": "nimbus-fuel-cell-stack",
+        "src": "assets/images/nimbus-fuel-cell-stack.webp",
+        "width": 600,
+        "height": 337
       }
     ],
     "resources": [
