@@ -18,10 +18,11 @@ export function confirmChange(title,message,confirmText){
 export function confirmRemoval(title,message='You can restore it with Undo before leaving the editor.'){
  return confirmChange('Remove '+title+'?',message,'Remove from draft');
 }
-export function mountForm(container,{data,def,path='portfolio',onChange,referenceData=data,lockedIds=true,omit=[],friendly=false,labels={}}){
+export function mountForm(container,{data,def,path='portfolio',onChange,referenceData=data,lockedIds=true,omit=[],friendly=false,labels={},renderField,newItem,arrayLabels={}}){
  container.replaceChildren();
  function field(value,d,p,set,key=''){
   d=resolve(d,value);
+  const custom=renderField?.({value,def:d,path:p,key,set});if(custom)return custom;
   if(d.type==='object'){
    const group=element('div');
    for(const [k,sub] of Object.entries(d.properties)){
@@ -34,12 +35,13 @@ export function mountForm(container,{data,def,path='portfolio',onChange,referenc
    return group;
   }
   if(d.type==='array'){
-   const list=element('div',{class:'list','data-path':p});
+   const list=element('div',{class:'list','data-path':p}),fillItem=new WeakMap();
+   const friendlyTitle=(item,i)=>itemName(item,i)||((key==='items'?'Bullet point ':'Item ')+(i+1));
    const refresh=()=>{
     const opened=new Set([...list.querySelectorAll(':scope > details[open]')].map(el=>el.dataset.itemKey));
     list.replaceChildren();
     value.forEach((item,i)=>{
-     const itemKey=item?.id||String(i),title=friendly?itemName(item,i):typeof item==='string'?item:item.title||item.label||item.alt||item.id||item.type||'Item';
+     const itemKey=item?.id||String(i),title=friendly?friendlyTitle(item,i):typeof item==='string'?item:item.title||item.label||item.alt||item.id||item.type||'Item';
      const details=element('details',{class:'item','data-item-key':itemKey,'data-path':`${p}[${i}]`},element('summary',{text:title.slice(0,100)}));
      let built=false;
      const fill=()=>{
@@ -48,18 +50,18 @@ export function mountForm(container,{data,def,path='portfolio',onChange,referenc
       const move=(to)=>{if(to<0||to>=value.length)return;[value[to],value[i]]=[value[i],value[to]];set(value);refresh();const moved=list.children[to];moved.open=true;moved.querySelector('summary').focus();};
       const referenced=friendly&&p==='portfolio.resources'&&JSON.stringify(referenceData.sections).includes('"resource":'+JSON.stringify(item.id));
       controls.append(element('button',{type:'button',text:'Move up','aria-label':'Move '+title+' up',disabled:i===0,onclick:()=>move(i-1)}),element('button',{type:'button',text:'Move down','aria-label':'Move '+title+' down',disabled:i===value.length-1,onclick:()=>move(i+1)}),element('button',{type:'button',text:'Remove','aria-label':'Remove '+title,disabled:friendly&&(value.length<=(d.minItems||0)||referenced),title:referenced?'Remove this link from the page before deleting it here.':undefined,onclick:async()=>{if(friendly&&!await confirmRemoval(title))return;value.splice(i,1);set(value);refresh();list.querySelector('summary,button')?.focus();}}));
-      const body=element('div',{class:'item-body'},controls,field(item,d.items,`${p}[${i}]`,v=>{value[i]=v;set(value);const summary=details.querySelector('summary');summary.textContent=friendly?itemName(v,i):typeof v==='string'?v:v.title||v.label||v.alt||v.id||v.type||'Item';},key==='items'?'text':key));
+      const body=element('div',{class:'item-body'},controls,field(item,d.items,`${p}[${i}]`,v=>{value[i]=v;set(value);const summary=details.querySelector('summary');summary.textContent=friendly?friendlyTitle(v,i):typeof v==='string'?v:v.title||v.label||v.alt||v.id||v.type||'Item';},key==='items'?'text':key));
       if(referenced)body.append(element('p',{class:'help',text:'This link is used on the page. Remove it there before deleting it from this list.'}));
       details.append(body);
      };
-     details.addEventListener('toggle',()=>{if(details.open)fill();});list.append(details);if(opened.has(itemKey)){fill();details.open=true;}
+     fillItem.set(details,fill);details.addEventListener('toggle',()=>{if(details.open)fill();});list.append(details);if(opened.has(itemKey)){fill();details.open=true;}
     });
     if(value.length<d.maxItems){
      const row=element('div',{class:'add-row'});const itemDef=resolve(d.items);let select;
      if(itemDef.oneOf){select=element('select',{'aria-label':friendly?'Content type':'Block type'});itemDef.oneOf.forEach(b=>select.append(element('option',{value:b.properties.type.const,text:friendly?contentNames[b.properties.type.const]:label(b.properties.type.const)})));row.append(select);}
-     row.append(element('button',{type:'button',text:'Add '+(friendly?(key==='resources'?'link':key==='items'?'bullet point':key==='blocks'?'content':'item'):(key==='entries'?'entry':key==='roles'?'role':key==='images'?'image':key==='blocks'?'block':'item')),onclick:()=>{
+     row.append(element('button',{type:'button',text:arrayLabels[key]||'Add '+(friendly?(key==='resources'?'link':key==='items'?'bullet point':key==='blocks'?'content':'item'):(key==='entries'?'entry':key==='roles'?'role':key==='images'?'image':key==='blocks'?'block':'item')),onclick:async()=>{
       const use=select?itemDef.oneOf.find(b=>b.properties.type.const===select.value):d.items;
-      let next=newValue(use,referenceData);if(friendly&&typeof next==='string')next='New item';if(friendly&&key==='resources'){next.label='New link';next.newTab=true;}value.push(next);set(value);refresh();const added=list.children[value.length-1];added.open=true;added.querySelector('summary').focus();
+      let next=newItem?await newItem({def:use,key,path:p}):newValue(use,referenceData);if(next===undefined)return;if(friendly&&!newItem&&typeof next==='string')next='New item';if(friendly&&!newItem&&key==='resources'){next.label='New link';next.newTab=true;}value.push(next);set(value);refresh();const added=list.children[value.length-1];added.open=true;fillItem.get(added)();added.querySelector('summary').focus();
      }}));list.append(row);
     }
    };refresh();return list;
