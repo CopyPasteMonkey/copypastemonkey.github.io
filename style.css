@@ -20,7 +20,7 @@
 .entry-summary.with-image{display:grid;grid-template-columns:minmax(0,1fr) 264px;gap:42px;align-items:start}
 .entry-summary .company-line{display:block}.entry-summary .date{display:block;margin-top:8px}
 .entry-summary .role-date{margin-top:7px}.entry-intro{max-width:710px;margin-top:17px}
-.entry-photo img{width:100%;height:198px;object-fit:contain;background:#f1f1f1}
+.entry-photo img{width:100%;height:198px;object-fit:contain;background:transparent}
 .entry-photo figcaption{font-size:12px;line-height:1.4;margin-top:8px}
 .entry-actions{margin-top:8px}.expand-button{gap:10px}.toggle-chevron{flex:none;display:block}
 .expand-button[aria-expanded="true"] .toggle-chevron,.collapse-button .toggle-chevron{transform:rotate(180deg)}
@@ -33,7 +33,7 @@
 .archive-section.chapter h5{font-size:24px}.archive-section.chapter+section{padding-top:17px}
 .section-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:22px;margin-top:22px}
 .section-images.single-image{grid-template-columns:1fr;max-width:700px}
-.section-images img{width:100%;height:auto;max-height:420px;object-fit:contain;background:#eee}
+.section-images img{width:100%;height:auto;max-height:420px;object-fit:contain;background:transparent}
 .section-images a{display:block}.section-images a:hover img{outline:1px solid #aaa;outline-offset:3px}
 .source-note{font-size:13px;line-height:1.5;color:#555;margin-top:23px;max-width:770px}
 .nimbus-controls{display:flex;gap:42px;margin-top:21px;border-top:1px solid #dedede;padding-top:15px}
