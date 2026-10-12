@@ -1,8 +1,8 @@
 # Visual portfolio editor
 
-The owner approved this visual editor for publication on 2026-10-11. It is the default at `/editor/`; `/editor/visual.html` redirects there. The previous form interface remains available at `/editor/form.html` for compatibility.
+The owner approved this visual editor for publication on 2026-10-11. The forms-first editor now replaces it as the default at `/editor/`. This visual interface remains available at `/editor/visual.html`, and the original form remains at `/editor/form.html` for compatibility. See [the forms-first guide](FORMS-EDITOR-REVIEW.md).
 
-Open `http://127.0.0.1:4173/editor/` after `npm run build` and `npm run dev`. Publishing is disabled in this loopback preview. No account or permission change is required to review it.
+Open `http://127.0.0.1:4173/editor/visual.html` after `npm run build` and `npm run dev`. Publishing is disabled in this loopback preview. No account or permission change is required to review it.
 
 ## Editing your portfolio
 
@@ -21,7 +21,7 @@ Open `http://127.0.0.1:4173/editor/` after `npm run build` and `npm run dev`. Pu
 
 The editor uses the same content schema, public renderer, font files, styles, image references, browser draft storage, undo/redo, import/export, and guarded remote workflow. The public content schema is unchanged: existing drafts and backups retain all original IDs and links. The visual editor stores a small list of newly created template IDs outside the portfolio content in browser drafts. Unfinished backups carry this metadata and should be restored in the visual editor. Complete backups retain the ordinary content format. Blank values remain blank in saved data; labels and instructions are never saved as authored text. Publishing still uses strict public validation, and unfinished drafts are kept locally rather than sent to the GitHub publishing workflow. New IDs are generated automatically and checked for uniqueness; renaming and reordering never regenerate them. This remains a fixed-style portfolio editor, not a general website builder.
 
-Editing bindings exist only in the editor iframe. The public renderer, HTML, CSS, JavaScript, content, media, credits, resource links, and original resume files remain unchanged. Authentication and publishing permissions have not been expanded. The default `/editor/` uses the visual interface and the existing approved publishing configuration.
+Editing bindings exist only in the editor iframe. The public renderer, HTML, CSS, JavaScript, content, media, credits, resource links, and original resume files remain unchanged. Authentication and publishing permissions have not been expanded. The compatibility page `/editor/visual.html` uses this visual interface and the existing approved publishing configuration.
 
 ## Verification
 
