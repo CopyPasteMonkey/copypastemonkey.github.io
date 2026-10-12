@@ -2,6 +2,7 @@ import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
 const original=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
 
+for(const editorPath of ['/editor/visual.html','/editor/'])test.describe(editorPath,()=>{
 test('one editor signs in, saves a public draft, explicitly publishes, checks deployment and signs out',async({page,context})=>{
  const config={enabled:true,repository:'elidoggart/elidoggart.github.io',branch:'main',repositoryId:1412250381,allowedUserId:183743177,editorOrigin:'http://127.0.0.1:4173',authOrigin:'https://auth.example.test',requiredCheck:'validate'};
  const main='1'.repeat(40),head='2'.repeat(40),merge='3'.repeat(40);let draft=null,content=original,uploaded='',pr=null,mergeCalls=0;const writes=[];
@@ -29,7 +30,7 @@ test('one editor signs in, saves a public draft, explicitly publishes, checks de
   if(path==='/deployments')return json([]);
   throw Error('Unexpected GitHub UI request '+method+' '+path);
  });
- await page.goto('/editor/');await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();await expect(page.locator('#status')).toContainText('Connected. Local edits');
+ await page.goto(editorPath);await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();await expect(page.locator('#status')).toContainText('Connected. Local edits');
  await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Remote UI draft');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved to a public GitHub branch');expect(content.site.name).toBe('Remote UI draft');expect(original.site.name).toBe('Eli Doggart');expect(mergeCalls).toBe(0);
  await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Validation passed for draft 222222222222');expect(mergeCalls).toBe(0);
  await page.getByRole('button',{name:'Publish reviewed draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft merged; GitHub Pages deployment is pending');expect(mergeCalls).toBe(1);
@@ -40,7 +41,9 @@ test('one editor signs in, saves a public draft, explicitly publishes, checks de
 test('closing the sign-in popup leaves a recoverable local draft',async({page,context})=>{
  await context.route('**/editor/publishing.json',r=>r.fulfill({json:{enabled:true,repository:'elidoggart/elidoggart.github.io',branch:'main',repositoryId:1412250381,allowedUserId:183743177,editorOrigin:'http://127.0.0.1:4173',authOrigin:'https://auth.example.test',requiredCheck:'validate'}}));
  await context.route('https://auth.example.test/auth',r=>r.fulfill({contentType:'text/html',body:'<p>Mock sign-in cancellation</p>'}));
- await page.goto('/editor/');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Recoverable draft');
+ await page.goto(editorPath);await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Recoverable draft');
  const popupPromise=page.waitForEvent('popup');await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();const popup=await popupPromise;await popup.close();await expect(page.locator('#status')).toContainText('cancelled');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved in this browser');
  await page.reload();await page.getByRole('button',{name:'Site & contact',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Recoverable draft');
+});
+
 });

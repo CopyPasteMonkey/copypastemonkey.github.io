@@ -10,7 +10,7 @@ async function chooseRole(page){await page.getByRole('combobox',{name:'Choose wh
 const ids=data=>data.sections.flatMap(s=>s.entries.flatMap(e=>[e.id,...e.roles.map(r=>r.id)]));
 
 test('image library searches descriptive thumbnails, reviews selection, preserves edits on Back, and cancels by keyboard',async({page})=>{
- await page.goto('/editor/');await chooseCover(page);
+ await page.goto('/editor/visual.html');await chooseCover(page);
  await expect(page.getByRole('button',{name:'Upload from device',exact:true})).toBeVisible();await expect(page.locator('.image-choice')).toHaveCount(149);await expect(page.getByRole('searchbox',{name:'Search available images'})).toBeFocused();
  await page.getByRole('searchbox').fill('stars above a dark');await expect(page.locator('.image-choice')).toHaveCount(1);await expect(page.locator('.image-choice img')).toHaveJSProperty('complete',true);await page.locator('.image-choice').press('Enter');
  await expect(page.locator('#selected-image-title')).toBeFocused();await expect(page.locator('.image-preview img')).toHaveAttribute('src','../assets/images/photo-00.webp');await expect(page.getByRole('textbox',{name:'Image description (alt text)',exact:true})).toHaveValue(original.sections[3].entries[0].image[0].alt);
@@ -20,7 +20,7 @@ test('image library searches descriptive thumbnails, reviews selection, preserve
 });
 
 test('device uploads optimize once, retain alt/caption/credit through save and reload, reuse with no duplicate media, and undo',async({page})=>{
- await page.goto('/editor/');await chooseCover(page);
+ await page.goto('/editor/visual.html');await chooseCover(page);
  const chooser=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Upload from device',exact:true}).click();await (await chooser).setFiles('assets/media/mott-permeability-chart.jpg');
  await expect(page.locator('.image-preview img')).toBeVisible();await expect(page.getByRole('button',{name:'Use image',exact:true})).toBeDisabled();
  await page.getByRole('textbox',{name:'Image description (alt text)',exact:true}).fill('Review permeability chart');await page.getByRole('textbox',{name:'Image caption',exact:true}).fill('Review caption');await page.getByRole('textbox',{name:'Image credit',exact:true}).fill('Review credit');await page.getByRole('button',{name:'Use image',exact:true}).click();await save(page);
@@ -33,14 +33,14 @@ test('device uploads optimize once, retain alt/caption/credit through save and r
 
 test('invalid and interrupted uploads never alter the content, and a new dialog still works',async({page})=>{
  await page.addInitScript(()=>{const original=createImageBitmap;window.createImageBitmap=async(...args)=>{if(window.pauseImage)await new Promise(resolve=>window.releaseImage=resolve);return original(...args);};});
- await page.goto('/editor/');await chooseCover(page);const input=page.getByLabel('Choose image file',{exact:true});
+ await page.goto('/editor/visual.html');await chooseCover(page);const input=page.getByLabel('Choose image file',{exact:true});
  for(const file of [{name:'test.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg/>')},{name:'fake.jpg',mimeType:'image/jpeg',buffer:Buffer.from('not an image')},{name:'large.jpg',mimeType:'image/jpeg',buffer:Buffer.alloc(12_000_001)}]){await input.setInputFiles(file);await expect(page.getByRole('alert')).toContainText('Image was not added');await expect(page.getByRole('button',{name:'Use image',exact:true})).toBeDisabled();}
  await page.evaluate(()=>window.pauseImage=true);await input.setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('.image-picker-message')).toHaveText('Preparing image…');await page.getByRole('button',{name:'Cancel',exact:true}).click();await page.evaluate(()=>{window.pauseImage=false;window.releaseImage();});await save(page);expect(await saved(page)).toEqual(original);
  await chooseCover(page);await page.locator('.image-choice[data-media=photo-00]').click();await page.getByRole('button',{name:'Use image',exact:true}).click();await save(page);expect((await saved(page)).media).toHaveLength(149);
 });
 
 test('details hide implementation fields; duplicate company names get persistent automatic links; removal is reversible',async({page})=>{
- await page.goto('/editor/');await page.getByRole('button',{name:'Add job',exact:true}).click();await page.getByRole('textbox',{name:'Company or organization',exact:true}).fill('New company');await expect(page.getByRole('textbox',{name:'Stable ID'})).toHaveCount(0);await expect(page.locator('#fields')).not.toContainText('Stable');await expect(page.locator('#fields')).not.toContainText('Content blocks');await page.getByRole('button',{name:'Close details',exact:true}).click();
+ await page.goto('/editor/visual.html');await page.getByRole('button',{name:'Add job',exact:true}).click();await page.getByRole('textbox',{name:'Company or organization',exact:true}).fill('New company');await expect(page.getByRole('textbox',{name:'Stable ID'})).toHaveCount(0);await expect(page.locator('#fields')).not.toContainText('Stable');await expect(page.locator('#fields')).not.toContainText('Content blocks');await page.getByRole('button',{name:'Close details',exact:true}).click();
  await page.getByRole('button',{name:'Add job',exact:true}).click();await page.getByRole('textbox',{name:'Company or organization',exact:true}).fill('New company');await page.getByRole('button',{name:'Close details',exact:true}).click();await save(page);let data=await saved(page);const first=data.sections[0].entries[8].id,second=data.sections[0].entries[9].id;expect(first).not.toBe(second);expect(data.sections[0].entries[9].roles[0].id).toBe(second);
  await field(page,'sections[0].entries[9].title').fill('Renamed company');await page.getByRole('button',{name:'Move up',exact:true}).click();await save(page);await page.reload();data=await saved(page);expect(data.sections[0].entries[8].id).toBe(second);expect(ids(data).filter(id=>!id.includes(first)&&!id.includes(second))).toEqual(ids(original));
  await page.getByRole('combobox',{name:'Choose what to edit'}).selectOption('sections[0].entries[8]');await page.getByRole('button',{name:'Remove',exact:true}).click();await expect(page.getByRole('button',{name:'Cancel',exact:true})).toBeFocused();await page.keyboard.press('Escape');await save(page);expect((await saved(page)).sections[0].entries).toHaveLength(10);
@@ -48,7 +48,7 @@ test('details hide implementation fields; duplicate company names get persistent
 });
 
 test('plain-language content controls add a heading, list, gallery and link; gallery parent supports repeated images',async({page})=>{
- await page.goto('/editor/');await chooseRole(page);
+ await page.goto('/editor/visual.html');await chooseRole(page);
  for(const kind of ['Heading','Bullet list']){await page.getByRole('button',{name:'Add content',exact:true}).click();await page.getByRole('button',{name:new RegExp('^'+kind)}).click();await expect(page.locator('#fields')).not.toContainText('Stable ID');await expect(page.locator('#fields input[aria-label=Level]')).toHaveCount(0);await page.getByRole('button',{name:'Close details',exact:true}).click();}
  await page.getByRole('button',{name:'Add content',exact:true}).click();await page.getByRole('button',{name:/^Photo gallery/}).click();await page.locator('.image-choice[data-media=photo-00]').click();await page.getByRole('button',{name:'Use image',exact:true}).click();
  await page.getByRole('button',{name:'Add image',exact:true}).click();await page.locator('.image-choice[data-media=photo-01]').click();await page.getByRole('button',{name:'Use image',exact:true}).click();await page.locator('#canvas-parents').getByRole('button',{name:'Photo gallery'}).click();await page.getByRole('button',{name:'Add image',exact:true}).click();await page.locator('.image-choice[data-media=photo-02]').click();await page.getByRole('button',{name:'Use image',exact:true}).click();
@@ -58,20 +58,20 @@ test('plain-language content controls add a heading, list, gallery and link; gal
 
 test('saved drafts and backups retain original links; errors and save state explain how to recover',async({page})=>{
  await page.addInitScript(data=>{if(window===window.top&&!localStorage.getItem('eli-portfolio-draft-v1'))localStorage.setItem('eli-portfolio-draft-v1',JSON.stringify({portfolio:data,draftRevision:123,savedAt:'2026-10-11T00:00:00Z'}));},original);
- await page.goto('/editor/');await expect(page.locator('#draft-state')).toHaveText('Saved in this browser');const title=field(page,'sections[0].entries[0].title');await title.fill('');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Please fill this in');await expect(page.locator('#status')).not.toContainText('characters');await expect(page.locator('#draft-state')).toHaveText('Unsaved changes');await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(title).toHaveText('Nimbus Power Systems');await save(page);expect(ids(await saved(page))).toEqual(ids(original));
+ await page.goto('/editor/visual.html');await expect(page.locator('#draft-state')).toHaveText('Saved in this browser');const title=field(page,'sections[0].entries[0].title');await title.fill('');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Please fill this in');await expect(page.locator('#status')).not.toContainText('characters');await expect(page.locator('#draft-state')).toHaveText('Unsaved changes');await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(title).toHaveText('Nimbus Power Systems');await save(page);expect(ids(await saved(page))).toEqual(ids(original));
  const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download backup',exact:true}).click();const path=await (await download).path();await title.fill('Unsaved change');await page.locator('#import').setInputFiles({name:'portfolio-draft.zip',mimeType:'application/zip',buffer:await readFile(path)});await expect(page.getByRole('heading',{name:'Restore this backup?'})).toBeVisible();await page.getByRole('button',{name:'Cancel',exact:true}).click();await expect(title).toHaveText('Unsaved change');
  // Use the exported ZIP's extension because the browser download temp path has none.
  await page.locator('#import').setInputFiles({name:'portfolio-draft.zip',mimeType:'application/zip',buffer:await readFile(path)});await page.getByRole('dialog').getByRole('button',{name:'Restore backup',exact:true}).click();await expect(title).toHaveText('Nimbus Power Systems');await save(page);expect(ids(await saved(page))).toEqual(ids(original));
 });
 
 test('image picker and friendly company details fit phone and desktop screens with keyboard controls',async({page})=>{
- await page.goto('/editor/');await field(page,'sections[0].entries[0].title').click();await page.getByRole('button',{name:'Edit details',exact:true}).click();await page.screenshot({path:'.local/friendly-editor-desktop.png'});await page.getByRole('button',{name:'Close details',exact:true}).click();await chooseCover(page);
+ await page.goto('/editor/visual.html');await field(page,'sections[0].entries[0].title').click();await page.getByRole('button',{name:'Edit details',exact:true}).click();await page.screenshot({path:'.local/friendly-editor-desktop.png'});await page.getByRole('button',{name:'Close details',exact:true}).click();await chooseCover(page);
  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'.local/image-library-phone.png'});expect(await page.getByRole('dialog').evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);await page.getByRole('searchbox').fill('photo-00');await page.locator('.image-choice').press('Enter');await page.getByRole('textbox',{name:'Image credit',exact:true}).fill('Review credit');await page.screenshot({path:'.local/image-review-phone.png'});expect(await page.getByRole('dialog').evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);await page.getByRole('button',{name:'Use image',exact:true}).press('Enter');await save(page);await expect(page.locator('#draft-state')).toHaveText('Saved in this browser');expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
 
 test('new projects, skill groups, interests and links use human labels and save without exposing storage fields',async({page})=>{
- await page.goto('/editor/');
+ await page.goto('/editor/visual.html');
  for(const [section,button,label] of [['Projects','Add project','Project name'],['Skills','Add skill group','Skill group name'],['Passions','Add interest','Interest name']]){
   await frame(page).getByRole('link',{name:section,exact:true}).click();await page.getByRole('button',{name:button,exact:true}).click();await page.getByRole('textbox',{name:label,exact:true}).fill('Review '+section);await expect(page.locator('#fields [data-path$=".id"]')).toHaveCount(0);await page.getByRole('button',{name:'Close details',exact:true}).click();
  }

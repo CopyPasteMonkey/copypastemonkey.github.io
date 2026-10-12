@@ -2,7 +2,7 @@ import {element} from './form.mjs';
 
 // Uploads use the editor's existing optimizer/storage. Only the confirmed result
 // is returned to the canvas; browsing, Back, Cancel and Escape never edit content.
-export function chooseImage({media,sections,current,uploadImage,replace=false}){
+export function chooseImage({media,sections,current,uploadImage,replace=false,initialFile}){
  return new Promise(resolve=>{
   const placements=new Map(),pending=new Map(),names=new Map();
   function collect(value){
@@ -73,8 +73,8 @@ export function chooseImage({media,sections,current,uploadImage,replace=false}){
   }
   search.oninput=cards;
   alt.oninput=()=>{preview.alt=alt.value||'Preview of the selected image';updateUse();};
-  upload.onchange=async()=>{
-   const file=upload.files[0];if(!file||busy)return;
+  const prepare=async file=>{
+   if(!file||busy)return;
    busy=true;uploadButton.disabled=true;back.disabled=true;search.disabled=true;clearMessages();message.textContent='Preparing image…';dialog.setAttribute('aria-busy','true');cards();updateUse();
    try{
     const m=await uploadImage.add(file);
@@ -88,12 +88,13 @@ export function chooseImage({media,sections,current,uploadImage,replace=false}){
     if(!closed){cards();updateUse();}
    }
   };
+  upload.onchange=()=>prepare(upload.files[0]);
   use.onclick=()=>{
    if(use.disabled)return;
    result={media:chosen,image:{media:chosen.id,alt:alt.value.trim(),caption:caption.value,credit:credit.value,linked:current?.linked??false,linkLabel:current?.media===chosen.id?current.linkLabel:'',lazy:current?.lazy??true}};dialog.close();
   };
   dialog.addEventListener('close',()=>{closed=true;dialog.remove();resolve(result);},{once:true});
   dialog.append(title,help,element('div',{class:'image-source'},uploadButton,upload,uploadHelp),message,error,library,review,footer);
-  document.body.append(dialog);cards();dialog.showModal();search.focus();
+  document.body.append(dialog);cards();dialog.showModal();if(initialFile)prepare(initialFile);search.focus();
  });
 }

@@ -39,8 +39,8 @@ test('image upload creates optimized stable media and draft package',async({page
  await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('#status')).toContainText('Image optimized');await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
  await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export draft',exact:true}).click();await (await download).saveAs('.local/with-image.zip');await page.reload();await page.getByRole('button',{name:'Media',exact:true}).click();await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
 });
-test('default visual editor keeps local publishing gated and redirects previous routes',async({page})=>{
- for(const path of ['/editor/','/editor/cms.html','/editor/visual.html']){await page.goto(path);await expect(page).toHaveURL(/\/editor\/$/);await expect(page.locator('body')).toHaveClass(/visual-editor/);await expect(page.getByRole('button',{name:'Publish…',exact:true})).toBeDisabled();await expect(page.locator('#publish-note')).toContainText('www.elidoggart.com');}
+test('default forms editor keeps local publishing gated and preserves compatible routes',async({page})=>{
+ for(const path of ['/editor/','/editor/cms.html']){await page.goto(path);await expect(page).toHaveURL(/\/editor\/$/);await expect(page.locator('body')).toHaveClass(/forms-editor/);await expect(page.getByRole('button',{name:'Publish…',exact:true})).toBeDisabled();await expect(page.locator('#publish-note')).toContainText('www.elidoggart.com');}await page.goto('/editor/visual.html');await expect(page.locator('body')).toHaveClass(/visual-editor/);
 });
 
 test('editor keyboard focus survives automatic preview updates and mobile editing fits',async({page})=>{
