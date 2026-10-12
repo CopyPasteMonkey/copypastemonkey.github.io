@@ -9,10 +9,10 @@ import {createContentTree} from './content-tree.mjs';
 export function createForms({root,getData,changed,settle,status,uploadImage,markTemplate}){
  const openEntries=new Set();let initialized=false;
  const titleCase=text=>text[0].toUpperCase()+text.slice(1);
- const button=(text,onclick,extra={})=>element('button',{type:'button',text,onclick,...extra});
+ const button=(text,onclick,extra={})=>{const icon=text==='Move up'?'↑':text==='Move down'?'↓':text.startsWith('Add ')?'+':'';return element('button',{type:'button',onclick,class:text.startsWith('Remove')?'remove-button':'',...extra},icon?element('span',{class:'action-icon','aria-hidden':'true',text:icon}):null,element('span',{text}));};
  const changedValue=()=>changed({repaint:false});
  const mount=(host,data,def,path,options={})=>mountForm(host,{data,def,path,referenceData:getData(),onChange:changedValue,friendly:true,renderField:imageField,newItem:newContent,arrayLabels:{blocks:'Add content',items:'Add bullet point'},...options});
- const tree=createContentTree({getData,mount,imageEditor,photoList,prepareBlock,changed:changedValue,settle,status});
+ const tree=createContentTree({getData,mount,imageEditor,photoList,prepareBlock,changed:changedValue,settle,status,mediaURL:uploadImage.url});
  function newContent({def}){const value=blank(def);if(value?.id!==undefined)value.id=uniqueID(getData(),'item');return value;}
  async function selectImage(current,apply,initialFile){
   const result=await chooseImage({media:getData().media,sections:getData().sections,current,uploadImage,replace:!!current,initialFile});
@@ -74,25 +74,25 @@ export function createForms({root,getData,changed,settle,status,uploadImage,mark
  async function addBlock(blocks,type){
   const def=schema.$defs.block.oneOf.find(b=>b.properties.type.const===type);const next=blank(def);if(type==='section')next.chapter=true;const value=await prepareBlock(next);if(value){blocks.push(value);changedValue();return true;}
  }
- function rolesForm(host,entry,path,template,category){
+ function rolesForm(host,entry,path,template,category,onTitle=()=>{}){
   host.replaceChildren();const heading=category==='work'?'Roles':'Details sections';host.append(element('h3',{text:heading}));
   for(const [i,role] of entry.roles.entries()){
    const rolePath=path+'.roles['+i+']',group=element('fieldset',{class:'role-fields','data-path':rolePath});
-   group.append(element('legend',{text:(category==='work'?'Role ':'Details section ')+(i+1)}));
+   const legend=element('legend'),roleName=element('span',{class:'role-name'}),roleIndex=element('span',{class:'role-index',text:(category==='work'?'Role ':'Section ')+(i+1)});legend.append(roleIndex,roleName);group.append(legend);const updateRole=()=>{roleName.textContent=role.label||role.role||(category==='work'?'Role details':'Details');onTitle();};updateRole();
    const controls=element('div',{class:'item-actions'});
-   const move=to=>{settle();[entry.roles[i],entry.roles[to]]=[entry.roles[to],entry.roles[i]];changedValue();rolesForm(host,entry,path,template,category);host.querySelectorAll(':scope > fieldset')[to]?.querySelector('button:not([disabled])')?.focus();};
-   controls.append(button('Move up',()=>move(i-1),{disabled:i===0,'aria-label':'Move role '+(i+1)+' up'}),button('Move down',()=>move(i+1),{disabled:i===entry.roles.length-1,'aria-label':'Move role '+(i+1)+' down'}),button('Remove '+(category==='work'?'role':'details section'),async()=>{if(!await confirmRemoval(role.label||'this '+(category==='work'?'role':'details section')))return;settle();entry.roles.splice(i,1);changedValue();rolesForm(host,entry,path,template,category);host.querySelectorAll(':scope > fieldset')[Math.min(i,entry.roles.length-1)]?.querySelector('input')?.focus();},{disabled:entry.roles.length===1}));group.append(controls);
-   const metadata=element('div');group.append(metadata);
+   const move=to=>{settle();[entry.roles[i],entry.roles[to]]=[entry.roles[to],entry.roles[i]];changedValue();rolesForm(host,entry,path,template,category,onTitle);host.querySelectorAll(':scope > fieldset')[to]?.querySelector('button:not([disabled])')?.focus();};
+   controls.append(button('Move up',()=>move(i-1),{disabled:i===0,'aria-label':'Move role '+(i+1)+' up'}),button('Move down',()=>move(i+1),{disabled:i===entry.roles.length-1,'aria-label':'Move role '+(i+1)+' down'}),button('Remove '+(category==='work'?'role':'details section'),async()=>{if(!await confirmRemoval(role.label||'this '+(category==='work'?'role':'details section')))return;settle();entry.roles.splice(i,1);changedValue();rolesForm(host,entry,path,template,category,onTitle);host.querySelectorAll(':scope > fieldset')[Math.min(i,entry.roles.length-1)]?.querySelector('input')?.focus();},{disabled:entry.roles.length===1}));group.append(controls);
+   const metadata=element('div',{class:'role-metadata'});group.append(metadata);
    const properties=category==='work'?{label:schema.$defs.role.properties.label,role:schema.$defs.role.properties.role,date:schema.$defs.role.properties.date}:{label:schema.$defs.role.properties.label,...(role.role||role.date?{role:schema.$defs.role.properties.role,date:schema.$defs.role.properties.date}:{})};
-   mount(metadata,role,{type:'object',properties},rolePath,{labels:{label:category==='work'?'Role label · optional':'Details section name · optional',role:category==='work'?'Job title':'Role or description',date:category==='work'?'Dates of employment':'Dates'}});
+   mount(metadata,role,{type:'object',properties},rolePath,{labels:{label:category==='work'?'Role label · optional':'Details section name · optional',role:category==='work'?'Job title':'Role or description',date:category==='work'?'Dates of employment':'Dates'},onChange:()=>{updateRole();changedValue();}});
    const content=element('div',{class:'role-content'});group.append(content);detailsContent(content,role,rolePath,template);host.append(group);
   }
-  if(entry.roles.length<20)host.append(button(category==='work'?'Add role':'Add details section',()=>{settle();entry.roles.push({id:uniqueID(getData(),'role'),label:'',role:'',date:'',blocks:[]});changedValue();rolesForm(host,entry,path,template,category);const last=host.querySelectorAll('fieldset')[entry.roles.length-1];last.querySelector('input')?.focus();}));
+  if(entry.roles.length<20)host.append(button(category==='work'?'Add role':'Add details section',()=>{settle();entry.roles.push({id:uniqueID(getData(),'role'),label:'',role:'',date:'',blocks:[]});changedValue();rolesForm(host,entry,path,template,category,onTitle);const last=host.querySelectorAll('fieldset')[entry.roles.length-1];last.querySelector('input')?.focus();}));
  }
  function entryBody(host,entry,path,template,category,onTitle){
   const info=element('div');host.append(info);mount(info,entry,{type:'object',properties:{title:schema.$defs.entry.properties.title,intro:schema.$defs.entry.properties.intro,...(category==='work'?{}:{role:schema.$defs.entry.properties.role,date:schema.$defs.entry.properties.date})}},path,{labels:{title:template.title,intro:'Summary',role:template.role+' · optional',date:template.date+' · optional'},onChange:()=>{onTitle();changedValue();}});
   host.append(element('h3',{text:'Main image'}),photoList(entry.image,path+'.image',()=>{changedValue();renderOptions();},{max:1,onAdd:()=>{entry.placeholder='';}}));
-  const roles=element('div',{class:'entry-roles'});host.append(roles);rolesForm(roles,entry,path,template,category);
+  const roles=element('div',{class:'entry-roles'});host.append(roles);rolesForm(roles,entry,path,template,category,onTitle);
   const options=element('details',{class:'entry-options'},element('summary',{text:'Other text options'})),extra=element('div');options.append(extra);function renderOptions(){mount(extra,entry,{type:'object',properties:{divider:schema.$defs.entry.properties.divider,...(!entry.image.length?{placeholder:schema.$defs.entry.properties.placeholder}:{})}},path);}renderOptions();host.append(options);
  }
  function sectionForm(section){
@@ -108,8 +108,8 @@ export function createForms({root,getData,changed,settle,status,uploadImage,mark
     const move=direction=>{const to=index+direction;if(to<0||to>=section.entries.length)return;settle();[section.entries[index],section.entries[to]]=[section.entries[to],section.entries[index]];changedValue();draw(entry.id);const moved=list.querySelector('[data-entry-id="'+entry.id+'"]');const control=moved.querySelector('[data-move="'+(direction<0?'up':'down')+'"]');(control.disabled?moved.querySelector('summary'):control).focus();};
     const up=button('Move up',()=>move(-1),{'data-move':'up',disabled:index===0}),down=button('Move down',()=>move(1),{'data-move':'down',disabled:index===section.entries.length-1}),remove=button('Remove',async()=>{if(!await confirmRemoval(name()))return;settle();section.entries.splice(index,1);openEntries.delete(entry.id);changedValue();draw();list.querySelector('summary')?.focus();});
     actions.append(up,down,remove);head.append(counter,actions);
-    const details=element('details',{class:'entry-fields','data-path':path}),summary=element('summary'),body=element('div',{class:'entry-body'});
-    const updateTitle=()=>{summary.textContent=name();for(const [b,verb] of [[up,'Move'],[down,'Move'],[remove,'Remove']])b.setAttribute('aria-label',verb+' '+name()+(b===up?' up':b===down?' down':''));};updateTitle();details.append(summary,body);let built=false;
+    const details=element('details',{class:'entry-fields','data-path':path}),summary=element('summary'),entryName=element('span',{class:'entry-name'}),entryHint=element('span',{class:'entry-hint'}),body=element('div',{class:'entry-body'});summary.append(entryName,entryHint);
+    const updateTitle=()=>{entryName.textContent=name();entryHint.textContent=entry.roles.map(r=>r.label||r.role).filter(Boolean).join(' · ');for(const [b,verb] of [[up,'Move'],[down,'Move'],[remove,'Remove']])b.setAttribute('aria-label',verb+' '+name()+(b===up?' up':b===down?' down':''));};updateTitle();details.append(summary,body);let built=false;
     const fill=()=>{if(!built){built=true;entryBody(body,entry,path,template,section.id,updateTitle);}};
     details.addEventListener('toggle',()=>{if(details.open){openEntries.add(entry.id);fill();}else openEntries.delete(entry.id);});
     if(openEntries.has(entry.id)){details.open=true;fill();}card.append(head,details);list.append(card);
