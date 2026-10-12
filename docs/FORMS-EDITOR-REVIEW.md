@@ -37,12 +37,18 @@ This interface shares the existing schema, rendering, browser draft/IndexedDB st
 
 Publishing is disabled on the local review origin. The authenticated production flow is covered with inert mocked credentials: sign in, save a public draft branch, explicitly review and confirm publication, check deployment status, and sign out. Cancelled sign-in preserves local work. Nothing in these tests writes to GitHub. GitHub drafts remain public. The owner explicitly authorized this hierarchy fix and deployment as the default editor. Rollout still uses the existing protected pull-request, validation and Pages flow.
 
+## Forms usability polish
+
+Role legends show the actual role label, and collapsed entries summarize their roles. Main headings, subheadings and content rows use distinct typography and spacing; subheadings show their parent explicitly. Closed galleries and individual images show small previews, while replacement/upload buttons stay next to the full image preview. Add controls carry a plus sign, Move controls use direction arrows, and Remove stays visually secondary. Empty group introductions collapse behind **Add introductory text or images**, keeping existing subheadings nearer their parent.
+
+The editor remembers explicitly collapsed groups and heading settings while other items move. Keyboard names, focus, validation, data/schema, compatible drafts, image metadata, save/preview/publish and security boundaries stay intact. The owner requested direct publication of this polish after verification. Local review: `http://127.0.0.1:4181/editor/` using `PORT=4181 node scripts/serve.mjs`.
+
 ## Verification
 
-- 27 Node tests and 56 browser tests passed, including the public site, old form, visual editor, security contracts, resume replacement, and the new forms interface.
+- 27 Node tests and 59 browser tests passed, including the public site, old form, visual editor, security contracts, resume replacement, and the forms interface. New cases verify parent/role labels update with edits, keyboard access to tucked-away introductions, collapsed-group persistence during moves, and thumbnail replacement on desktop/mobile.
 - All 17 original entries, 149 media records, 10 resources, and stable IDs retained. Saving the unchanged forms reproduces the original content exactly.
 - Tests cover all four blank templates, existing filled fields, save/reload, unfinished backup recovery and publication rejection, direct/invalid/interrupted uploads, alt/caption/credit preservation, image reuse, galleries, nested content, entry/role ordering, removal/Undo, error focus across tabs and nested groups, safe links, contact fields, concurrent drafts, repeated navigation, phone overflow, and keyboard dialogs.
-- Two consecutive builds produced identical bytes for all 203 output files. All 175 public source/content/asset files checked against `origin/main` are unchanged. The existing public-page screenshot parity tests passed on desktop and phone.
+- Two consecutive builds produced identical bytes for all 203 output files. All 194 tracked files outside editor/docs/tests checked against the previous published commit are unchanged. The existing public-page screenshot parity tests passed on desktop and phone.
 - Original resume SHA-256: `51ad284d3934b12f9d91c6f88acfa9979b313e1e49cc371620e395d61f06a025`.
 
 Local evidence: `.local/forms-build-evidence.json`. Review screenshots: `.local/forms-editor-desktop.png`, `.local/forms-job-form.png`, `.local/forms-job-phone.png`, `.local/forms-image-upload.png`, and `.local/forms-preview-desktop.png`.
