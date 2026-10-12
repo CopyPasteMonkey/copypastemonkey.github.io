@@ -73,3 +73,63 @@ select:focus-visible{outline:2px solid var(--crimson);outline-offset:4px}
 }
 @media(max-height:600px){.site-header{padding-top:24px}.profession{display:block}.site-toolbar nav a{min-height:44px}}
 @media print{.site-toolbar{display:none}main{min-height:0}}
+
+/* Resume typography and continuous, compact experience rows. */
+:root{--crimson:#990011;--content:1000px}
+.site-header{padding-top:38px;padding-bottom:15px}
+.name{font-size:46px;letter-spacing:-.02em}
+.profession{font-size:17px;margin-top:7px}
+.introduction{font-size:17px;line-height:1.5;padding:22px 0 20px;max-width:780px}
+.section-heading{border-color:var(--crimson)}
+.section-heading h2,.section-heading h3{font-size:22px}
+.portfolio-entry{border:0;border-bottom:1px solid #d9d9d9;margin:0;padding:21px 0}
+.portfolio-entry:last-child{border-bottom:0}
+.portfolio-entry.is-open{background:transparent}
+.company-line h3,.entry-summary h3{font-size:22px;line-height:1.25}
+.entry-summary.with-image{grid-template-columns:minmax(0,1fr) 170px;gap:30px}
+.entry-intro{margin-top:8px;line-height:1.5}
+.entry-photo img{height:108px;object-fit:contain}
+.entry-photo figcaption{font-size:11px;margin-top:5px}
+.work-role-control{margin-top:12px;padding-top:10px;border-top:0;align-items:center}
+.work-role-control .role-meta{flex:1;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 18px}
+.work-role-control .role{font-size:16px;flex:1;min-width:180px}
+.work-role-control .date{font-size:13px;margin:0;font-weight:700}
+.nimbus-controls{gap:26px;margin-top:12px;padding-top:10px;border-top:1px solid #e3e3e3}
+.nimbus-role.work-role-control{gap:14px;padding:0}
+.nimbus-role .role-meta{display:block}
+.nimbus-role h4{font-size:16px}
+.nimbus-role .role{margin-top:4px;font-size:15px}
+.nimbus-role .date{margin-top:5px}
+.expand-button,.collapse-button{min-height:44px}
+.entry-details{margin-top:15px;padding:16px 0 0 20px;border-top:0;border-left:2px solid #990011}
+.archive-section{padding:16px 0 20px}
+.archive-section h4,.archive-section h5,.archive-section h6{font-size:20px;margin-bottom:9px}
+.archive-section.chapter{padding:18px 0 3px}
+.archive-section.chapter h5{font-size:20px}
+.entry-details>.detail-context{font-size:13px}
+.section-images{margin-top:16px;gap:18px}
+.collapse-button{margin-top:8px}
+.empty-note{margin-top:10px}
+footer{padding-top:28px}
+@media(min-width:1450px){.site-header{padding-top:42px}}
+@media(max-width:640px){
+ .wrap{width:calc(100% - 36px)}
+ .site-header{padding-top:25px;padding-bottom:12px}.name{font-size:38px}
+ .profession{font-size:15px}.introduction{padding:20px 0;font-size:17px}
+ .section-heading h2,.section-heading h3{font-size:21px}
+ .portfolio-entry{padding:19px 0;margin:0}
+ .entry-summary.with-image{grid-template-columns:minmax(0,1fr) 90px;gap:14px}
+ .entry-summary.with-image>div:first-child{min-width:0}
+ .company-line h3,.entry-summary h3{font-size:20px}
+ .entry-intro{font-size:15px;line-height:1.45}
+ .entry-photo img{height:78px;max-height:78px}
+ .entry-photo figcaption{font-size:10px;line-height:1.35}
+ .nimbus-controls{flex-direction:column;padding-top:0;gap:0;margin-top:12px}
+ .nimbus-role.work-role-control{padding:10px 0;gap:12px}
+ .work-role-control{gap:12px;margin-top:8px;padding-top:5px}
+ .work-role-control .role-meta{display:block}
+ .work-role-control .role{font-size:15px;min-width:0}.work-role-control .date{margin-top:5px}
+ .entry-details{padding-left:12px;margin-top:12px}
+ .archive-section h4,.archive-section h5,.archive-section h6{font-size:19px}
+}
+@media print{.portfolio-entry{padding:10pt 0;margin:0}.entry-summary.with-image{grid-template-columns:1fr 90pt}.entry-details{border-left:0;padding-left:0}}

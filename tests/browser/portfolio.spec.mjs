@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
+import {render} from '../../lib/render.mjs';
 test('desktop routing, keyboard, repeated navigation and direct links',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
  await page.getByRole('button',{name:'Expand Nimbus Power Systems — Current Work',exact:false}).focus();await page.keyboard.press('Enter');await expect(page.locator('#details-nimbus-current')).toBeVisible();
@@ -55,13 +56,14 @@ test('invalid image and draft paths are refused without changing content',async(
  await page.locator('#import').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"portfolio":{"html":"<script>bad</script>"}}')});await expect(page.locator('#status')).toContainText('Import failed');
 });
 
-test('built site screenshots exactly match approved HTML with approved border CSS',async({page})=>{
+test('frozen migration content retains visual parity with its archived HTML',async({page})=>{
  fs.copyFileSync('tests/fixtures/published.html','dist/approved-baseline.html');
+ fs.writeFileSync('dist/migration-generated.html',render(JSON.parse(fs.readFileSync('tests/fixtures/published-content.json')).portfolio));
  try{for(const width of [1440,390]){await page.setViewportSize({width,height:width===390?844:1000});for(const hash of ['work','work/nimbus-internship','projects/mqp','passions/film','contact']){
   await page.goto('/approved-baseline.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
   const baselinePosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
   const baseline=await page.screenshot({path:'.local/parity-baseline.png'});
-  await page.goto('/#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
+  await page.goto('/migration-generated.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
   const generatedPosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
   // Initial font loading can round the existing hash scroll by one pixel.
   // Check navigation separately, then compare the exact same viewport pixels.
@@ -70,5 +72,5 @@ test('built site screenshots exactly match approved HTML with approved border CS
   await page.evaluate(async position=>{scrollTo({left:position.x,top:position.y,behavior:'instant'});await new Promise(requestAnimationFrame);},baselinePosition);
   const generated=await page.screenshot({path:'.local/parity-generated.png'});expect(generated.equals(baseline),`${width}px ${hash} visual parity`).toBe(true);
   if(hash==='work')await page.screenshot({path:'.local/portfolio-'+(width===390?'mobile':'desktop')+'.png'});
- }}}finally{fs.unlinkSync('dist/approved-baseline.html');}
+ }}}finally{fs.unlinkSync('dist/approved-baseline.html');fs.unlinkSync('dist/migration-generated.html');}
 });
