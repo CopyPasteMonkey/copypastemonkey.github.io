@@ -28,7 +28,8 @@ export async function handle(request,env,{fetcher=fetch,now=()=>Date.now()}={}){
   // No caller-chosen callback, repository, user, scope or redirect URI is accepted.
   if([...url.searchParams.keys()].length)return fail();
   const state=random(),verifier=random();const challenge=b64(new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(verifier))));
-  const binding=await seal({state,verifier,issued:now(),expires:now()+ttl*1000},env);
+  const issued=now();
+  const binding=await seal({state,verifier,issued,expires:issued+ttl*1000},env);
   const target=new URL('https://github.com/login/oauth/authorize');target.search=new URLSearchParams({client_id:env.CLIENT_ID,redirect_uri:env.AUTH_ORIGIN+'/callback',state,code_challenge:challenge,code_challenge_method:'S256'}).toString();
   return new Response(null,{status:302,headers:{...headers,Location:target.href,'Set-Cookie':cookie(binding)}});
  }
@@ -45,8 +46,9 @@ export async function handle(request,env,{fetcher=fetch,now=()=>Date.now()}={}){
   const user=await githubJSON(fetcher,'https://api.github.com/user',{headers:apiHeaders});if(String(user.id)!==env.ALLOWED_USER_ID)throw Error('user');
   const repo=await githubJSON(fetcher,'https://api.github.com/repositories/'+env.REPOSITORY_ID,{headers:apiHeaders});if(String(repo.id)!==env.REPOSITORY_ID||repo.permissions?.push!==true)throw Error('repo');
   // Separate, read-only capability: the editor never sends its GitHub token to the stats API.
-  const statsToken=await seal({purpose:'portfolio-stats',user:env.ALLOWED_USER_ID,issued:now(),expires:now()+token.expires_in*1000},env);
-  const nonce=random();const payload=JSON.stringify({type:'portfolio:authorized',token:token.access_token,statsToken,provider:'github',expiresAt:now()+token.expires_in*1000}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+  const issued=now(),expiresAt=issued+token.expires_in*1000;
+  const statsToken=await seal({purpose:'portfolio-stats',user:env.ALLOWED_USER_ID,issued,expires:expiresAt},env);
+  const nonce=random();const payload=JSON.stringify({type:'portfolio:authorized',token:token.access_token,statsToken,provider:'github',expiresAt}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
   const originJSON=JSON.stringify(env.EDITOR_ORIGIN);
   const html=`<!doctype html><meta charset="utf-8"><title>Finish portfolio sign-in</title><p>Completing sign-in. You can close this window if the editor is no longer open.</p><script nonce="${nonce}">(()=>{const origin=${originJSON};const target=window.opener;if(!target)return;let sent=false;const listener=e=>{if(sent||e.origin!==origin||e.source!==target||e.data?.type!=='portfolio:ack')return;sent=true;window.removeEventListener('message',listener);target.postMessage(${payload},origin);window.close();};window.addEventListener('message',listener);target.postMessage({type:'portfolio:ready'},origin);setTimeout(()=>{window.removeEventListener('message',listener);window.close();},60000);})();</script>`;
   return new Response(html,{headers:{...headers,'Content-Type':'text/html; charset=utf-8','Set-Cookie':cookie('',0),'Content-Security-Policy':`default-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`}});
