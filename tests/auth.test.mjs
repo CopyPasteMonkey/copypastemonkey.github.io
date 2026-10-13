@@ -11,3 +11,9 @@ test('successful exchange narrows repository and verifies PKCE, numeric identity
 test('deny wrong user, read-only repository and non-expiring credentials',async()=>{for(const options of [{id:999},{push:false},{expires:undefined},{expires:0}]){const a=await start(),p=provider(options);if(Object.hasOwn(options,'expires')&&options.expires===undefined)p.fetcher=async()=>new Response(JSON.stringify({access_token:'test-token'}));const res=await handle(callback(a),env,{...p,now:()=>1000001});assert.equal(res.status,400);assert.doesNotMatch(await res.text(),/test-token|unit-test-only/);}});
 test('popup client accepts only exact trusted origin AND source',()=>{const popup={};assert.equal(trustedMessage({origin:env.AUTH_ORIGIN,source:popup,data:{type:'ready'}},popup,env.AUTH_ORIGIN),true);assert.equal(trustedMessage({origin:'https://evil.test',source:popup,data:{}},popup,env.AUTH_ORIGIN),false);assert.equal(trustedMessage({origin:env.AUTH_ORIGIN,source:{},data:{}},popup,env.AUTH_ORIGIN),false);});
 test('popup timeout and blocker are recoverable failures',async()=>{await assert.rejects(signIn(env.AUTH_ORIGIN,{host:{open:()=>null}}),/Allow/);const popup={closed:false,close(){this.closed=true;}};const host={open:()=>popup,addEventListener(){},removeEventListener(){}};await assert.rejects(signIn(env.AUTH_ORIGIN,{host,timeoutMs:5}),/timed out/);assert.equal(popup.closed,true);});
+test('closing sign-in before the ready handshake cancels and removes its listener',async()=>{
+ let listener;const popup={closed:false,close(){this.closed=true;}};
+ const host={open:()=>popup,addEventListener(type,callback){listener=callback;},removeEventListener(type,callback){assert.equal(callback,listener);listener=null;}};
+ const result=signIn(env.AUTH_ORIGIN,{host,timeoutMs:2000});popup.close();
+ await assert.rejects(result,/Sign-in was cancelled\. Your draft is still available/);assert.equal(listener,null);
+});
