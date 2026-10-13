@@ -27,6 +27,7 @@ test('one editor signs in, saves a public draft, explicitly publishes, checks de
   if(path.includes('/check-runs'))return json({check_runs:[{name:'validate',app:{slug:'github-actions'},head_sha:head,status:'completed',conclusion:'success'}]});
   if(path==='/pulls/9')return json(pr);
   if(path==='/pulls/9/merge'){mergeCalls++;expect(body.sha).toBe(head);pr.state='closed';return json({merged:true,sha:merge});}
+  if(path.startsWith('/compare/'))return json({behind_by:0});
   if(path==='/deployments')return json([]);
   throw Error('Unexpected GitHub UI request '+method+' '+path);
  });
