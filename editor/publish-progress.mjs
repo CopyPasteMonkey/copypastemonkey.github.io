@@ -17,7 +17,7 @@ export function createPublishProgress({anchor,checkDeployment,interval=10000,max
    if(result.state==='success'){show(4,'Your changes are live','The website has finished updating. Open the live website to see your changes.');pending=null;remember();return;}
    if(['failure','error','inactive'].includes(result.state)){failed=true;show(2,'Website update needs attention','Your draft was published, but the website update did not finish successfully. Check the deployment in GitHub, then try Check again.',true);retry.hidden=false;return;}
    failed=false;const elapsed=Math.floor((Date.now()-pending.started)/1000),time=elapsed<60?elapsed+' seconds':Math.floor(elapsed/60)+' min '+elapsed%60+' sec';
-   show(2,'Updating your website…','Your draft is published. GitHub is building and deploying the website. Usually 1–2 minutes · '+time+' elapsed. Checking automatically every 10 seconds.');
+   show(2,'Updating your website…','Your draft is published. GitHub is running final checks and deploying the website. This can take several minutes · '+time+' elapsed. Checking automatically every 10 seconds.');
    if(Date.now()-pending.started>=maxWait){show(2,'Taking longer than usual','Your draft is published, but the website update is still pending. You can check again; there is no need to publish twice.');retry.hidden=false;return;}
    timer=setTimeout(refresh,interval);
   }catch{if(run!==generation)return;show(2,'Unable to check the website update','Your draft is published. The connection or GitHub status service is unavailable. Check again to see whether it is live.',true);retry.hidden=false;
@@ -31,7 +31,7 @@ export function createPublishProgress({anchor,checkDeployment,interval=10000,max
   ready(){show(1,'Ready to publish','Your draft passed validation. Click Publish now in the confirmation window to update your website.');},
   merging(){show(1,'Publishing your draft…','Sending the reviewed draft to GitHub. Please wait; do not click Publish again.');},
   error(detail){show(0,'Publication could not continue',detail,true);},
-  start(sha){stop();failed=false;pending={sha,started:Date.now()};remember();show(2,'Updating your website…','Your draft is published. The website normally updates in 1–2 minutes. Checking automatically…');return refresh();},
+  start(sha){stop();failed=false;pending={sha,started:Date.now()};remember();show(2,'Updating your website…','Your draft is published. Final checks and deployment can take several minutes. Checking automatically…');return refresh();},
   resume(){try{const saved=JSON.parse(storage.getItem(key));if(/^[a-f0-9]{40}$/.test(saved?.sha)&&Number.isFinite(saved.started)){pending=saved;show(2,'Checking your website update…','Resuming the status check for your last publication.');return refresh();}}catch{}},
   refresh,
   isPending:()=>!!pending&&!failed,
