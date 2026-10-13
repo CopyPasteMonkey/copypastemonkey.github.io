@@ -1,12 +1,12 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const portfolio=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 async function setup(page,{failure=false,remoteName=null,noDraft=false,signInFirst=true,authFailure=false}={}){
  const remoteData=structuredClone(portfolio);if(remoteName)remoteData.site.name=remoteName;
  await page.route('**/editor/auth-client.mjs',route=>route.fulfill({contentType:'text/javascript',body:`export async function signIn(){window.signinCalls=(window.signinCalls||0)+1;${authFailure?"throw Error('Sign-in cancelled');":"return {}"}}`}));
  await page.route('**/editor/remote.mjs',route=>route.fulfill({contentType:'text/javascript',body:`
  export const publishingReady=()=>true;
- const state={published:${JSON.stringify(portfolio)},draft:${noDraft?'null':JSON.stringify({data:remoteData,pr:{number:1}})}};
+ const state={publishedHead:'a'.repeat(40),published:${JSON.stringify(portfolio)},draft:${noDraft?'null':JSON.stringify({data:remoteData,pr:{number:1}})}};
  export function createRemote(){return {isConnected:()=>!!window.connected,connect:async()=>{window.connected=true;return state},snapshot:async()=>state,media:async()=>new Map(),adopt:()=>{},saveDraft:async data=>{window.savedRemote=JSON.parse(JSON.stringify(data));state.draft={data:window.savedRemote,pr:{number:1}};return state.draft;},review:async()=>{await new Promise(r=>setTimeout(r,100));return {head:'a'.repeat(40),url:'https://github.com/elidoggart/elidoggart.github.io/pull/1'}},publish:async()=>{window.mergeCalls=(window.mergeCalls||0)+1;await new Promise(r=>setTimeout(r,100));${failure?"throw Error('GitHub blocked the merge. Please retry.');":"state.published=state.draft.data;state.draft=null;return {sha:'b'.repeat(40)};"}},deployment:async()=>{window.deploymentCalls=(window.deploymentCalls||0)+1;return {state:window.deploymentState||'pending'}},end:()=>{}}}` }));
  await page.goto('/editor/');if(signInFirst){await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();await expect(page.getByText('GitHub connected',{exact:true})).toBeVisible();}
 }
@@ -56,7 +56,7 @@ test('Publish cancellation preserves local edits without overwriting the GitHub 
  await setup(page,{remoteName:'Other saved draft',signInFirst:false});await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('My unsaved edits');await page.getByRole('button',{name:'Publish…',exact:true}).click();await page.getByRole('button',{name:'Cancel',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('My unsaved edits');expect(await page.evaluate(()=>window.savedRemote)).toBeUndefined();expect(await page.evaluate(()=>window.mergeCalls)).toBeUndefined();await expect(page.getByRole('button',{name:'Publish…',exact:true})).toBeEnabled();
 });
 test('Publish handles no changes and a second publication in the same session',async({page})=>{
- await setup(page,{noDraft:true,signInFirst:false});await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('already up to date');expect(await page.evaluate(()=>window.savedRemote)).toBeUndefined();
+ await setup(page,{noDraft:true,signInFirst:false});await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Updating your website');await page.evaluate(()=>window.deploymentState='success');await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Your changes are live');expect(await page.evaluate(()=>window.savedRemote)).toBeUndefined();
  for(const name of ['First publication','Second publication']){await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill(name);await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Ready to update');await page.evaluate(()=>window.deploymentState='success');await page.getByRole('button',{name:'Publish now',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Your changes are live');}
  expect(await page.evaluate(()=>window.mergeCalls)).toBe(2);
 });

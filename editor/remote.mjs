@@ -11,6 +11,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
  if(!publishingReady(config,config.editorOrigin))throw Error('GitHub publishing setup is incomplete.');
  const repo='/repos/'+config.repository,owner=config.repository.split('/')[0];
  let draftBranch='cms/portfolio/portfolio',token='',expires=0,api,expectedHead=null,publishedHead=null,publishedData=null,savedData=null,timer,controller=new AbortController(),busy=false,updatingPR=null;
+ let needsReconcile=false;
  function end(){clearTimeout(timer);token='';expires=0;if(api)api.token='';api=null;controller.abort();}
  function check(){if(!token||expires<=now()){end();onExpire();throw Error('Sign-in expired. Your local draft is safe; sign in again before saving to GitHub.');}}
  async function transport(url,options={}){
@@ -26,7 +27,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    }catch(e){
     if(parent.aborted)throw Error('The GitHub operation was cancelled. Your local draft is safe.');
     if(reading&&attempt<readRetries&&(timedOut||e instanceof TypeError)){await pause(1000*(attempt+1));continue;}
-    if(!reading)throw Error('The GitHub response was interrupted. Changes may have reached GitHub. Click Publish to reconcile the saved version before retrying.');
+    if(!reading){const error=Error('The GitHub response was interrupted. Changes may have reached GitHub. Click Publish to check the saved version before retrying. Your local draft is safe.');error.ambiguous=true;throw error;}
     throw Error(timedOut?'GitHub timed out. Your local draft is safe. Try again.':'Could not read GitHub. Check your connection and try again. Your local draft is safe.');
    }finally{clearTimeout(timer);parent.removeEventListener('abort',stop);}
   }
@@ -66,7 +67,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   return {pr,branch:pr.head.ref,head:pr.head.sha,data:await content(pr.head.sha)};
  }
  async function snapshot(){const branch=await request(repo+'/branches/'+config.branch);if(!sha(branch.commit?.sha))throw Error('Invalid published revision.');return {publishedHead:branch.commit.sha,published:await content(branch.commit.sha),draft:await findDraft()};}
- function adopt(state){draftBranch=state.draft?.branch||'cms/portfolio/portfolio-'+crypto.randomUUID().replace(/-/g,'').slice(0,12);publishedHead=state.publishedHead;publishedData=fingerprint(state.published);expectedHead=state.draft?.head||null;savedData=state.draft?fingerprint(state.draft.data):null;return state.draft?.data||state.published;}
+ function adopt(state){needsReconcile=false;draftBranch=state.draft?.branch||'cms/portfolio/portfolio-'+crypto.randomUUID().replace(/-/g,'').slice(0,12);publishedHead=state.publishedHead;publishedData=fingerprint(state.published);expectedHead=state.draft?.head||null;savedData=state.draft?fingerprint(state.draft.data):null;return state.draft?.data||state.published;}
  async function exclusive(fn){if(busy)throw Error('Wait for the current GitHub operation to finish.');busy=true;try{check();return await fn();}finally{busy=false;}}
  async function connect(credentials){
   end();controller=new AbortController();
@@ -85,6 +86,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
  async function saveDraft(data,images=new Map()){
   data=structuredClone(data);images=new Map(images);
   return exclusive(async()=>{
+   if(needsReconcile)throw Error('The last save could not be confirmed. Click Publish to check the saved GitHub version before sending another update. Your local draft is safe.');
    assertValid(data);const raw=JSON.stringify({portfolio:data},null,2)+'\n';if(new TextEncoder().encode(raw).length>2_000_000)throw Error('Content must be smaller than 2 MB when saved. Shorten long text or remove unused items.');if(!publishedHead)throw Error('Load or reconcile GitHub content before saving a remote draft.');
    const current=await findDraft();if((current?.head||null)!==expectedHead)throw Error('The GitHub draft changed in another session. Export your copy, then load the GitHub draft.');
    const main=await request(repo+'/branches/'+config.branch);if(main.commit.sha!==publishedHead)throw Error('Published content changed. Export your local copy and reload before saving.');
@@ -98,12 +100,20 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
     const blob=images.get(data.site.resume);await verifyResume(data.site.resume,blob);const bytes=new Uint8Array(await blob.arrayBuffer());assets.push({path:data.site.resume,toBase64:async()=>base64(bytes)});
    }else if(data.site.resume!==JSON.parse(publishedData).site.resume&&data.site.resume!==current?.data.site.resume)throw Error('Missing uploaded resume PDF. Upload it or load the complete GitHub draft.');
    const files=[{path:contentPath,slug:draftBranch.split('/').at(-1),raw}];
-   if(current){
+   let writeError;needsReconcile=true;
+   try{if(current){
     // Append to the checked draft head, without Decap's implicit force-rebase fallback.
     const combined=[...files,...assets];await Promise.all(combined.map(f=>api.uploadBlob(f)));const tree=await api.updateTree(expectedHead,combined,draftBranch,false);const commit=await api.commit('Update portfolio draft',tree);await api.patchBranch(draftBranch,commit.sha,{force:false});
-   }else await api.persistFiles(files,assets,{useWorkflow:true,unpublished:false,collectionName:'portfolio',commitMessage:'Update portfolio draft',status:'draft',hasSubfolders:false});
-   const saved=await findDraft();if(!saved||fingerprint(saved.data)!==fingerprint(data))throw Error('Could not verify the saved GitHub draft. Reload before retrying.');
-   expectedHead=saved.head;savedData=fingerprint(data);
+   }else await api.persistFiles(files,assets,{useWorkflow:true,unpublished:false,collectionName:'portfolio',commitMessage:'Update portfolio draft',status:'draft',hasSubfolders:false});}catch(error){if(!error.ambiguous)throw error;writeError=error;}
+   // GitHub's PR/content reads can lag a successful write. Recheck reads only;
+   // never replay an uncertain create, commit, branch update or merge request.
+   let saved;for(let attempt=0;attempt<5;attempt++){
+    if(attempt)await pause(500*attempt);
+    const candidate=await findDraft();
+    if(candidate?.branch===draftBranch&&candidate.head!==current?.head&&fingerprint(candidate.data)===fingerprint(data)){saved=candidate;break;}
+   }
+   if(!saved)throw writeError||Error('GitHub has not confirmed the saved draft yet. Your local copy is safe. Wait a moment, then click Publish to check the saved version.');
+   expectedHead=saved.head;savedData=fingerprint(data);needsReconcile=false;
    // Labels are cosmetic: a label failure must not strand a verified saved draft.
    try{await api.setPullRequestStatus(saved.pr,'draft');}catch{saved.warning='Draft saved; GitHub could not update its draft label.';}return saved;
   });
@@ -138,7 +148,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    if(required.length===1&&required[0].status==='completed'&&required[0].conclusion==='success')break;
    if(required.length>1)throw Error('GitHub returned conflicting validation results. Review the draft checks in GitHub.');
    if(required.length===1&&required[0].status==='completed')throw Error('The draft validation check did not pass ('+required[0].conclusion+'). Open Review public draft to see the check details. Your changes are saved.');
-   if(!wait||attempt>=12)throw Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');
+   if(!wait||attempt>=72){const error=Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');error.pending=true;throw error;}
    await pause(10000);check();
   }
   // Like check-runs, read public readiness without the app's restricted status visibility.
@@ -150,7 +160,16 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   return {number:pr.number,head:expectedHead,url:'https://github.com/'+config.repository+'/pull/'+pr.number};
  }
  async function publish(data,reviewed){return exclusive(async()=>{const latest=await review(data);if(latest.head!==reviewed.head||latest.number!==reviewed.number)throw Error('Draft changed after review. Review it again.');
-  const result=await request(repo+'/pulls/'+latest.number+'/merge',{method:'PUT',body:JSON.stringify({sha:reviewed.head,merge_method:'squash',commit_title:'Publish portfolio content'})});
+  let result;try{result=await request(repo+'/pulls/'+latest.number+'/merge',{method:'PUT',body:JSON.stringify({sha:reviewed.head,merge_method:'squash',commit_title:'Publish portfolio content'})});}
+  catch(error){if(!error.ambiguous)throw error;
+   for(let attempt=0;attempt<4;attempt++){if(attempt)await pause(1000);let pr;try{pr=await request(repo+'/pulls/'+latest.number);}catch{throw error;}
+    if(pr.merged===true&&pr.head?.sha===reviewed.head&&sha(pr.merge_commit_sha)){
+     if(fingerprint(await content(pr.merge_commit_sha))!==fingerprint(data))throw error;
+     result={merged:true,sha:pr.merge_commit_sha};break;
+    }
+   }
+   if(!result)throw error;
+  }
   if(result.merged!==true||!sha(result.sha))throw Error('GitHub did not confirm a merge. Check the pull request before retrying.');
   expectedHead=null;savedData=null;publishedHead=null;return {sha:result.sha,pullRequest:latest.url};
  });}

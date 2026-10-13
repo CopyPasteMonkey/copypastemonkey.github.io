@@ -13,7 +13,7 @@ export function chooseImage({media,sections,current,uploadImage,replace=false,in
    }
   }
   collect(sections);if(current)placements.set(current.media,current);
-  let chosen=null,reviewing=false,busy=false,closed=false,result=null;
+  let chosen=null,reviewing=false,busy=false,closed=false,result=null,uploadController;
   const dialog=element('dialog',{class:'image-picker','aria-labelledby':'choose-image-title','aria-describedby':'choose-image-help'});
   const title=element('h2',{id:'choose-image-title',text:replace?'Replace image':'Add image'});
   const help=element('p',{id:'choose-image-help',class:'image-picker-help',text:'Choose an available image or upload one from your device.'});
@@ -77,7 +77,7 @@ export function chooseImage({media,sections,current,uploadImage,replace=false,in
    if(!file||busy)return;
    busy=true;uploadButton.disabled=true;back.disabled=true;search.disabled=true;clearMessages();message.textContent='Preparing image…';dialog.setAttribute('aria-busy','true');cards();updateUse();
    try{
-    const m=await uploadImage.add(file);
+    uploadController=new AbortController();const m=await uploadImage.add(file,{signal:uploadController.signal});
     if(closed)return;
     pending.set(m.id,m);names.set(m.id,file.name);busy=false;selectImage(m);message.textContent='Image ready. Review its description before adding it.';
    }catch(e){
@@ -93,7 +93,7 @@ export function chooseImage({media,sections,current,uploadImage,replace=false,in
    if(use.disabled)return;
    result={media:chosen,image:{media:chosen.id,alt:alt.value.trim(),caption:caption.value,credit:credit.value,linked:current?.linked??false,linkLabel:current?.media===chosen.id?current.linkLabel:'',lazy:current?.lazy??true}};dialog.close();
   };
-  dialog.addEventListener('close',()=>{closed=true;dialog.remove();resolve(result);},{once:true});
+  dialog.addEventListener('close',()=>{closed=true;uploadController?.abort();dialog.remove();resolve(result);},{once:true});
   dialog.append(title,help,element('div',{class:'image-source'},uploadButton,upload,uploadHelp),message,error,library,review,footer);
   document.body.append(dialog);cards();dialog.showModal();if(initialFile)prepare(initialFile);search.focus();
  });

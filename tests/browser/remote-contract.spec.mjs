@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const portfolio=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 test('actual Decap API supports guarded draft/upload/reload/publish/expiry with mocked GitHub',async({page})=>{
  await page.goto('/editor/');
  const result=await page.evaluate(async(initial)=>{

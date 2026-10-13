@@ -1,6 +1,4 @@
-> Status: the owner approved the full editor, favicon, branch-protection and Pages rollout on 2026-10-11. Earlier pending-approval notes below are historical. See [ROLLOUT-STATUS.md](ROLLOUT-STATUS.md) for current execution and verification.
-
-# Portfolio editor review
+# Portfolio editor guide
 
 ## Start locally
 
@@ -20,11 +18,11 @@ The allowed blocks are section, text, citation, gallery, figure, resource group,
 
 The preview uses the exact same renderer and stylesheet as the build. It supports the site's section navigation, expandable entries, keyboard focus and mobile layout. Invalid content leaves the last valid preview visible and reports a validation error.
 
-**Save Draft** always saves valid content in this browser first. The loopback preview saves locally. On the approved production domain, signing in also enables saving a public draft branch and pull request, leaving the live site unchanged. A failed remote save explicitly reports that the local copy is safe. Uploaded images are optimized to static WebP (maximum 2400 px, 2 MB) and stored in browser IndexedDB, with metadata stripped by canvas re-encoding. Export the draft ZIP to keep a portable backup with the content JSON and all newly uploaded images and the selected resume PDF. Existing site images stay referenced. Browser/site-data clearing removes local drafts. Changes since the last save trigger a leave-page warning. Multiple tabs detect newer saved drafts; export a conflicting tab before reloading.
+**Save Draft** keeps structurally valid content in this browser first, including unfinished text and links. Required fields are checked before publishing, without blocking local saving or backup. The loopback preview saves locally. On the approved production domain, signing in also enables saving a public draft branch and pull request, leaving the live site unchanged. A failed remote save explicitly reports that the local copy is safe. Uploaded images are optimized to static WebP or PNG (maximum 2400 px, 2 MB) and stored as bytes in browser IndexedDB, with metadata stripped by canvas re-encoding. Export the draft ZIP to keep a portable backup with the content JSON and all newly uploaded images and the selected resume PDF. Existing site images stay referenced. Browser/site-data clearing removes local drafts. Changes since the last save trigger a leave-page warning and receive separate automatic recovery copies per tab. After a reload, use Restore recovered edits or download that copy. Multiple tabs detect conflicting saves and offer an explicit choice; earlier versions remain available in recovery controls.
 
-**Restore backup** accepts exported ZIP files or the content JSON (new image files must already exist or be included).
+**Restore backup** accepts exported ZIP files or content JSON. A full backup includes new files. If any files are missing, Download backup can provide a clearly labelled text-only recovery JSON; restored text remains editable, and the missing files must be uploaded again before publishing.
 
-**Publish…** handles sign-in, saving the current edits to GitHub, and waiting for validation automatically. After checks pass, click **Publish now** in the confirmation window. The progress tracker checks deployment until the update is live. You do not need to click Save Draft or load a remote draft first. Identical drafts are reused without another commit. An unchanged live version reports that it is already up to date.
+**Publish…** handles sign-in, saving the current edits to GitHub, and waiting for validation automatically. The browser checks can take several minutes; pending checks are displayed as progress. After checks pass, click **Publish now** in the confirmation window. The progress tracker checks deployment until the update is live. You do not need to click Save Draft or load a remote draft first. Identical drafts are reused without another commit. An unchanged live version reports that it is already up to date.
 
 If GitHub has a different draft and this editor has local edits, choose **Keep my current edits**, **Load saved GitHub version**, or **Cancel**. Loading keeps the displaced edits in Undo and a browser recovery copy. **Load saved version** is also available after sign-in if you want to resume editing on another computer. Multiple editor tabs require an explicit choice before replacing a newer local save. Download backup keeps a portable copy independent of browser storage.
 
@@ -63,7 +61,7 @@ The same validation runs in required CI. The GitHub transport only adds hashed r
 - `lib/render.mjs`: controlled static templates. No framework is needed for the public site.
 - `editor/`: the forms-first editor and compatible visual/original form interfaces, secure auth client, guarded remote workflow and faithful preview. `build/decap-api.mjs` bundles the actual official Decap GitHub API module; it is not the stock Decap CMS interface. The retired `/editor/cms.html` demo redirects to `/editor/`.
 - `scripts/`: deterministic build, read-only server, media and draft import.
-- `auth/`: integrated OAuth Worker source, current setup status and exact approval/acceptance scope. The approved Cloudflare Worker and repository-only GitHub App are configured, with secrets entered directly by the user. User OAuth consent and the standalone callback succeeded after approval. Production-origin popup acceptance and the full write workflow remain pending.
+- `auth/`: the deployed OAuth Worker source and documented repository-only GitHub App integration. Secrets are managed outside this repository. Completed rollout evidence is in [ROLLOUT-STATUS.md](ROLLOUT-STATUS.md).
 - `tests/fixtures/`: approved HTML and border CSS; assets remain the originals in `assets/`.
 
 `index.html`, assets, legacy redirect pages, credits, font notices and resume PDF are preserved. `app.js` has only two necessary adjustments: page titles follow the editable site name, and same-document navigation also works in preview iframes. The actual approved site CSS is unchanged by the editor feature.
@@ -74,22 +72,19 @@ The same validation runs in required CI. The GitHub transport only adds hashed r
 npm test
 npm run validate
 npm run build
-npx playwright install chromium
-npm run dev
-# In another terminal:
+npx playwright install chromium webkit
 npm run test:browser
+TEST_BROWSER=webkit npm run test:browser
 ```
 
 The initial migration test compares 2,511 parsed HTML nodes: all text, tags, attributes, IDs, images and links. This migration fixture is frozen independently of the editable content, so future intentional edits can pass validation without needing to rewrite the migration proof. Update fixtures only for a reviewed template/design change, never automatically in CI. The tests also validate all referenced assets, block/URL/path safety and authentication-helper rejection cases. Browser checks exercise all 18 disclosures, repeated/back/direct navigation, keyboard focus, mobile overflow, local drafts, undo, import/export, image optimization and conflicting tabs. Actual Decap API contract tests use mocked GitHub responses; interface tests execute the real popup handshake on a mocked separate origin. They cover public draft creation/update/upload, explicit publish, stale drafts, failed checks/merge, expiry, permission denial, revoked credentials, logout and cancellation. No test uses a real GitHub account or writes remotely.
 
-## Rollback and deployment plan
+## Current deployment and rollback
 
-The completed migration confirmed `elidoggart/elidoggart.github.io`, repository ID `1412250381`, and allowed user ID `183743177`. The isolated checkout remote and disabled publishing configuration now use those verified values. The app, helper secrets and user OAuth authorization are configured, but editor sign-in remains disabled pending production-origin acceptance and publication approval. The separate three-file diagnostic proposal in `docs/AUTH-TEST-PROPOSAL.md` does not publish the full editor.
+Publishing is enabled at `https://www.elidoggart.com/editor/`. Protected `main` requires a pull request and successful, up-to-date `validate` checks. Force pushes and main-branch deletion are blocked. Zero required human approvals is intentional for this owner-operated repository; the editor still requires explicit publication confirmation.
 
-Publication requires separate review and approval. The dependency advisory work is complete: the fresh locked tree audits clean, and the browser bundles only the narrow Decap backend. See [DEPENDENCIES.md](DEPENDENCIES.md). Before enabling the integration, complete the live GitHub App acceptance gates in `auth/README.md`. Approved and installed permissions are limited to this single repository: Metadata read, Contents read/write, Pull requests read/write. Additional permissions must not be silently requested.
+`.github/workflows/content-validation.yml` validates actual content/assets, runs unit tests, builds the actual website, and exercises both browser engines against the separate frozen editor fixture. `.github/workflows/pages.yml` publishes only the real `dist/` build through the `github-pages` environment. Test builds go to `.local/browser-dist/` and cannot replace the deployment artifact. Failed UI screenshots and context are retained as workflow artifacts for seven days.
 
-The supplied GitHub workflow only validates/builds pull requests. It cannot deploy. An inactive, reviewable deployment example is supplied at `docs/examples/pages.yml`: it validates/builds, uploads only `dist/`, and deploys through the GitHub Pages environment. GitHub Pages must be changed from root/branch serving to the approved build workflow if it is not already configured that way. Required validation checks/branch rules must block invalid content before the Publish merge without app bypass. Request exact settings changes at setup time; do not rely on client validation as authorization.
+A merge is not proof of deployment. Verify the Pages result and `/build.json` revision before reporting a change live. Revert a bad release with a new reviewed commit through the same checks; never reset or force-push main.
 
-A successful merge is not proof of deployment. Show the GitHub Actions run link and commit SHA, then confirm the deployed revision/URL before reporting live success. In the absence of a preview provider, use the faithful local preview and label remote deployment preview unavailable. Do not add a preview service or paid plan without approval.
-
-Rollback after publication: identify the last working content commit, create a new revert commit (no force push), validate/build it and deploy through the same checks. Restore referenced image/resource files in that revert if they changed. Draft changes can be discarded or restored from their Git history without changing the published branch.
+The initial setup and approval records in [ROLLOUT-STATUS.md](ROLLOUT-STATUS.md), older review documents and `docs/examples/` are historical evidence. They are not current instructions to disable publication or repeat setup. The authentication examples also support regression tests.

@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {outline,allNodes,moveGroup,removeGroup,setLevel,setParent,canSetLevel} from '../editor/hierarchy.mjs';
 import {render} from '../lib/render.mjs';
 import {validate} from '../lib/schema.mjs';
-const original=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const original=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 const section=(title,level,blocks=[])=>({type:'section',title,level,chapter:level===4,blocks});
 const paragraph=text=>({type:'text',style:'body',text});
 

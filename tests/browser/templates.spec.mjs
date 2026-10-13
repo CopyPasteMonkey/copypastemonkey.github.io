@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
-const original=JSON.parse(await readFile('content/portfolio.json','utf8')).portfolio;
+const original=JSON.parse(await readFile('tests/fixtures/editor-content.json','utf8')).portfolio;
 const frame=page=>page.frameLocator('#preview');
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')));
 const edit=(scope,path)=>scope.locator('[data-edit-path="'+path+'"]');

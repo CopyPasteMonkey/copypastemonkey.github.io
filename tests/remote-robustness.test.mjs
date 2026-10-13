@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import sharp from 'sharp';
 import {createRemote} from '../editor/remote.mjs';
-const original=JSON.parse(await fs.readFile('content/portfolio.json')).portfolio;
+const original=JSON.parse(await fs.readFile('tests/fixtures/editor-content.json')).portfolio;
 const resumeBytes=await fs.readFile(original.site.resume);
 const cfg={enabled:true,repository:'elidoggart/elidoggart.github.io',branch:'main',repositoryId:1,allowedUserId:2,editorOrigin:'https://editor.test',authOrigin:'https://auth.test',requiredCheck:'validate'};
 const main='1'.repeat(40),head='2'.repeat(40),blobSHA='3'.repeat(40),root='/repos/'+cfg.repository;
@@ -77,7 +77,7 @@ test('transient reads retry but an ambiguous merge is never replayed',async t=>{
 });
 test('saved draft remains usable if its cosmetic label update fails',async t=>{
  let revision=head,writes=0;
- const api={uploadBlob:async()=>{},updateTree:async()=>({}),commit:async()=>({sha:'4'.repeat(40)}),patchBranch:async()=>{revision='4'.repeat(40);writes++;},setPullRequestStatus:async()=>{throw Error('label denied');}};
+ const api={uploadBlob:async()=>{},updateTree:async()=>({}),commit:async()=>({sha:'4'.repeat(40)}),patchBranch:async()=>{writes++;revision=String(writes+3).repeat(40);},setPullRequestStatus:async()=>{throw Error('label denied');}};
  const {remote}=await session(t,{draft:true,apiFactory:()=>api,handle:(u,o,p)=>p==='/pulls'?json([{...pr,head:{...pr.head,sha:revision}}]):undefined});
  const first=await remote.saveDraft(original);assert.match(first.warning,/Draft saved/);await remote.saveDraft(original);assert.equal(writes,2);
 });
@@ -90,4 +90,40 @@ test('large-file fallback does not bypass size or content hash checks',async t=>
  const data=structuredClone(original),src='assets/images/upload-'+'a'.repeat(20)+'.png';data.media.push({id:'upload-'+'a'.repeat(20),src,width:2,height:2});
  const {remote}=await session(t,{handle:(u,o,p)=>p==='/contents/'+src?json({encoding:'none',size:1_100_000,sha:blobSHA}):p==='/git/blobs/'+blobSHA?json(encoded(Buffer.alloc(2_000_001))):undefined});
  await assert.rejects(remote.media(data,main),/Invalid uploaded image|allowed size/);
+});
+
+test('a saved draft is verified after stale GitHub reads without repeating the write',async t=>{
+ const next=structuredClone(original);next.site.name='Delayed saved draft';let changed=false,reads=0,writes=0;
+ const api={uploadBlob:async()=>{},updateTree:async()=>({}),commit:async()=>({sha:'4'.repeat(40)}),patchBranch:async()=>{changed=true;writes++;},setPullRequestStatus:async()=>{}};
+ const {remote}=await session(t,{draft:true,apiFactory:()=>api,pause:async()=>{},handle:(u,o,p)=>{
+  if(p==='/pulls'&&changed)return json([{...pr,head:{...pr.head,sha:++reads>=3?'4'.repeat(40):head}}]);
+  if(p==='/contents/content/portfolio.json')return json(encoded(Buffer.from(JSON.stringify({portfolio:u.searchParams.get('ref')==='4'.repeat(40)?next:original}))));
+ }});
+ const saved=await remote.saveDraft(next);assert.equal(saved.head,'4'.repeat(40));assert.equal(saved.data.site.name,next.site.name);assert.equal(writes,1);assert.equal(reads,3);
+});
+test('unconfirmed save blocks another write until an explicit snapshot reconciliation',async t=>{
+ const next=structuredClone(original);next.site.name='Unconfirmed';let writes=0;
+ const api={uploadBlob:async()=>{},updateTree:async()=>({}),commit:async()=>({sha:'4'.repeat(40)}),patchBranch:async()=>{writes++;},setPullRequestStatus:async()=>{}};
+ const {remote}=await session(t,{draft:true,apiFactory:()=>api,pause:async()=>{}});
+ await assert.rejects(remote.saveDraft(next),/has not confirmed/);await assert.rejects(remote.saveDraft(next),/last save could not be confirmed/);assert.equal(writes,1);
+ remote.adopt(await remote.snapshot());await assert.rejects(remote.saveDraft(next),/has not confirmed/);assert.equal(writes,2);
+});
+test('lost merge reply is reconciled from the exact reviewed PR and merged content, without remerging',async t=>{
+ let writes=0,merged=false;
+ const {remote}=await session(t,{draft:true,pause:async()=>{},handle:(u,o,p)=>{
+  if(p==='/pulls/7/merge'){writes++;merged=true;throw new TypeError('reply lost');}
+  if(p==='/pulls/7'&&merged)return json({...pr,state:'closed',merged:true,merge_commit_sha:'4'.repeat(40)});
+ }});
+ const reviewed=await remote.review(original);const result=await remote.publish(original,reviewed);assert.equal(result.sha,'4'.repeat(40));assert.equal(writes,1);
+});
+test('an uncertain merge never accepts a different PR head or different merged content',async t=>{
+ for(const wrong of ['head','content']){
+  let merged=false,writes=0;const different=structuredClone(original);different.site.name='Different changes';
+  const {remote}=await session(t,{draft:true,pause:async()=>{},handle:(u,o,p)=>{
+   if(p==='/pulls/7/merge'){merged=true;writes++;throw new TypeError('reply lost');}
+   if(p==='/pulls/7'&&merged)return json({...pr,head:{...pr.head,sha:wrong==='head'?'5'.repeat(40):head},merged:true,merge_commit_sha:'4'.repeat(40)});
+   if(p==='/contents/content/portfolio.json'&&u.searchParams.get('ref')==='4'.repeat(40))return json(encoded(Buffer.from(JSON.stringify({portfolio:different}))));
+  }});
+  const reviewed=await remote.review(original);await assert.rejects(remote.publish(original,reviewed),/may have reached GitHub/);assert.equal(writes,1);remote.end();
+ }
 });
