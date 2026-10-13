@@ -21,6 +21,8 @@ The Worker binds random state and S256 PKCE to an AES-GCM encrypted, short-lived
 
 The editor holds the bearer token only in memory and sends it only to GitHub's API with redirects rejected. Logout, provider revocation and expiry clear it and abort authenticated requests. Refresh tokens are never retained. The editor has a restrictive script/connect CSP and renders authored content as escaped text. Browser XSS would still be a risk to an in-memory bearer token.
 
+The Stats dashboard uses a separate expiring, read-only capability issued after the same owner checks. It goes only to this Worker, never grants GitHub access, and is also held only in memory. Public collection stores daily aggregates in the `STATS_DB` D1 binding. See [STATS.md](../docs/STATS.md) for counting semantics, privacy boundaries, deployment and recovery.
+
 Save Draft first saves locally, then writes content and optimized images to a public `cms/portfolio/portfolio-…` branch and pull request. Existing draft updates check the expected head and use non-force ref updates. A second session's changes, changed main, multiple drafts, missing images and unexpected PR files block writing/publication. There is no direct main ref update, branch deletion or forced merge. An interrupted operation preserves the local draft; export it before reloading the GitHub state.
 
 Publish checks the actual draft content/head, permitted changed paths, one successful `validate` check from GitHub Actions on that exact SHA, and GitHub mergeability. The user then confirms the reviewed revision. The merge request supplies that SHA and rechecks everything. Merge rejection remains a rejection. A confirmed merge and a successful Pages deployment are reported separately.
