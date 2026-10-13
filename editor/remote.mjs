@@ -1,4 +1,4 @@
-import {isResumeUpload,isImageUpload,verifyResume,maxResumeBytes} from '../lib/pdf.mjs';
+import {matchesImageUpload,imageUploadType,isResumeUpload,isImageUpload,verifyResume,maxResumeBytes} from '../lib/pdf.mjs';
 import {assertValid} from '../lib/schema.mjs';
 const contentPath='content/portfolio.json';
 const decode=content=>new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(atob(content.replace(/\s/g,'')),c=>c.charCodeAt(0)));
@@ -66,7 +66,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    const assets=[];const knownMedia=new Set(JSON.parse(publishedData).media.map(m=>m.src));
    for(const m of data.media){if(!images.has(m.src)){if(!knownMedia.has(m.src)&&!current?.data.media.some(x=>x.src===m.src))throw Error('Missing uploaded image: '+m.src);continue;}
     const blob=images.get(m.src),bytes=new Uint8Array(await blob.arrayBuffer());const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);
-    if(bytes.length>2_000_000||m.src!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('Only optimized, hash-verified WebP uploads are accepted.');
+    if(bytes.length>2_000_000||!matchesImageUpload(m.src,bytes,hash))throw Error('Only optimized, hash-verified WebP or PNG uploads are accepted.');
     assets.push({path:m.src,toBase64:async()=>base64(bytes)});
    }
    if(images.has(data.site.resume)){
@@ -127,8 +127,8 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
  async function media(data,ref){check();if(!sha(ref))throw Error('Invalid media revision.');const results=new Map();for(const m of data.media.filter(m=>m.id.startsWith('upload-'))){
   const r=await request(repo+'/contents/'+m.src,{params:{ref}});if(r.encoding!=='base64'||r.size>2_000_000||typeof r.content!=='string'||r.content.length>3_000_000)throw Error('Invalid uploaded image response.');
   const bytes=Uint8Array.from(atob(r.content.replace(/\s/g,'')),c=>c.charCodeAt(0));const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);
-  if(bytes.length>2_000_000||m.id!=='upload-'+hash||m.src!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('GitHub image bytes do not match their stable filename.');
-  const blob=new Blob([bytes],{type:'image/webp'}),bitmap=await createImageBitmap(blob);const valid=bitmap.width===m.width&&bitmap.height===m.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!valid)throw Error('GitHub image dimensions do not match the draft.');results.set(m.src,blob);
+  if(bytes.length>2_000_000||m.id!=='upload-'+hash||!matchesImageUpload(m.src,bytes,hash))throw Error('GitHub image bytes do not match their stable filename.');
+  const blob=new Blob([bytes],{type:imageUploadType(m.src)}),bitmap=await createImageBitmap(blob);const valid=bitmap.width===m.width&&bitmap.height===m.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!valid)throw Error('GitHub image dimensions do not match the draft.');results.set(m.src,blob);
  }
  if(isResumeUpload(data.site.resume)){
   let r=await request(repo+'/contents/'+data.site.resume,{params:{ref}});

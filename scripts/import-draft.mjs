@@ -8,7 +8,7 @@ const files=await readZip(new Blob([await fs.readFile(input)]));const content=aw
 await fs.mkdir('.local',{recursive:true});const staging=await fs.mkdtemp(path.resolve('.local/import-'));
 try{
  await fs.cp('assets',path.join(staging,'assets'),{recursive:true});
- for(const [p,blob] of files){if(p==='content/portfolio.json')continue;const bytes=Buffer.from(await blob.arrayBuffer());if(isResumeUpload(p)){if(p!==data.site.resume)throw Error('Unreferenced resume in draft package.');await verifyResume(p,blob);}else if(crypto.createHash('sha256').update(bytes).digest('hex').slice(0,20)!==path.basename(p,'.webp').slice(7))throw Error('Uploaded image hash does not match its stable filename.');await fs.writeFile(path.join(staging,p),bytes);}
+ for(const [p,blob] of files){if(p==='content/portfolio.json')continue;const bytes=Buffer.from(await blob.arrayBuffer());if(isResumeUpload(p)){if(p!==data.site.resume)throw Error('Unreferenced resume in draft package.');await verifyResume(p,blob);}else if(crypto.createHash('sha256').update(bytes).digest('hex').slice(0,20)!==path.basename(p,path.extname(p)).slice(7))throw Error('Uploaded image hash does not match its stable filename.');await fs.writeFile(path.join(staging,p),bytes);}
  await validateAssets(data,staging);
  console.log(`Validated draft: ${data.sections.flatMap(s=>s.entries).length} entries and ${files.size-1} uploaded assets.`);
  if(process.argv.includes('--apply')){

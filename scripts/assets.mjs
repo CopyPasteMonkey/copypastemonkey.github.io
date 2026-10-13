@@ -1,4 +1,4 @@
-import {inspectPDF,isResumeUpload} from '../lib/pdf.mjs';
+import {inspectPDF,isResumeUpload,isImageUpload} from '../lib/pdf.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -10,7 +10,7 @@ export async function validateAssets(data,root){
  }
  for(const m of data.media){
   const p=await file(m.src,2_000_000);if(!p)continue;
-  if(m.id.startsWith('upload-')){const hash=crypto.createHash('sha256').update(await fs.readFile(p)).digest('hex').slice(0,20);if(m.id!=='upload-'+hash||m.src!=='assets/images/'+m.id+'.webp')failures.push(m.src+': upload ID and filename must match the image bytes');}
+  if(m.id.startsWith('upload-')){const hash=crypto.createHash('sha256').update(await fs.readFile(p)).digest('hex').slice(0,20);if(m.id!=='upload-'+hash||!isImageUpload(m.src)||path.basename(m.src,path.extname(m.src))!==m.id)failures.push(m.src+': upload ID and filename must match the image bytes');}
   try{const meta=await sharp(p,{limitInputPixels:40_000_000}).metadata();if(!['webp','jpeg','png'].includes(meta.format)||meta.pages>1)throw Error('use a static WebP, JPEG or PNG');const expected=m.src.endsWith('.webp')?'webp':m.src.endsWith('.png')?'png':'jpeg';if(meta.format!==expected)throw Error('extension does not match image bytes');if(m.id.startsWith('upload-')&&(meta.exif||meta.xmp||meta.iptc))throw Error('strip metadata from uploaded images');if(meta.width!==m.width||meta.height!==m.height)throw Error('recorded dimensions do not match the image');if(meta.width>2400||meta.height>2400)throw Error('optimize to at most 2400 px');}catch(e){failures.push(`${m.src}: ${e.message}`);}
  }
  const resume=await file(data.site.resume,15_000_000);
