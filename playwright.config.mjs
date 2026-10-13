@@ -1,2 +1,2 @@
 import {defineConfig} from '@playwright/test';
-export default defineConfig({testDir:'tests/browser',fullyParallel:false,workers:1,timeout:45000,use:{baseURL:'http://127.0.0.1:4173',viewport:{width:1440,height:1000},screenshot:'only-on-failure'},reporter:'list'});
+export default defineConfig({testDir:'tests/browser',outputDir:'test-results/'+(process.env.TEST_BROWSER||'chromium'),fullyParallel:false,workers:1,timeout:45000,use:{browserName:process.env.TEST_BROWSER||'chromium',baseURL:'http://127.0.0.1:4173',viewport:{width:1440,height:1000},screenshot:'only-on-failure'},webServer:{command:'npm run dev',url:'http://127.0.0.1:4173/editor/',reuseExistingServer:!process.env.CI},reporter:'list'});
