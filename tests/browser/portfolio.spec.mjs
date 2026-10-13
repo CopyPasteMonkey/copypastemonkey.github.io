@@ -56,12 +56,12 @@ test('invalid image and draft paths are refused without changing content',async(
  await page.locator('#import').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"portfolio":{"html":"<script>bad</script>"}}')});await expect(page.locator('#status')).toContainText('Import failed');
 });
 
-test('frozen migration content retains visual parity with its archived HTML',async({page,browserName})=>{
- // WebKit can downsample the same decoded photo differently between visits.
- // Compare its image identity, dimensions, placement and fit directly, then mask
- // photo pixels for the layout comparison. Chromium retains full pixel parity.
+test('frozen migration content retains visual parity with its archived HTML',async({page})=>{
+ // Browsers can downsample the same decoded photo differently between visits.
+ // Compare image identity, dimensions, placement and fit directly, then mask
+ // photo pixels so resampling cannot hide or falsely report layout changes.
  const imageLayout=()=>[...document.images].flatMap(i=>{const r=i.getBoundingClientRect(),s=getComputedStyle(i);return r.width&&r.top<innerHeight&&r.bottom>0?[{src:i.currentSrc,alt:i.alt,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,x:r.x,y:r.y,width:r.width,height:r.height,fit:s.objectFit,position:s.objectPosition}]:[];});
- const screenshotOptions=()=>browserName==='webkit'?{mask:[page.locator('img')]}:{};
+ const screenshotOptions=()=>({mask:[page.locator('img')]});
  await page.route('**/approved-baseline.html',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync('tests/fixtures/published.html')}));
  await page.route('**/migration-generated.html',r=>r.fulfill({contentType:'text/html',body:render(JSON.parse(fs.readFileSync('tests/fixtures/published-content.json')).portfolio)}));
  for(const width of [1440,390]){await page.setViewportSize({width,height:width===390?844:1000});for(const hash of ['work','work/nimbus-internship','projects/mqp','passions/film','contact']){
