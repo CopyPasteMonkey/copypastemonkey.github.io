@@ -1,9 +1,7 @@
 import {isResumeUpload,isImageUpload,imageUploadType,maxResumeBytes} from '../lib/pdf.mjs';
 // Browser-local storage only. This module never calls a write API.
 export const draftKey='eli-portfolio-draft-v1';
-const database=()=>new Promise((resolve,reject)=>{const r=indexedDB.open('eli-portfolio-media-v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('images');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
-export async function putImage(path,blob){const db=await database();try{await new Promise((resolve,reject)=>{const tx=db.transaction('images','readwrite');tx.objectStore('images').put(blob,path);tx.oncomplete=resolve;tx.onerror=tx.onabort=()=>reject(tx.error||Error('Uploaded-file storage could not finish saving. Download a backup or free browser storage.'));});}finally{db.close();}}
-export async function getImages(){const db=await database();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('images','readonly');const map=new Map();const r=tx.objectStore('images').openCursor();r.onsuccess=()=>{const c=r.result;if(c){map.set(c.key,c.value);c.continue();}else resolve(map);};r.onerror=()=>reject(r.error);});}finally{db.close();}}
+export {putImage,getImages} from './media-store.mjs';
 // Canvas encoders can add EXIF/text chunks. Remove those before hashing so
 // upload, backup and publication all use the same metadata-free PNG bytes.
 export async function stripPNGMetadata(blob){
@@ -28,11 +26,11 @@ export async function optimizeImage(file){
  const view=new DataView(sourceBytes.buffer);
  if(format==='webp')for(let offset=12;offset+8<=sourceBytes.length;){const type=String.fromCharCode(...sourceBytes.slice(offset,offset+4));if(type==='ANIM'||type==='ANMF')throw Error('Use a still image; animated WebP is not supported.');const size=view.getUint32(offset+4,true);offset+=8+size+(size%2);}
  if(format==='png')for(let offset=8;offset+12<=sourceBytes.length;){const type=String.fromCharCode(...sourceBytes.slice(offset+4,offset+8));if(type==='acTL')throw Error('Use a still image; animated PNG is not supported.');offset+=12+view.getUint32(offset);}
- const bitmap=await createImageBitmap(file);
+ let bitmap;try{bitmap=await createImageBitmap(file);}catch{throw Error('This image could not be opened. It may be damaged or use an unsupported format. Open it in Preview or Photos, export a JPEG or PNG, and try that copy.');}
  try{
   if(bitmap.width*bitmap.height>40_000_000)throw Error('Use an image below 40 megapixels.');
   const scale=Math.min(1,2400/Math.max(bitmap.width,bitmap.height));const width=Math.max(1,Math.round(bitmap.width*scale)),height=Math.max(1,Math.round(bitmap.height*scale));
-  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').drawImage(bitmap,0,0,width,height);
+  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const context=canvas.getContext('2d');if(!context)throw Error('Your browser could not prepare the image. Close other large tabs and try again.');context.drawImage(bitmap,0,0,width,height);
   let blob=await stripPNGMetadata(await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.84)));
   if(!blob||!['image/webp','image/png'].includes(blob.type))throw Error('Your browser could not encode this image. Try exporting it as JPEG or PNG.');
   // Keep transparency when WebP is unavailable. Reduce dimensions if needed.

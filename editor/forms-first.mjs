@@ -11,6 +11,7 @@ export function createForms({root,getData,changed,settle,status,uploadImage,mark
  const titleCase=text=>text[0].toUpperCase()+text.slice(1);
  const button=(text,onclick,extra={})=>{const icon=text==='Move up'?'↑':text==='Move down'?'↓':text.startsWith('Add ')?'+':'';return element('button',{type:'button',onclick,class:text.startsWith('Remove')?'remove-button':'',...extra},icon?element('span',{class:'action-icon','aria-hidden':'true',text:icon}):null,element('span',{text}));};
  const changedValue=()=>changed({repaint:false});
+ const focusAfterDraw=node=>{node?.focus();requestAnimationFrame(()=>{if(node?.isConnected&&document.activeElement===document.body)node.focus();});};
  const mount=(host,data,def,path,options={})=>mountForm(host,{data,def,path,referenceData:getData(),onChange:changedValue,friendly:true,renderField:imageField,newItem:newContent,arrayLabels:{blocks:'Add content',items:'Add bullet point'},...options});
  const tree=createContentTree({getData,mount,imageEditor,photoList,prepareBlock,changed:changedValue,settle,status,mediaURL:uploadImage.url});
  function newContent({def}){const value=blank(def);if(value?.id!==undefined)value.id=uniqueID(getData(),'item');return value;}
@@ -105,7 +106,7 @@ export function createForms({root,getData,changed,settle,status,uploadImage,mark
    list.replaceChildren();section.entries.forEach((entry,index)=>{
     const path=prefix+'.entries['+index+']',name=()=>entry.title.trim()||'Untitled '+template.name;
     const card=element('article',{class:'form-entry','data-entry-id':entry.id}),head=element('div',{class:'entry-heading'}),counter=element('strong',{text:titleCase(template.name)+' '+(index+1)+' of '+section.entries.length}),actions=element('div',{class:'entry-order'});
-    const move=direction=>{const to=index+direction;if(to<0||to>=section.entries.length)return;settle();[section.entries[index],section.entries[to]]=[section.entries[to],section.entries[index]];changedValue();draw(entry.id);const moved=list.querySelector('[data-entry-id="'+entry.id+'"]');const control=moved.querySelector('[data-move="'+(direction<0?'up':'down')+'"]');(control.disabled?moved.querySelector('summary'):control).focus();};
+    const move=direction=>{const to=index+direction;if(to<0||to>=section.entries.length)return;settle();[section.entries[index],section.entries[to]]=[section.entries[to],section.entries[index]];changedValue();draw(entry.id);const moved=list.querySelector('[data-entry-id="'+entry.id+'"]');const control=moved.querySelector('[data-move="'+(direction<0?'up':'down')+'"]');focusAfterDraw(control.disabled?moved.querySelector('summary'):control);};
     const up=button('Move up',()=>move(-1),{'data-move':'up',disabled:index===0}),down=button('Move down',()=>move(1),{'data-move':'down',disabled:index===section.entries.length-1}),remove=button('Remove',async()=>{if(!await confirmRemoval(name()))return;settle();section.entries.splice(index,1);openEntries.delete(entry.id);changedValue();draw();list.querySelector('summary')?.focus();});
     actions.append(up,down,remove);head.append(counter,actions);
     const details=element('details',{class:'entry-fields','data-path':path}),summary=element('summary'),entryName=element('span',{class:'entry-name'}),entryHint=element('span',{class:'entry-hint'}),body=element('div',{class:'entry-body'});summary.append(entryName,entryHint);
