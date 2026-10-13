@@ -19,6 +19,7 @@ Feature work was paused for this audit. Public portfolio content and the photogr
 | A tracker race could strand a newer deployment, and already-merged content could be described as live prematurely. | Checks follow the current revision, resume after reload, and distinguish published content from a completed deployment. Waiting validation is not presented as user error. | Superseded checks, failed/pending/success transitions, reload, no duplicate merge, already-published content. |
 | Rapid Undo during a preview reload could restore text inside a collapsed disclosure, appearing to do nothing. | Consecutive preview updates preserve the last usable section, expanded details and scroll position until the replacement is ready. | Remove then Undo while the preview stylesheet is deliberately stalled, in both browsers. |
 | Safari could lose keyboard focus after moving an entry. | The moved control regains focus after the DOM update. | Keyboard reorder tests in WebKit and Chromium. |
+| Mutable real content was also used as hardcoded regression examples. | UI examples now use a frozen test portfolio and separate build, so renaming/removing real content does not invalidate editor scenarios or replace the deployed website. | Actual content validation plus deployment/fixture build isolation test. |
 | Browser tests were not part of the publishing gate, and several fixtures assumed no existing uploads or WebP-only output. | PR validation and main deployment run unit tests, content validation, build, and both browser suites. Fixtures reflect existing uploaded images and both supported formats. | CI workflows; real Decap transport contract tests; image and backup tests. |
 
 The WebKit storage behavior also has an [upstream WebKit report](https://bugs.webkit.org/show_bug.cgi?id=286561). The compatibility change was verified by reproducing the failure and rerunning the same storage test successfully, rather than excluding WebKit from testing.
@@ -29,7 +30,7 @@ The WebKit storage behavior also has an [upstream WebKit report](https://bugs.we
 - Browser tests use actual editor controls and browser storage. GitHub/OAuth failures are injected into isolated test sessions; they do not write to the production repository.
 - The browser suites cover forms, the visual editor, the legacy form route, keyboard navigation, phone/laptop layouts, uploads, resume replacement, backup/restore, multi-tab conflicts and publication progress.
 - Manual Safari checks reproduced the original unfinished-draft save/backup failure before the change, then verified unfinished saving and download, leave-page warning, unsaved-text recovery, and image replacement surviving save/reload after the change.
-- Public content and asset validation, deterministic build and whitespace checks were also run. Final execution counts and deployment evidence are recorded in the PR.
+- Public content and asset validation, deterministic build and whitespace checks were also run. Visual comparisons check image identities, dimensions, cropping and placement directly, with browser antialiasing handled by Playwright’s standard screenshot comparator. Final execution counts and deployment evidence are recorded in the PR.
 
 Run locally, after installing dependencies and Playwright's Chromium/WebKit browsers:
 
@@ -41,7 +42,7 @@ npm run test:browser
 TEST_BROWSER=webkit npm run test:browser
 ```
 
-The browser configuration starts its own local preview server when needed. Run the two browser commands sequentially; some older test artifacts use shared paths under `.local/`.
+The browser configuration builds its frozen portfolio into `.local/browser-dist/` and starts a dedicated server on port 4175. The actual portfolio build in `dist/` remains separate. Run the two browser commands sequentially; some older test artifacts use shared paths under `.local/`.
 
 ## What remains untested or limited
 

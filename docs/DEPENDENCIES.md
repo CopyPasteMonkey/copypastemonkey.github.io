@@ -6,7 +6,7 @@ The locked development tools are Playwright 1.64.0, Sharp 0.35.5 and esbuild 0.2
 
 ## Audit result
 
-On 2026-10-11, a fresh installation and `npm audit --json` reported **0 vulnerabilities** across all severities. No audit suppression or force-fix was used.
+On 2026-10-11, a fresh installation and `npm audit --json` reported **0 vulnerabilities** across all severities. No audit suppression or force-fix was used. A fresh audit on 2026-10-13 also reported zero known vulnerabilities.
 
 The earlier full Decap 3.16.3 tree reported 34 affected entries arising from @platejs/core, trim, sprintf-js and uuid. Removing the unnecessary CMS/widget dependency tree removed the first three packages; the uuid override addresses the fourth. This is a dependency reduction and patched resolution, not a claim that hidden rich-text fields make vulnerable code safe.
 
