@@ -21,6 +21,11 @@ jobs:
       - run: npm run validate
       - run: npm test
       - run: npm run build
+      - run: npx playwright install --with-deps chromium webkit
+      - run: npm run test:browser
+      - run: npm run test:browser
+        env:
+          TEST_BROWSER: webkit
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
