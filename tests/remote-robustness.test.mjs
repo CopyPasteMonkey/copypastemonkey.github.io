@@ -12,6 +12,9 @@ const encoded=bytes=>({encoding:'base64',size:bytes.length,content:Buffer.from(b
 const json=value=>new Response(JSON.stringify(value));
 const pr={number:7,state:'open',head:{ref:'cms/portfolio/portfolio-aabbcc',sha:head,repo:{id:1}},base:{ref:'main',repo:{id:1}},mergeable:true,mergeable_state:'clean'};
 async function session(t,{data=original,draft=false,handle=()=>{},...options}={}){
+ const previousBitmap=globalThis.createImageBitmap;
+ globalThis.createImageBitmap=async blob=>{const m=await sharp(Buffer.from(await blob.arrayBuffer())).metadata();return {width:m.width,height:m.height,close(){}};};
+ t.after(()=>{if(previousBitmap)globalThis.createImageBitmap=previousBitmap;else delete globalThis.createImageBitmap;});
  const calls=[];
  const fetcher=async(url,opts={})=>{
   const u=new URL(url),p=u.pathname.slice(root.length);calls.push({url:u,method:opts.method||'GET',body:opts.body});
@@ -21,6 +24,8 @@ async function session(t,{data=original,draft=false,handle=()=>{},...options}={}
   if(p==='/branches/main')return json({commit:{sha:main}});
   if(p==='/pulls')return json(draft?[pr]:[]);
   if(p==='/contents/'+original.site.resume)return json(encoded(resumeBytes));
+   // Serve existing editor uploads as fixtures; test-specific handlers run first.
+   if(p.startsWith('/contents/assets/images/'))return json(encoded(await fs.readFile(p.slice('/contents/'.length))));
   if(p==='/contents/content/portfolio.json')return json(encoded(Buffer.from(JSON.stringify({portfolio:data}))));
   if(p.startsWith('/compare/'))return json({behind_by:0});
   if(p.endsWith('/check-runs'))return json({check_runs:[{name:'validate',app:{slug:'github-actions'},head_sha:head,status:'completed',conclusion:'success'}]});
