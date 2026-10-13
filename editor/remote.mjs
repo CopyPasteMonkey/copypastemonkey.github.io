@@ -94,7 +94,12 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    if(!wait||attempt>=12)throw Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');
    await pause(10000);check();
   }
-  const pr=await request(repo+'/pulls/'+draft.pr.number);if(pr.head?.sha!==expectedHead||pr.mergeable!==true||pr.mergeable_state!=='clean'||pr.state!=='open')throw Error('GitHub has not marked this draft ready to merge. Review conflicts, checks and branch rules.');
+  // Like check-runs, read public readiness without the app's restricted status visibility.
+  // The authenticated merge below still enforces GitHub's branch rules and exact head.
+  const pr=await publicJSON('/pulls/'+draft.pr.number);
+  if(pr.head?.sha!==expectedHead)throw Error('The saved draft changed while checking it. Click Publish again to review the latest version.');
+  if(pr.state!=='open')throw Error('This draft is already closed. Click Publish again to load the latest published version.');
+  if(pr.mergeable!==true||pr.mergeable_state!=='clean')throw Error('GitHub is not ready to merge this draft ('+(pr.mergeable_state||'calculating')+'). Review public draft for details, or retry shortly.');
   return {number:pr.number,head:expectedHead,url:'https://github.com/'+config.repository+'/pull/'+pr.number};
  }
  async function publish(data,reviewed){return exclusive(async()=>{const latest=await review(data);if(latest.head!==reviewed.head||latest.number!==reviewed.number)throw Error('Draft changed after review. Review it again.');
