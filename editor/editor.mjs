@@ -17,6 +17,7 @@ const $=s=>document.querySelector(s),clone=structuredClone;
 const publishedCacheKey='eli-portfolio-published-cache';
 let data,baseline,active='work',saved='',history=[],future=[],prior='',changeTimer,previewTimer,revision=0,draftRevision=0,urls=new Map(),images=new Map(),busy=0;
 let publishing,remote,remoteState,remoteAdopted=false,reviewed,lastMerge,preparingPublication=false;
+let previewRendering=false,previewViewState;
 let recovery,recoveryReady=false,recoveryRaw='',saving=false,operation='',operationControls=[];
 const visual=document.body.classList.contains('visual-editor'),functional=document.body.classList.contains('forms-editor'),friendly=visual||functional;let canvas,forms,fieldSelection=null,templateIDs=new Set();
 const publication=createPublishProgress({anchor:$('.notice'),checkDeployment:sha=>createRemote(publishing,{apiFactory:()=>{}}).deployment(sha)});
@@ -86,8 +87,12 @@ function updatePreview(){
  clearTimeout(previewTimer);const errors=valid();
  if(errors.length){if(!$('#preview').srcdoc)$('#preview').srcdoc=render(baseline,{base:new URL('../',location.href).href});status(friendly?'Before publishing, please check: '+describeError(errors[0],data,true)+' Save Draft keeps your unfinished edits.':`${errors.length} validation issue${errors.length===1?'':'s'}: ${describeError(errors[0],data)}`,true);$('#preview-status').textContent='Showing the last valid preview. Fix validation errors to update it.';return;}
  const renderRevision=revision,iframe=$('#preview');let route=functional&&['work','projects','skills','passions'].includes(active)?'#'+active:'#work',open=[],scroll=0;
- try{if(!functional)route=iframe.contentWindow.location.hash||route;open=[...iframe.contentDocument.querySelectorAll('[data-expand][aria-expanded=true]')].map(x=>x.dataset.expand);scroll=iframe.contentWindow.scrollY;}catch{}
- iframe.onload=()=>{if(revision!==renderRevision){updatePreview();return;}const focused=document.activeElement;try{const doc=iframe.contentDocument,win=iframe.contentWindow;const section=route.slice(1).split('/')[0];if(section!=='work')doc.querySelector(`nav [data-section="${section}"]`)?.click();open.forEach(id=>{const btn=[...doc.querySelectorAll('[data-expand]')].find(b=>b.dataset.expand===id);if(btn?.getAttribute('aria-expanded')==='false')btn.click();});win.requestAnimationFrame(()=>win.scrollTo(0,scroll));if(canvas)canvas.bind();}catch(e){if(canvas)status('The editor could not display this change. Try Undo or reload your saved draft.',true);}finally{if(focused&&focused!==iframe&&focused!==document.body)focused.focus({preventScroll:true});}};
+ // A second edit can arrive while srcdoc is still loading. Preserve the last
+ // usable view instead of reading the temporary, collapsed replacement DOM.
+ if(previewRendering&&previewViewState){if(!functional)route=previewViewState.route;open=previewViewState.open;scroll=previewViewState.scroll;}
+ else try{if(!functional)route=iframe.contentWindow.location.hash||route;open=[...iframe.contentDocument.querySelectorAll('[data-expand][aria-expanded=true]')].map(x=>x.dataset.expand);scroll=iframe.contentWindow.scrollY;}catch{}
+ previewViewState={route,open,scroll};previewRendering=true;
+ iframe.onload=()=>{if(revision!==renderRevision){updatePreview();return;}const focused=document.activeElement;try{const doc=iframe.contentDocument,win=iframe.contentWindow;const section=route.slice(1).split('/')[0];if(section!=='work')doc.querySelector(`nav [data-section="${section}"]`)?.click();open.forEach(id=>{const btn=[...doc.querySelectorAll('[data-expand]')].find(b=>b.dataset.expand===id);if(btn?.getAttribute('aria-expanded')==='false')btn.click();});win.requestAnimationFrame(()=>win.scrollTo(0,scroll));if(canvas)canvas.bind();}catch(e){if(canvas)status('The editor could not display this change. Try Undo or reload your saved draft.',true);}finally{previewRendering=false;if(focused&&focused!==iframe&&focused!==document.body)focused.focus({preventScroll:true});}};
  iframe.srcdoc=render(friendly?editorData(data,templateIDs,{visitor:functional||canvas?.isPreview()}):data,{base:new URL('../',location.href).href,mediaURL:src=>urls.get(src)||src});$('#preview-status').textContent='Preview is up to date. Navigate and expand entries inside it.';
 }
 function revealError(error){
