@@ -15,7 +15,12 @@ test('visual canvas edits plain text, saves/reloads, previews and preserves keyb
 test('context controls add roles and text, reorder/remove with undo, and keep stable IDs',async({page})=>{
  await page.goto('/editor/visual.html');await field(page,'sections[0].entries[0].title').click();await page.getByRole('button',{name:'Add role',exact:true}).click();await expect(page.locator('#fields')).toBeVisible();await page.getByRole('textbox',{name:'Role name',exact:true}).fill('Review role');await page.getByRole('button',{name:'Close details',exact:true}).click();await expect(field(page,'sections[0].entries[0].roles[2].label')).toHaveText('Review role');
  await field(page,'sections[0].entries[0].roles[2].label').click();await page.getByRole('button',{name:'Add paragraph',exact:true}).click();const p='sections[0].entries[0].roles[2].blocks[0].text';await expect(field(page,p)).toBeVisible();await field(page,p).fill('A review-only paragraph.');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');let data=await saved(page);expect(data.sections[0].entries[0].roles[2].blocks[0].text).toBe('A review-only paragraph.');expect(data.sections[0].entries[0].id).toBe('nimbus');
- await field(page,p).click();await page.getByRole('button',{name:'Remove',exact:true}).click();await page.getByRole('button',{name:'Remove from draft',exact:true}).click();await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(field(page,p)).toBeVisible();
+ // Hold the next preview load so rapid Undo sees a partially loaded iframe.
+ let releasePreview;const previewGate=new Promise(resolve=>releasePreview=resolve);
+ await page.route('**/style.css',async route=>{await previewGate;await route.continue();});
+ await field(page,p).click();await page.getByRole('button',{name:'Remove',exact:true}).click();await page.getByRole('button',{name:'Remove from draft',exact:true}).click();
+ await expect(field(page,p)).toHaveCount(0);
+ await page.getByRole('button',{name:'Undo',exact:true}).click();releasePreview();await expect(field(page,p)).toBeVisible();
  await field(page,'sections[0].entries[0].roles[2].label').click();await page.getByRole('button',{name:'Move up',exact:true}).click();await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');data=await saved(page);expect(data.sections[0].entries[0].roles[1].label).toBe('Review role');expect(data.sections[0].entries[0].roles[2].id).toBe('nimbus-internship');
 });
 test('images require alt text, cancel safely, and support inline replacement and detail editing',async({page})=>{
