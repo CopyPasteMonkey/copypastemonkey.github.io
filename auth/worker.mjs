@@ -1,4 +1,5 @@
-// UNPROVISIONED review implementation. No account, app, binding or secret is created by this file.
+// Deployed OAuth helper. Secrets are Cloudflare bindings, never source files.
+import {handleStats} from './stats.mjs';
 const cookieName='__Host-portfolio_oauth';
 const ttl=600;
 const encoder=new TextEncoder(),decoder=new TextDecoder();
@@ -19,7 +20,9 @@ function fail(status=400){return new Response('Sign-in was not completed. Close 
 async function githubJSON(fetcher,url,options){const res=await fetcher(url,options);if(!res.ok)throw Error('provider');const text=await res.text();if(text.length>100_000)throw Error('provider');return JSON.parse(text);}
 export async function handle(request,env,{fetcher=fetch,now=()=>Date.now()}={}){
  try{configured(env);}catch{return fail(503);}
- const url=new URL(request.url);if(url.origin!==env.AUTH_ORIGIN||request.method!=='GET')return fail(405);
+ const url=new URL(request.url);
+ if(['/collect','/stats'].includes(url.pathname))return handleStats(request,env,{now,verify:token=>unseal(token,env)});
+ if(url.origin!==env.AUTH_ORIGIN||request.method!=='GET')return fail(405);
  const origin=request.headers.get('Origin');if(origin&&origin!==env.EDITOR_ORIGIN&&origin!==env.AUTH_ORIGIN)return fail(403);
  if(url.pathname==='/auth'){
   // No caller-chosen callback, repository, user, scope or redirect URI is accepted.
@@ -41,7 +44,9 @@ export async function handle(request,env,{fetcher=fetch,now=()=>Date.now()}={}){
   const apiHeaders={Accept:'application/vnd.github+json',Authorization:'Bearer '+token.access_token,'X-GitHub-Api-Version':'2026-03-10','User-Agent':'portfolio-editor-auth'};
   const user=await githubJSON(fetcher,'https://api.github.com/user',{headers:apiHeaders});if(String(user.id)!==env.ALLOWED_USER_ID)throw Error('user');
   const repo=await githubJSON(fetcher,'https://api.github.com/repositories/'+env.REPOSITORY_ID,{headers:apiHeaders});if(String(repo.id)!==env.REPOSITORY_ID||repo.permissions?.push!==true)throw Error('repo');
-  const nonce=random();const payload=JSON.stringify({type:'portfolio:authorized',token:token.access_token,provider:'github',expiresAt:now()+token.expires_in*1000}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
+  // Separate, read-only capability: the editor never sends its GitHub token to the stats API.
+  const statsToken=await seal({purpose:'portfolio-stats',user:env.ALLOWED_USER_ID,issued:now(),expires:now()+token.expires_in*1000},env);
+  const nonce=random();const payload=JSON.stringify({type:'portfolio:authorized',token:token.access_token,statsToken,provider:'github',expiresAt:now()+token.expires_in*1000}).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
   const originJSON=JSON.stringify(env.EDITOR_ORIGIN);
   const html=`<!doctype html><meta charset="utf-8"><title>Finish portfolio sign-in</title><p>Completing sign-in. You can close this window if the editor is no longer open.</p><script nonce="${nonce}">(()=>{const origin=${originJSON};const target=window.opener;if(!target)return;let sent=false;const listener=e=>{if(sent||e.origin!==origin||e.source!==target||e.data?.type!=='portfolio:ack')return;sent=true;window.removeEventListener('message',listener);target.postMessage(${payload},origin);window.close();};window.addEventListener('message',listener);target.postMessage({type:'portfolio:ready'},origin);setTimeout(()=>{window.removeEventListener('message',listener);window.close();},60000);})();</script>`;
   return new Response(html,{headers:{...headers,'Content-Type':'text/html; charset=utf-8','Set-Cookie':cookie('',0),'Content-Security-Policy':`default-src 'none'; script-src 'nonce-${nonce}'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`}});

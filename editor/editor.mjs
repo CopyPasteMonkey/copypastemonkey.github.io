@@ -8,6 +8,7 @@ import {assetPaths,matchesImageUpload,isResumeUpload,verifyResume} from '../lib/
 import {schema,validate,validateLocalDraft} from '../lib/schema.mjs';
 import {createRemote,publishingReady} from './remote.mjs';
 import {signIn} from './auth-client.mjs';
+import {createStats} from './stats.mjs';
 import {render} from '../lib/render.mjs';
 import {element,mountForm,showErrors,describeError,confirmChange} from './form.mjs';
 import {itemName} from './friendly.mjs';
@@ -21,6 +22,7 @@ let previewRendering=false,previewViewState;
 let recovery,recoveryReady=false,recoveryRaw='',saving=false,operation='',operationControls=[];
 const visual=document.body.classList.contains('visual-editor'),functional=document.body.classList.contains('forms-editor'),friendly=visual||functional;let canvas,forms,fieldSelection=null,templateIDs=new Set();
 const publication=createPublishProgress({anchor:$('.notice'),checkDeployment:sha=>createRemote(publishing,{apiFactory:()=>{}}).deployment(sha)});
+const stats=createStats({getConfig:()=>publishing,getNames:()=>new Map((baseline?.sections.find(s=>s.id==='work')?.entries||[]).flatMap(e=>e.roles.map(r=>[r.id,[e.title,r.label||r.role].filter(Boolean).join(' — ')]))),onSignIn:connectGitHub});
 const setupTitle=$('#publish-dialog h2').textContent,setupMessage=$('#publish-message').innerHTML;
 async function loadJSON(path,timeout){const controller=new AbortController();let timer;try{return await Promise.race([(async()=>{const response=await fetch(path,{signal:controller.signal});if(!response.ok)throw Error('The website could not return the requested content.');return response.json();})(),new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error('The connection timed out.'));},timeout);})]);}finally{clearTimeout(timer);}}
 function showSetup(){const enabled=publishingReady(publishing,location.origin);$('#publish-dialog h2').textContent=enabled?'Sign in to publish':setupTitle;if(enabled)$('#publish-message').replaceChildren(element('p',{text:'Sign in with GitHub, load or save the current public draft, then review it before publishing. Your local draft remains available.'}));else $('#publish-message').innerHTML=setupMessage;$('#confirm-publish').hidden=true;$('#publish-dialog').showModal();}
@@ -34,7 +36,7 @@ function checkpoint(){
 }
 function lockEditing(label){
  if(operation)return false;operation=label;
- operationControls=[...document.querySelectorAll('#save,#publish,#load-remote,#signin,#logout,#undo,#redo,#import,#editor-section,#open-preview,#export')].map(node=>[node,node.disabled]);
+ operationControls=[...document.querySelectorAll('#save,#publish,#load-remote,#signin,#logout,#undo,#redo,#import,#editor-section,#open-preview,#export,#open-stats')].map(node=>[node,node.disabled]);
  operationControls.forEach(([node])=>{node.disabled=true;});document.querySelectorAll('#fields,#editor-nav,#preview,#canvas-toolbar,.preview-tools,.recovery-copies').forEach(node=>{node.inert=true;});return true;
 }
 function unlockEditing(){operation='';operationControls.forEach(([node,disabled])=>{node.disabled=disabled;});operationControls=[];document.querySelectorAll('#fields,#editor-nav,#preview,#canvas-toolbar,.preview-tools,.recovery-copies').forEach(node=>{node.inert=false;});if(friendly&&!publishingReady(publishing,location.origin))$('#publish').disabled=true;updateButtons();}
@@ -218,11 +220,11 @@ function showRecoveries(){
 }
 
 function showDraft(draft){const link=$('#draft-link');link.hidden=!draft;if(draft)link.href='https://github.com/'+publishing.repository+'/pull/'+draft.pr.number;}
-function signedOut(){remoteAdopted=false;reviewed=null;$('#publish-dialog').close();$('#confirm-publish').hidden=true;$('#signin').hidden=false;$('#remote-tools').hidden=true;$('#mode-label').textContent='Local draft mode';$('#publish-note').textContent='Drafts save in this browser. GitHub credentials are not stored here. Repository drafts are public.';}
+function signedOut(){stats.clearSession();remoteAdopted=false;reviewed=null;$('#publish-dialog').close();$('#confirm-publish').hidden=true;$('#signin').hidden=false;$('#remote-tools').hidden=true;$('#mode-label').textContent='Local draft mode';$('#publish-note').textContent='Drafts save in this browser. GitHub credentials are not stored here. Repository drafts are public.';}
 async function connectGitHub(){
  if(!publishingReady(publishing,location.origin)){showSetup();return false;}
  $('#signin').disabled=true;status('Complete GitHub sign-in in the popup. Your local draft stays here.');
- try{const credentials=await signIn(publishing.authOrigin);const {DecapAPI}=await import('./vendor/decap-api.mjs');remote?.end();remote=createRemote(publishing,{apiFactory:options=>new DecapAPI(options),onExpire:()=>{signedOut();status('GitHub sign-in expired. Your local draft is safe. Sign in again to continue.',true);}});remoteState=await remote.connect(credentials);
+ try{const credentials=await signIn(publishing.authOrigin);const {DecapAPI}=await import('./vendor/decap-api.mjs');remote?.end();remote=createRemote(publishing,{apiFactory:options=>new DecapAPI(options),onExpire:()=>{signedOut();status('GitHub sign-in expired. Your local draft is safe. Sign in again to continue.',true);}});remoteState=await remote.connect(credentials);stats.setSession(credentials);
   $('#signin').hidden=true;$('#remote-tools').hidden=false;$('#mode-label').textContent='GitHub connected';$('#publish-note').textContent='Publish saves your changes, checks them, and asks you to confirm before updating the website.';showDraft(remoteState.draft);
   if(!remoteState.draft&&JSON.stringify(remoteState.published)===JSON.stringify(baseline)){remote.adopt(remoteState);remoteAdopted=true;status('Connected. Local edits can now be saved to a public GitHub draft.');}
   else{remoteAdopted=false;status('Connected. Click Publish to save and publish these edits. If GitHub has a different version, you can choose which to use.');}

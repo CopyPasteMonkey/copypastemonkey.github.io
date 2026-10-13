@@ -13,9 +13,9 @@ const wrapper=JSON.parse(raw);if(Object.keys(wrapper).join()!=='portfolio')throw
 const data=assertValid(wrapper.portfolio);await validateAssets(data,root);
 if(process.argv.includes('--validate')){console.log(`Validated ${data.sections.flatMap(s=>s.entries).length} entries, ${data.media.length} media, ${data.resources.length} resources.`);process.exit(0);}
 const output=path.join(root,browserTest?'.local/browser-dist':'dist');await fs.rm(output,{recursive:true,force:true});await fs.mkdir(output,{recursive:true});
-for(const f of ['assets','style.css','app.js','CNAME','.nojekyll','README.txt','accelerate.html','mott.html','nimbus.html','favicon-flow.svg','favicon-32.png','favicon.ico','apple-touch-icon.png','editor','lib','content'])await fs.cp(path.join(root,f),path.join(output,f),{recursive:true});
+for(const f of ['assets','style.css','app.js','stats-client.mjs','l','CNAME','.nojekyll','README.txt','accelerate.html','mott.html','nimbus.html','favicon-flow.svg','favicon-32.png','favicon.ico','apple-touch-icon.png','editor','lib','content'])await fs.cp(path.join(root,f),path.join(output,f),{recursive:true});
 await fs.writeFile(path.join(output,'content/portfolio.json'),raw);
-await fs.writeFile(path.join(output,'index.html'),render(data));
+await fs.writeFile(path.join(output,'index.html'),render(data,{stats:true}));
 await fs.writeFile(path.join(output,'content/schema.json'),JSON.stringify(schema,null,2)+'\n');
 // Build the narrow, pinned Decap backend from source; no prebuilt CMS bundle/CDN.
 const {build}=await import('esbuild');
