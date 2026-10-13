@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const portfolio=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 async function setup(page,{failure=false,remoteName=null,noDraft=false,signInFirst=true,authFailure=false}={}){
  const remoteData=structuredClone(portfolio);if(remoteName)remoteData.site.name=remoteName;
  await page.route('**/editor/auth-client.mjs',route=>route.fulfill({contentType:'text/javascript',body:`export async function signIn(){window.signinCalls=(window.signinCalls||0)+1;${authFailure?"throw Error('Sign-in cancelled');":"return {}"}}`}));

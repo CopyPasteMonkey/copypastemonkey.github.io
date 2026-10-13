@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const original=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const original=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 const prefix='portfolio.sections[0].entries[0].roles[1].blocks';
 const block=(page,index)=>page.locator('.content-node[data-path="'+prefix+'['+index+']"]');
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio);

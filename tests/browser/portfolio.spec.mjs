@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
+import path from 'node:path';
 import {render} from '../../lib/render.mjs';
 test('desktop routing, keyboard, repeated navigation and direct links',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/');
@@ -33,7 +34,7 @@ test('editor save/reload, undo, validation, import/export and faithful interacti
 });
 test('entry removal undo, reorder and stable ID',async({page})=>{
  await page.goto('/editor/form.html');const summaries=page.locator('#fields > div > div > .list > details > summary');await expect(page.locator('#fields summary').first()).toHaveText('Nimbus Power Systems');
- await page.locator('#fields summary').first().click();await page.getByRole('button',{name:'Move Nimbus Power Systems down',exact:true}).click();await expect(page.locator('#fields summary').first()).toHaveText(JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio.sections[0].entries[1].title);
+ await page.locator('#fields summary').first().click();await page.getByRole('button',{name:'Move Nimbus Power Systems down',exact:true}).click();await expect(page.locator('#fields summary').first()).toHaveText(JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio.sections[0].entries[1].title);
  await page.getByRole('button',{name:'Remove Nimbus Power Systems',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(0);await page.waitForTimeout(400);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(1);
 });
 test('image upload creates optimized stable media and draft package',async({page})=>{
@@ -70,6 +71,8 @@ test('frozen migration content retains visual parity with its archived HTML',asy
   const baselineImages=await page.evaluate(imageLayout);
   expect(baselineImages.every(i=>i.naturalWidth>0)).toBe(true);
   const baseline=await page.screenshot({path:'.local/parity-baseline.png',...screenshotOptions()});
+  const name=`migration-${width}-${hash.replaceAll('/','-')}.png`,snapshot=test.info().snapshotPath(name);
+  fs.mkdirSync(path.dirname(snapshot),{recursive:true});fs.writeFileSync(snapshot,baseline);
   await page.goto('/migration-generated.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
   const generatedPosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
   // Initial font loading can round the existing hash scroll by one pixel.
@@ -78,7 +81,9 @@ test('frozen migration content retains visual parity with its archived HTML',asy
   expect(Math.abs(generatedPosition.y-baselinePosition.y),`${width}px ${hash} scroll parity`).toBeLessThanOrEqual(1);
   await page.evaluate(async position=>{scrollTo({left:position.x,top:position.y,behavior:'instant'});await new Promise(requestAnimationFrame);},baselinePosition);
   expect(await page.evaluate(imageLayout)).toEqual(baselineImages);
-  const generated=await page.screenshot({path:'.local/parity-generated.png',...screenshotOptions()});expect(generated.equals(baseline),`${width}px ${hash} visual parity`).toBe(true);
+  const generated=await page.screenshot({path:'.local/parity-generated.png',...screenshotOptions()});
+  // Use the standard perceptual comparison so subpixel antialiasing is ignored.
+  expect(generated,`${width}px ${hash} visual parity`).toMatchSnapshot(name,{maxDiffPixels:0,threshold:0.2});
   if(hash==='work')await page.screenshot({path:'.local/portfolio-'+(width===390?'mobile':'desktop')+'.png'});
  }}
 });

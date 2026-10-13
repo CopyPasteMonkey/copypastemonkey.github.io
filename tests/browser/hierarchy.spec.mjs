@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const original=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const original=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio);
 const node=(page,path)=>page.locator('.content-node[data-path="'+path+'"]');
 async function save(page){await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');}

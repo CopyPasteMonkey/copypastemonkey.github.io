@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
-const portfolio=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const portfolio=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 test('remote sessions fail closed for wrong identity, missing expiry, denied access and revoked credentials',async({page})=>{
  await page.goto('/editor/');
  const result=await page.evaluate(async data=>{

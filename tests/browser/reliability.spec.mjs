@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs/promises';
-const original=JSON.parse(await fs.readFile('content/portfolio.json')).portfolio;
+const original=JSON.parse(await fs.readFile('tests/fixtures/editor-content.json')).portfolio;
 const key='eli-portfolio-draft-v1';
 const name=page=>page.getByRole('textbox',{name:'Name',exact:true});
 const save=async page=>{await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#save')).toBeEnabled();};

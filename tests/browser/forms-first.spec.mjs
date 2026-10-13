@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
-const original=JSON.parse(await readFile('content/portfolio.json','utf8')).portfolio;
+const original=JSON.parse(await readFile('tests/fixtures/editor-content.json','utf8')).portfolio;
 const entry=(page,id)=>page.locator('.form-entry[data-entry-id="'+id+'"]');
 const saved=page=>page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')));
 const group=(page,name)=>page.getByRole('navigation',{name:'Content groups'}).getByRole('button',{name,exact:true});

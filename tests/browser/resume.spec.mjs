@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs';
 import {PDFDocument} from 'pdf-lib';
-const source=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio.site.resume;
+const source=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio.site.resume;
 const original=fs.readFileSync(source);
 const file=(buffer=original,name='New Resume.pdf')=>({name,mimeType:'application/pdf',buffer});
 const resume=page=>page.getByRole('button',{name:'Resume',exact:true});
