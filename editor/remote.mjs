@@ -8,7 +8,7 @@ const sha=value=>typeof value==='string'&&/^[a-f0-9]{40}$/.test(value);
 export function publishingReady(config,origin){
  return config?.enabled===true&&config.editorOrigin===origin&&/^https:\/\/[^/]+$/.test(config.authOrigin)&&/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(config.repository)&&config.branch==='main'&&Number.isSafeInteger(config.repositoryId)&&Number.isSafeInteger(config.allowedUserId)&&config.requiredCheck==='validate';
 }
-export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now(),onExpire=()=>{}}={}){
+export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now(),onExpire=()=>{},pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
  if(!publishingReady(config,config.editorOrigin))throw Error('GitHub publishing setup is incomplete.');
  const repo='/repos/'+config.repository,owner=config.repository.split('/')[0];
  let draftBranch='cms/portfolio/portfolio',token='',expires=0,api,expectedHead=null,publishedHead=null,publishedData=null,savedData=null,timer,controller=new AbortController(),busy=false;
@@ -82,12 +82,18 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   });
  }
  async function publicJSON(path){const response=await fetcher('https://api.github.com'+repo+path,{headers:{Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2026-03-10'},cache:'no-store',redirect:'error'});if(!response.ok)throw Error('Public validation/deployment status is unavailable. Try again later.');return response.json();}
- async function review(data){
+ async function review(data,{wait=false}={}){
   data=structuredClone(data);
   check();if(fingerprint(data)!==savedData)throw Error('Save the current changes to the GitHub draft before publishing.');const draft=await findDraft();if(!draft||draft.head!==expectedHead)throw Error('The GitHub draft changed. Load and review the latest version.');
   const files=await request(repo+'/pulls/'+draft.pr.number+'/files',{params:{per_page:100}});if(files.length>=100||files.some(f=>!['added','modified'].includes(f.status)||(f.filename!==contentPath&&!isResumeUpload(f.filename)&&(!isImageUpload(f.filename)||!data.media.some(m=>m.src===f.filename)))))throw Error('This pull request changes files outside the approved portfolio content. Review it in GitHub.');
-  const checks=await publicJSON('/commits/'+draft.head+'/check-runs?per_page=100&filter=latest');const required=checks.check_runs?.filter(c=>c.name===config.requiredCheck&&c.app?.slug==='github-actions'&&c.head_sha===draft.head)||[];
-  if(required.length!==1||required[0].status!=='completed'||required[0].conclusion!=='success')throw Error('Publication is blocked until the required validation check succeeds for this exact draft.');
+  for(let attempt=0;;attempt++){
+   const checks=await publicJSON('/commits/'+draft.head+'/check-runs?per_page=100&filter=latest');const required=checks.check_runs?.filter(c=>c.name===config.requiredCheck&&c.app?.slug==='github-actions'&&c.head_sha===draft.head)||[];
+   if(required.length===1&&required[0].status==='completed'&&required[0].conclusion==='success')break;
+   if(required.length>1)throw Error('GitHub returned conflicting validation results. Review the draft checks in GitHub.');
+   if(required.length===1&&required[0].status==='completed')throw Error('The draft validation check did not pass ('+required[0].conclusion+'). Open Review public draft to see the check details. Your changes are saved.');
+   if(!wait||attempt>=12)throw Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');
+   await pause(10000);check();
+  }
   const pr=await request(repo+'/pulls/'+draft.pr.number);if(pr.head?.sha!==expectedHead||pr.mergeable!==true||pr.mergeable_state!=='clean'||pr.state!=='open')throw Error('GitHub has not marked this draft ready to merge. Review conflicts, checks and branch rules.');
   return {number:pr.number,head:expectedHead,url:'https://github.com/'+config.repository+'/pull/'+pr.number};
  }
