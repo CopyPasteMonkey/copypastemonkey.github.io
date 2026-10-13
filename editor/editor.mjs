@@ -13,7 +13,7 @@ import {editorData,validateDraft,readTemplateIDs,templateMetadata,unfinishedEntr
 import {draftKey,getImages,putImage,optimizeImage,makeZip,readZip} from './drafts.mjs';
 const $=s=>document.querySelector(s),clone=structuredClone;
 let data,baseline,active='work',saved='',history=[],future=[],prior='',changeTimer,previewTimer,revision=0,draftRevision=0,urls=new Map(),images=new Map(),busy=false;
-let publishing,remote,remoteState,remoteAdopted=false,reviewed,lastMerge;
+let publishing,remote,remoteState,remoteAdopted=false,reviewed,lastMerge,preparingPublication=false;
 const visual=document.body.classList.contains('visual-editor'),functional=document.body.classList.contains('forms-editor'),friendly=visual||functional;let canvas,forms,fieldSelection=null,templateIDs=new Set();
 const publication=createPublishProgress({anchor:$('.notice'),checkDeployment:sha=>createRemote(publishing,{apiFactory:()=>{}}).deployment(sha)});
 const setupTitle=$('#publish-dialog h2').textContent,setupMessage=$('#publish-message').innerHTML;
@@ -76,19 +76,26 @@ function revealError(error){
   else if(++attempts<16)requestAnimationFrame(reveal);
  };reveal();
 }
-async function save(){
+async function save(options={}){
+ if(preparingPublication&&!options.localOnly)return;
  const button=$('#save');button.disabled=true;button.textContent='Saving…';
- try{if(navigator.locks)return await navigator.locks.request('portfolio-draft',saveLocked);return await saveLocked();}
- finally{button.disabled=false;button.textContent='Save Draft';}
+ try{if(navigator.locks)return await navigator.locks.request('portfolio-draft',()=>saveLocked(options));return await saveLocked(options);}
+ finally{button.disabled=preparingPublication;button.textContent='Save Draft';}
 }
-async function saveLocked(){
+async function saveLocked({localOnly=false}={}){
  settleHistory();
  if(busy){status('Wait for the file operation to finish.',true);return;}
  const errors=valid();if(isResumeUpload(data.site.resume)&&data.site.resume!==baseline.site.resume&&!images.has(data.site.resume)){status('Resume PDF is missing from browser storage. Upload it again or load the GitHub draft.',true);return;}if(errors.length){if(functional)revealError(errors[0]);if(visual){fieldSelection=canvas.recordForPath(errors[0].path)||canvas.selection();form();valid();$('#fields').hidden=false;$('#fields').querySelector('[aria-invalid=true]')?.focus();}status(`Draft not saved: ${describeError(errors[0],data,friendly)}`,true);return;}
- try{const current=localStorage.getItem(draftKey);if(current&&JSON.parse(current).draftRevision!==draftRevision){status('A newer draft was saved in another tab. Export your changes before reloading.',true);return;}
-  const json=JSON.stringify({portfolio:data,draftRevision:Date.now(),savedAt:new Date().toISOString(),...(friendly?{editor:templateMetadata(data,templateIDs)}:{})});localStorage.setItem(draftKey,json);draftRevision=JSON.parse(json).draftRevision;saved=JSON.stringify(data);const unfinished=friendly&&unfinishedEntries(data,templateIDs).length;status(unfinished?'Draft saved in this browser, including unfinished items. Fill in their names and summaries before publishing.':'Draft saved in this browser. Nothing has been published.');if(unfinished)return;
-  if(remote?.isConnected()){try{if(!remoteAdopted)throw Error('Load the GitHub draft before saving remotely.');const result=await remote.saveDraft(data,images);showDraft(result);status('Draft saved to a public GitHub branch. The live site has not changed.');}catch(e){status('Saved locally. '+e.message,true);}}
- }catch{status('Browser storage is unavailable or full. Export your draft to keep a copy.',true);}
+ try{const current=localStorage.getItem(draftKey);if(current&&JSON.parse(current).draftRevision!==draftRevision){
+   if(!localOnly){status('A newer draft was saved in another tab. Click Publish to choose whether to continue with this tab, or Download backup to keep a separate copy.',true);return;}
+   if(!await confirmChange('Another tab saved a draft','Continue with the edits in this tab? A recovery copy of the other saved version will be kept in this browser.','Use this tab’s edits')){status('Publication cancelled. Your edits remain in this tab.');return;}
+   if(localStorage.getItem(draftKey)!==current)throw Error('Another tab changed the draft again. Close the other editor tab and retry.');
+   localStorage.setItem('portfolio-before-local-overwrite',current);
+  }
+  const json=JSON.stringify({portfolio:data,draftRevision:Date.now(),savedAt:new Date().toISOString(),...(friendly?{editor:templateMetadata(data,templateIDs)}:{})});localStorage.setItem(draftKey,json);draftRevision=JSON.parse(json).draftRevision;saved=JSON.stringify(data);const unfinished=friendly&&unfinishedEntries(data,templateIDs).length;status(unfinished?'Draft saved in this browser, including unfinished items. Fill in their names and summaries before publishing.':'Draft saved in this browser. Nothing has been published.');if(unfinished)return true;
+  if(!localOnly&&remote?.isConnected()&&remoteAdopted){try{const result=await remote.saveDraft(data,images);showDraft(result);status('Draft saved to a public GitHub branch. The live site has not changed.');}catch(e){status('Saved locally. '+e.message,true);}}
+  return true;
+ }catch(e){status(e.message||'Browser storage is unavailable or full. Export your draft to keep a copy.',true);}
 }
 async function download(){
  if(busy){status('Wait for the file operation to finish.',true);return;}
@@ -124,7 +131,7 @@ window.addEventListener('beforeunload',event=>{if(data&&JSON.stringify(data)!==s
 window.addEventListener('storage',event=>{if(event.key===draftKey)status('Another tab saved a draft. Export your changes before reloading.',true);});
 try{
  publishing=await (await fetch('publishing.json')).json();if(publishingReady(publishing,location.origin))publication.resume();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
- if(publishingReady(publishing,location.origin))$('#publish-note').textContent='Sign in with GitHub to save public drafts and publish validated changes. Until then, drafts save only in this browser.';
+ if(publishingReady(publishing,location.origin))$('#publish-note').textContent='Click Publish when you are ready. It handles sign-in, saving and checks, then asks you to confirm.';
  if(friendly&&!publishingReady(publishing,location.origin)){$('#signin').hidden=true;$('#publish').disabled=true;$('#publish').title='Publishing is available at https://www.elidoggart.com/editor/.';$('#mode-label').textContent='Local preview';$('#publish-note').textContent='Save Draft keeps your work in this browser. The live website stays unchanged. To publish, open the editor at www.elidoggart.com.';}
  const response=await fetch('../content/portfolio.json');if(!response.ok)throw Error('Could not load portfolio content.');baseline=(await response.json()).portfolio;data=clone(baseline);
  let draft;try{draft=localStorage.getItem(draftKey);}catch{status('Browser draft storage is unavailable. Use Export draft to keep your changes.',true);}
@@ -145,27 +152,67 @@ try{
 
 function showDraft(draft){const link=$('#draft-link');link.hidden=!draft;if(draft)link.href='https://github.com/'+publishing.repository+'/pull/'+draft.pr.number;}
 function signedOut(){remoteAdopted=false;reviewed=null;$('#publish-dialog').close();$('#confirm-publish').hidden=true;$('#signin').hidden=false;$('#remote-tools').hidden=true;$('#mode-label').textContent='Local draft mode';$('#publish-note').textContent='Drafts save in this browser. GitHub credentials are not stored here. Repository drafts are public.';}
-$('#signin').onclick=async()=>{
- if(!publishingReady(publishing,location.origin)){showSetup();return;}
+async function connectGitHub(){
+ if(!publishingReady(publishing,location.origin)){showSetup();return false;}
  $('#signin').disabled=true;status('Complete GitHub sign-in in the popup. Your local draft stays here.');
  try{const credentials=await signIn(publishing.authOrigin);const {DecapAPI}=await import('./vendor/decap-api.mjs');remote?.end();remote=createRemote(publishing,{apiFactory:options=>new DecapAPI(options),onExpire:()=>{signedOut();status('GitHub sign-in expired. Your local draft is safe. Sign in again to continue.',true);}});remoteState=await remote.connect(credentials);
-  $('#signin').hidden=true;$('#remote-tools').hidden=false;$('#mode-label').textContent='GitHub connected';$('#publish-note').textContent='Save Draft writes a public draft branch. Publish requires a reviewed draft and successful validation. Tokens stay in memory until sign-out or expiry.';showDraft(remoteState.draft);
+  $('#signin').hidden=true;$('#remote-tools').hidden=false;$('#mode-label').textContent='GitHub connected';$('#publish-note').textContent='Publish saves your changes, checks them, and asks you to confirm before updating the website.';showDraft(remoteState.draft);
   if(!remoteState.draft&&JSON.stringify(remoteState.published)===JSON.stringify(baseline)){remote.adopt(remoteState);remoteAdopted=true;status('Connected. Local edits can now be saved to a public GitHub draft.');}
-  else{remoteAdopted=false;status('Connected. Export any local edits you want to keep, then Load GitHub draft to use the latest remote content.');}
- }catch(e){status(e.message,true);signedOut();}finally{$('#signin').disabled=false;}
-};
+  else{remoteAdopted=false;status('Connected. Click Publish to save and publish these edits. If GitHub has a different version, you can choose which to use.');}
+  return true;
+ }catch(e){signedOut();status(e.message,true);return false;}finally{$('#signin').disabled=false;}
+}
+$('#signin').onclick=connectGitHub;
+async function chooseVersion(){
+ return new Promise(resolve=>{
+  let choice=null;const dialog=element('dialog',{'aria-labelledby':'version-title'}),finish=value=>{choice=value;dialog.close();};
+  dialog.append(element('h2',{id:'version-title',text:'Which version do you want to use?'}),element('p',{text:'Your current edits differ from the version saved on GitHub. Choose what to publish. Nothing goes live until you confirm.'}),element('button',{class:'primary',text:'Keep my current edits',onclick:()=>finish('local')}),element('button',{text:'Load saved GitHub version',onclick:()=>finish('remote')}),element('button',{text:'Cancel',onclick:()=>finish(null)}));
+  dialog.addEventListener('close',()=>{dialog.remove();resolve(choice);},{once:true});document.body.append(dialog);dialog.showModal();
+ });
+}
+async function adoptRemote(state,load){
+ const next=state.draft?.data||state.published;
+ if(load){
+  // Keep the displaced draft and its uploaded assets recoverable locally and with Undo.
+  localStorage.setItem('portfolio-before-github-load',JSON.stringify({portfolio:data,editor:templateMetadata(data,templateIDs),savedAt:new Date().toISOString()}));
+  const assets=await remote.media(next,state.draft?.head||state.publishedHead);for(const [src,blob]of assets){await putImage(src,blob);images.set(src,blob);urls.set(src,URL.createObjectURL(blob));}
+  settleHistory();history.push(JSON.stringify(data));data=structuredClone(next);templateIDs=new Set();prior=JSON.stringify(data);future=[];revision++;form();updateButtons();updatePreview();
+ }
+ remote.adopt(state);baseline=structuredClone(state.published);remoteState=state;remoteAdopted=true;showDraft(state.draft);
+}
+$('#load-remote').textContent='Load saved version';
 $('#load-remote').onclick=async()=>{
- if(JSON.stringify(data)!==saved){status('Save or export your local edits before loading remote content.',true);return;}
- busy=true;try{remoteState=await remote.snapshot();const next=remoteState.draft?.data||remoteState.published;const assets=await remote.media(next,remoteState.draft?.head||remoteState.publishedHead);for(const [src,blob]of assets){await putImage(src,blob);images.set(src,blob);urls.set(src,URL.createObjectURL(blob));}
-  settleHistory();history.push(JSON.stringify(data));data=structuredClone(remote.adopt(remoteState));baseline=structuredClone(remoteState.published);remoteAdopted=true;prior=JSON.stringify(data);future=[];form();updateButtons();updatePreview();showDraft(remoteState.draft);status('Loaded GitHub content. Review it, then Save Draft to keep further changes.');
- }catch(e){status(e.message,true);}finally{busy=false;}
+ if(busy||preparingPublication)return;const button=$('#load-remote');button.disabled=true;
+ try{const state=await remote.snapshot();const next=state.draft?.data||state.published;
+  if(JSON.stringify(data)!==JSON.stringify(next)&&!await confirmChange('Load saved GitHub version?','Your current edits will be kept in Undo. Download backup first if you want a separate copy.','Load saved version'))return;
+  if(!await save({localOnly:true}))return;
+  await adoptRemote(state,true);await save({localOnly:true});status('Loaded your saved GitHub version. Edit it, then click Publish when ready. Undo restores the previous edits.');
+ }catch(e){status(e.message,true);}finally{button.disabled=false;}
 };
 $('#logout').onclick=()=>{remote?.end();signedOut();status('Signed out. Your local draft remains available.');};
 async function reviewPublish(){
+ if(preparingPublication)return;
  if(publication.isPending()){publication.refresh();return;}
- if(friendly){const incomplete=unfinishedEntries(data,templateIDs),errors=validate(data);if(incomplete.length||errors.length){status(incomplete.length?'Not ready to publish: fill in the name and summary for '+incomplete[0].name+'. Save Draft can keep your unfinished work.':'Not ready to publish: '+describeError(errors[0],data,true),true);return;}}
- if(!remote?.isConnected()){showSetup();return;}
- $('#publish').disabled=true;publication.review();try{reviewed=await remote.review(data,{wait:true});publication.ready();$('#publish-dialog h2').textContent='Publish this reviewed draft?';$('#publish-message').replaceChildren(element('p',{text:'Validation passed for draft '+reviewed.head.slice(0,12)+'. After you confirm, the website usually updates in 1–2 minutes. Progress will appear in the editor.'}),element('a',{href:reviewed.url,target:'_blank',rel:'noopener',text:'Review the GitHub pull request'}));$('#confirm-publish').hidden=false;$('#publish-dialog').showModal();}catch(e){publication.error(e.message);status(e.message,true);}finally{$('#publish').disabled=false;}
+ if(busy){status('Wait for the file upload to finish, then click Publish.',true);return;}
+ const incomplete=friendly?unfinishedEntries(data,templateIDs):[],errors=validate(data);
+ if(incomplete.length||errors.length){if(errors.length&&functional)revealError(errors[0]);status(incomplete.length?'Not ready to publish: fill in the name and summary for '+incomplete[0].name+' before publishing.':'Not ready to publish: '+describeError(errors[0],data,true),true);return;}
+ if(!publishingReady(publishing,location.origin)){showSetup();return;}
+ preparingPublication=true;$('#publish').disabled=true;$('#save').disabled=true;$('#load-remote').disabled=true;$('#fields').inert=true;
+ try{
+  publication.note('Preparing to publish…','We will save your edits, check them, and ask you to confirm.');
+  if(!remote?.isConnected()){publication.note('Sign in to continue','Complete GitHub sign-in in the popup. Then publishing will continue automatically.');if(!await connectGitHub()){publication.error('Sign-in was not completed. Your edits are safe. Click Publish to try again.');return;}}
+  if(!await save({localOnly:true}))throw Error($('#status').textContent);
+  const state=await remote.snapshot(),next=state.draft?.data||state.published;
+  const same=JSON.stringify(data)===JSON.stringify(next),remoteUnchanged=JSON.stringify(next)===JSON.stringify(baseline);
+  let load=false;
+  if(!same&&!remoteUnchanged&&JSON.stringify(data)===JSON.stringify(baseline))load=true;
+  else if(!same&&!remoteUnchanged){const choice=await chooseVersion();if(!choice){publication.cancel();return;}load=choice==='remote';}
+  await adoptRemote(state,load);if(load&&!await save({localOnly:true}))throw Error($('#status').textContent);
+  if(!state.draft&&JSON.stringify(data)===JSON.stringify(state.published)){publication.note('Your website is already up to date','These edits are already published. Make a change, then click Publish when ready.');return;}
+  if(!state.draft||JSON.stringify(data)!==JSON.stringify(state.draft.data)){publication.note('Saving your changes…','Saving a copy on GitHub before checking it. The live website has not changed yet.');showDraft(await remote.saveDraft(data,images));}
+  publication.review();reviewed=await remote.review(data,{wait:true});publication.ready();
+  $('#publish-dialog h2').textContent='Ready to update your website';$('#publish-message').replaceChildren(element('p',{text:'Your changes are saved and checks have passed. Confirm below to update the live website. This usually takes 1–2 minutes.'}));$('#confirm-publish').textContent='Publish now';$('#confirm-publish').hidden=false;$('#publish-dialog').showModal();
+ }catch(e){publication.error(e.message);status(e.message,true);}finally{preparingPublication=false;$('#publish').disabled=false;$('#save').disabled=false;$('#load-remote').disabled=false;$('#fields').inert=false;}
 }
-$('#confirm-publish').onclick=async()=>{const button=$('#confirm-publish');button.disabled=true;$('#publish').disabled=true;$('#publish-dialog').close();publication.merging();try{lastMerge=await remote.publish(data,reviewed);status('Draft published. Follow the website update in the progress tracker above.');$('#deployment').hidden=false;await publication.start(lastMerge.sha);}catch(e){publication.error(e.message);status(e.message,true);}finally{button.disabled=false;$('#publish').disabled=false;}};
+$('#confirm-publish').onclick=async()=>{const button=$('#confirm-publish');button.disabled=true;$('#publish').disabled=true;$('#publish-dialog').close();publication.merging();try{const submitted=structuredClone(data);lastMerge=await remote.publish(submitted,reviewed);baseline=submitted;status('Draft published. Follow the website update in the progress tracker above.');$('#deployment').hidden=false;await publication.start(lastMerge.sha);}catch(e){publication.error(e.message);status(e.message,true);}finally{button.disabled=false;$('#publish').disabled=false;}};
 $('#deployment').onclick=()=>publication.refresh();

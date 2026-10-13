@@ -38,9 +38,9 @@ test('project template supplies project metadata and details, accepts an uploade
 });
 
 test('visible move buttons respect boundaries, retain keyboard focus and stable links, and support undo and reload',async({page})=>{
- await page.goto('/editor/visual.html');const first=frame(page).locator('#entry-nimbus'),last=frame(page).locator('#entry-first'),mott=frame(page).locator('#entry-mott');
+ await page.goto('/editor/visual.html');const first=frame(page).locator('#entry-nimbus'),last=frame(page).locator('#entry-first'),mott=frame(page).locator('#entry-'+original.sections[0].entries[3].id);
  await expect(first.locator('[data-entry-move=up]')).toBeDisabled();await expect(frame(page).locator('#view-work > .portfolio-entry').last().locator('[data-entry-move=down]')).toBeDisabled();
- await mott.locator('[data-entry-move=up]').press('Enter');await expect(mott.locator('[data-entry-move=up]')).toBeFocused();await save(page);let entries=(await saved(page)).portfolio.sections[0].entries;expect(entries[2].id).toBe('mott');expect(entries[2].roles[0].id).toBe(original.sections[0].entries[3].roles[0].id);
+ await mott.locator('[data-entry-move=up]').press('Enter');await expect(mott.locator('[data-entry-move=up]')).toBeFocused();await save(page);let entries=(await saved(page)).portfolio.sections[0].entries;expect(entries[2].id).toBe(original.sections[0].entries[3].id);expect(entries[2].roles[0].id).toBe(original.sections[0].entries[3].roles[0].id);
  await page.getByRole('button',{name:'Undo',exact:true}).click();await save(page);expect((await saved(page)).portfolio.sections[0].entries.map(e=>e.id)).toEqual(original.sections[0].entries.map(e=>e.id));await first.locator('[data-entry-move=down]').click();await save(page);await page.reload();entries=(await saved(page)).portfolio.sections[0].entries;expect(entries[1].id).toBe('nimbus');expect(entries[1].roles.map(r=>r.id)).toEqual(original.sections[0].entries[0].roles.map(r=>r.id));
 });
 

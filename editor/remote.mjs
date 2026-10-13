@@ -11,7 +11,7 @@ export function publishingReady(config,origin){
 export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now(),onExpire=()=>{},pause=ms=>new Promise(resolve=>setTimeout(resolve,ms))}={}){
  if(!publishingReady(config,config.editorOrigin))throw Error('GitHub publishing setup is incomplete.');
  const repo='/repos/'+config.repository,owner=config.repository.split('/')[0];
- let draftBranch='cms/portfolio/portfolio',token='',expires=0,api,expectedHead=null,publishedHead=null,publishedData=null,savedData=null,timer,controller=new AbortController(),busy=false;
+ let draftBranch='cms/portfolio/portfolio',token='',expires=0,api,expectedHead=null,publishedHead=null,publishedData=null,savedData=null,timer,controller=new AbortController(),busy=false,updatingPR=null;
  function end(){clearTimeout(timer);token='';expires=0;if(api)api.token='';api=null;controller.abort();}
  function check(){if(!token||expires<=now()){end();onExpire();throw Error('Sign-in expired. Your local draft is safe; sign in again before saving to GitHub.');}}
  async function request(path,options={}){
@@ -21,7 +21,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   if(method!=='GET'){
    const simple=(method==='POST'&&['/git/blobs','/git/trees','/git/commits'].includes(suffix))||(method==='PUT'&&/^\/issues\/\d+\/labels$/.test(suffix));
    const draftRef='/git/refs/heads/'+encodeURIComponent(draftBranch);
-   const allowed=simple||(method==='POST'&&suffix==='/git/refs'&&body.ref==='refs/heads/'+draftBranch)||(method==='POST'&&suffix==='/pulls'&&body.head===owner+':'+draftBranch&&body.base===config.branch)||(method==='PATCH'&&suffix===draftRef&&body.force===false)||(method==='PUT'&&/^\/pulls\/\d+\/merge$/.test(suffix)&&sha(body.sha));
+   const allowed=(method==='PUT'&&updatingPR!==null&&suffix==='/pulls/'+updatingPR+'/update-branch'&&sha(body.expected_head_sha)&&body.expected_head_sha===expectedHead)||simple||(method==='POST'&&suffix==='/git/refs'&&body.ref==='refs/heads/'+draftBranch)||(method==='POST'&&suffix==='/pulls'&&body.head===owner+':'+draftBranch&&body.base===config.branch)||(method==='PATCH'&&suffix===draftRef&&body.force===false)||(method==='PUT'&&/^\/pulls\/\d+\/merge$/.test(suffix)&&sha(body.sha));
    if(!allowed)throw Error('Blocked write outside the portfolio draft workflow.');
    if(suffix==='/git/trees'&&(!Array.isArray(body.tree)||body.tree.some(f=>f.path!==contentPath&&!isImageUpload(f.path)&&!isResumeUpload(f.path))))throw Error('Only portfolio content, optimized images, and validated resume PDFs may be changed.');
   }
@@ -82,7 +82,23 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   });
  }
  async function publicJSON(path){const response=await fetcher('https://api.github.com'+repo+path,{headers:{Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2026-03-10'},cache:'no-store',redirect:'error'});if(!response.ok)throw Error('Public validation/deployment status is unavailable. Try again later.');return response.json();}
+ async function syncDraft(data){return exclusive(async()=>{
+  if(fingerprint(data)!==savedData)throw Error('Save the current changes before checking publication.');
+  const draft=await findDraft();if(!draft||draft.head!==expectedHead)throw Error('The GitHub draft changed. Click Publish again to review the latest version.');
+  const main=await request(repo+'/branches/'+config.branch);if(main.commit.sha!==publishedHead)throw Error('The website changed while preparing publication. Click Publish again to reconcile the latest version.');
+  const comparison=await publicJSON('/compare/'+publishedHead+'...'+expectedHead+'?per_page=1');
+  if(!Number.isSafeInteger(comparison.behind_by)||comparison.behind_by<0)throw Error('GitHub could not check whether this draft is up to date. Try Publish again.');
+  if(!comparison.behind_by)return;
+  const before=expectedHead;updatingPR=draft.pr.number;
+  try{await request(repo+'/pulls/'+updatingPR+'/update-branch',{method:'PUT',body:JSON.stringify({expected_head_sha:before})});}finally{updatingPR=null;}
+  for(let attempt=0;attempt<30;attempt++){
+   await pause(2000);const updated=await findDraft();
+   if(updated&&updated.head!==before){if(fingerprint(updated.data)!==fingerprint(data))throw Error('Updating the draft also changed its content. Click Publish again and choose which version to use.');expectedHead=updated.head;return;}
+  }
+  throw Error('GitHub is still updating the saved draft. Wait a moment, then click Publish again.');
+ });}
  async function review(data,{wait=false}={}){
+  if(wait)await syncDraft(data);
   data=structuredClone(data);
   check();if(fingerprint(data)!==savedData)throw Error('Save the current changes to the GitHub draft before publishing.');const draft=await findDraft();if(!draft||draft.head!==expectedHead)throw Error('The GitHub draft changed. Load and review the latest version.');
   const files=await request(repo+'/pulls/'+draft.pr.number+'/files',{params:{per_page:100}});if(files.length>=100||files.some(f=>!['added','modified'].includes(f.status)||(f.filename!==contentPath&&!isResumeUpload(f.filename)&&(!isImageUpload(f.filename)||!data.media.some(m=>m.src===f.filename)))))throw Error('This pull request changes files outside the approved portfolio content. Review it in GitHub.');
@@ -94,7 +110,12 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    if(!wait||attempt>=12)throw Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');
    await pause(10000);check();
   }
-  const pr=await request(repo+'/pulls/'+draft.pr.number);if(pr.head?.sha!==expectedHead||pr.mergeable!==true||pr.mergeable_state!=='clean'||pr.state!=='open')throw Error('GitHub has not marked this draft ready to merge. Review conflicts, checks and branch rules.');
+  // Like check-runs, read public readiness without the app's restricted status visibility.
+  // The authenticated merge below still enforces GitHub's branch rules and exact head.
+  let pr;for(let attempt=0;;attempt++){pr=await publicJSON('/pulls/'+draft.pr.number);if(!wait||(pr.mergeable!==null&&pr.mergeable_state!=='unknown')||attempt>=15)break;await pause(2000);}
+  if(pr.head?.sha!==expectedHead)throw Error('The saved draft changed while checking it. Click Publish again to review the latest version.');
+  if(pr.state!=='open')throw Error('This draft is already closed. Click Publish again to load the latest published version.');
+  if(pr.mergeable!==true||pr.mergeable_state!=='clean')throw Error('GitHub is not ready to merge this draft ('+(pr.mergeable_state||'calculating')+'). Review public draft for details, or retry shortly.');
   return {number:pr.number,head:expectedHead,url:'https://github.com/'+config.repository+'/pull/'+pr.number};
  }
  async function publish(data,reviewed){return exclusive(async()=>{const latest=await review(data);if(latest.head!==reviewed.head||latest.number!==reviewed.number)throw Error('Draft changed after review. Review it again.');
