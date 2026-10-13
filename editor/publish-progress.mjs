@@ -24,8 +24,10 @@ export function createPublishProgress({anchor,checkDeployment,interval=10000,max
  }
  retry.onclick=()=>{if(pending){pending.started=Date.now();remember();}return refresh();};
  return {
+  note(heading,detail){show(0,heading,detail);},
+  cancel(){panel.hidden=true;},
   review(){stop();pending=null;failed=false;remember();show(0,'Checking your draft…','Waiting for GitHub to validate your saved draft. This usually takes under a minute. Checking automatically; no need to click Publish again.');},
-  ready(){show(1,'Ready to publish','Your draft passed validation. Confirm Publish reviewed draft in the review window to continue.');},
+  ready(){show(1,'Ready to publish','Your draft passed validation. Click Publish now in the confirmation window to update your website.');},
   merging(){show(1,'Publishing your draft…','Sending the reviewed draft to GitHub. Please wait; do not click Publish again.');},
   error(detail){show(0,'Publication could not continue',detail,true);},
   start(sha){stop();failed=false;pending={sha,started:Date.now()};remember();show(2,'Updating your website…','Your draft is published. The website normally updates in 1–2 minutes. Checking automatically…');return refresh();},

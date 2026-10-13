@@ -33,7 +33,7 @@ test('editor save/reload, undo, validation, import/export and faithful interacti
 });
 test('entry removal undo, reorder and stable ID',async({page})=>{
  await page.goto('/editor/form.html');const summaries=page.locator('#fields > div > div > .list > details > summary');await expect(page.locator('#fields summary').first()).toHaveText('Nimbus Power Systems');
- await page.locator('#fields summary').first().click();await page.getByRole('button',{name:'Move Nimbus Power Systems down',exact:true}).click();await expect(page.locator('#fields summary').first()).toHaveText('Accelerate Design LLC');
+ await page.locator('#fields summary').first().click();await page.getByRole('button',{name:'Move Nimbus Power Systems down',exact:true}).click();await expect(page.locator('#fields summary').first()).toHaveText(JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio.sections[0].entries[1].title);
  await page.getByRole('button',{name:'Remove Nimbus Power Systems',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(0);await page.waitForTimeout(400);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(1);
 });
 test('image upload creates optimized stable media and draft package',async({page})=>{
