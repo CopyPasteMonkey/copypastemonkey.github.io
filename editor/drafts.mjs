@@ -1,4 +1,4 @@
-import {isResumeUpload,isImageUpload,maxResumeBytes} from '../lib/pdf.mjs';
+import {isResumeUpload,isImageUpload,imageUploadType,maxResumeBytes} from '../lib/pdf.mjs';
 // Browser-local storage only. This module never calls a write API.
 export const draftKey='eli-portfolio-draft-v1';
 const database=()=>new Promise((resolve,reject)=>{const r=indexedDB.open('eli-portfolio-media-v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('images');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
@@ -18,10 +18,18 @@ export async function optimizeImage(file){
   if(bitmap.width*bitmap.height>40_000_000)throw Error('Use an image below 40 megapixels.');
   const scale=Math.min(1,2400/Math.max(bitmap.width,bitmap.height));const width=Math.max(1,Math.round(bitmap.width*scale)),height=Math.max(1,Math.round(bitmap.height*scale));
   const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').drawImage(bitmap,0,0,width,height);
-  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.84));
-  if(!blob||blob.type!=='image/webp'||blob.size>2_000_000)throw Error('Could not create a WebP smaller than 2 MB. Try a smaller image.');
+  let blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.84));
+  if(!blob||!['image/webp','image/png'].includes(blob.type))throw Error('Your browser could not encode this image. Try exporting it as JPEG or PNG.');
+  // Keep transparency when WebP is unavailable. Reduce dimensions if needed.
+  while(blob.size>2_000_000&&Math.max(canvas.width,canvas.height)>320){
+   canvas.width=Math.max(1,Math.round(canvas.width*.75));canvas.height=Math.max(1,Math.round(canvas.height*.75));
+   canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
+   blob=await new Promise(resolve=>canvas.toBlob(resolve,blob.type,.84));
+   if(!blob)throw Error('Your browser could not encode this image. Try exporting it as JPEG or PNG.');
+  }
+  if(blob.size>2_000_000)throw Error('The optimized image is still larger than 2 MB. Try a smaller image.');
   const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);
-  const id='upload-'+hash,src='assets/images/'+id+'.webp';return {record:{id,src,width,height},blob};
+  const id='upload-'+hash,src='assets/images/'+id+(blob.type==='image/png'?'.png':'.webp');return {record:{id,src,width:canvas.width,height:canvas.height},blob};
  }finally{bitmap.close();}
 }
 const utf8=new TextEncoder();
@@ -49,7 +57,7 @@ export async function readZip(file){
   if(path!=='content/portfolio.json'&&!isImageUpload(path)&&!isResumeUpload(path))throw Error('Unexpected file in draft package.');
   if(!isResumeUpload(path)&&size>2_000_000)throw Error('Content and image files must be smaller than 2 MB.');
   if(files.has(path)||files.size>500)throw Error('Duplicate files or too many files in draft package.');
-  const data=bytes.slice(start,start+size);if(crc32(data)!==crc)throw Error('Damaged draft package.');files.set(path,new Blob([data],{type:path.endsWith('.webp')?'image/webp':path.endsWith('.pdf')?'application/pdf':'application/json'}));offset=start+size;
+  const data=bytes.slice(start,start+size);if(crc32(data)!==crc)throw Error('Damaged draft package.');files.set(path,new Blob([data],{type:isImageUpload(path)?imageUploadType(path):path.endsWith('.pdf')?'application/pdf':'application/json'}));offset=start+size;
  }
  if(!files.has('content/portfolio.json'))throw Error('Missing portfolio content in draft package.');return files;
 }

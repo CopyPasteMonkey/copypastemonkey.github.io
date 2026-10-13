@@ -2,7 +2,7 @@ import {createPublishProgress} from './publish-progress.mjs';
 import {createForms} from './forms-first.mjs';
 import {createCanvas,selectionForm,at} from './canvas.mjs';
 import {resumeForm} from './resume.mjs';
-import {assetPaths,isResumeUpload,verifyResume} from '../lib/pdf.mjs';
+import {assetPaths,matchesImageUpload,isResumeUpload,verifyResume} from '../lib/pdf.mjs';
 import {schema,validate} from '../lib/schema.mjs';
 import {createRemote,publishingReady} from './remote.mjs';
 import {signIn} from './auth-client.mjs';
@@ -121,7 +121,7 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try
  if(files)for(const [p,blob] of files)if(p!=='content/portfolio.json'){
   if(isResumeUpload(p)){if(p!==next.site.resume)throw Error('Unreferenced resume PDF in draft package.');await verifyResume(p,blob);await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));continue;}
   if(blob.size>2_000_000)throw Error('Uploaded images must be smaller than 2 MB.');
-  const bytes=new Uint8Array(await blob.arrayBuffer());const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);if(p!=='assets/images/upload-'+hash+'.webp'||String.fromCharCode(...bytes.slice(0,4))!=='RIFF'||String.fromCharCode(...bytes.slice(8,12))!=='WEBP')throw Error('Uploaded image does not match its stable filename or WebP format.');
+  const bytes=new Uint8Array(await blob.arrayBuffer());const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);if(!matchesImageUpload(p,bytes,hash))throw Error('Uploaded image does not match its stable filename or image format.');
   const bitmap=await createImageBitmap(blob);const record=next.media.find(m=>m.src===p);const ok=record&&bitmap.width===record.width&&bitmap.height===record.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!ok)throw Error('Image dimensions do not match the draft.');
   await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));
  }
