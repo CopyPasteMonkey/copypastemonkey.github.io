@@ -43,7 +43,12 @@ test('closing the sign-in popup leaves a recoverable local draft',async({page,co
  await context.route('**/editor/publishing.json',r=>r.fulfill({json:{enabled:true,repository:'elidoggart/elidoggart.github.io',branch:'main',repositoryId:1412250381,allowedUserId:183743177,editorOrigin:'http://127.0.0.1:4175',authOrigin:'https://auth.example.test',requiredCheck:'validate'}}));
  await context.route('https://auth.example.test/auth',r=>r.fulfill({contentType:'text/html',body:'<p>Mock sign-in cancellation</p>'}));
  await page.goto(editorPath);await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Recoverable draft');
- const popupPromise=page.waitForEvent('popup');await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();const popup=await popupPromise;await popup.close();await expect(page.locator('#status')).toContainText('cancelled');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved in this browser');
+ const popupPromise=page.waitForEvent('popup');await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();const popup=await popupPromise;
+ // Exercise closing a visible sign-in page without racing initial navigation and the automation target's creation.
+ await expect(popup.getByText('Mock sign-in cancellation',{exact:true})).toBeVisible();
+ await popup.close();expect(popup.isClosed()).toBe(true);
+ await expect(page.locator('#status')).toContainText('cancelled');await expect(page.getByRole('button',{name:'Sign in with GitHub',exact:true})).toBeEnabled();
+ await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved in this browser');
  await page.reload();await page.getByRole('button',{name:'Site & contact',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Recoverable draft');
 });
 
