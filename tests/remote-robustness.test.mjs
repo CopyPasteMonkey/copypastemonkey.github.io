@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import sharp from 'sharp';
 import {createRemote} from '../editor/remote.mjs';
-const original=JSON.parse(await fs.readFile('content/portfolio.json')).portfolio;
+const original=JSON.parse(await fs.readFile('tests/fixtures/editor-content.json')).portfolio;
 const resumeBytes=await fs.readFile(original.site.resume);
 const cfg={enabled:true,repository:'elidoggart/elidoggart.github.io',branch:'main',repositoryId:1,allowedUserId:2,editorOrigin:'https://editor.test',authOrigin:'https://auth.test',requiredCheck:'validate'};
 const main='1'.repeat(40),head='2'.repeat(40),blobSHA='3'.repeat(40),root='/repos/'+cfg.repository;

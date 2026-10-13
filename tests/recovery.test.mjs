@@ -6,7 +6,7 @@ import {render} from '../lib/render.mjs';
 import {createRecovery,readableDraft} from '../editor/recovery.mjs';
 import {loadLocalDraft} from '../editor/storage.mjs';
 import {draftKey} from '../editor/drafts.mjs';
-const original=JSON.parse(await fs.readFile('content/portfolio.json')).portfolio;
+const original=JSON.parse(await fs.readFile('tests/fixtures/editor-content.json')).portfolio;
 const memory=()=>{const values=new Map();return {get length(){return values.size},key:i=>[...values.keys()][i],getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};};
 test('unfinished text and links survive local saving while public rendering stays strict',()=>{
  const portfolio=structuredClone(original);portfolio.site.name='';portfolio.site.email='unfinished@';portfolio.resources[0].url='javascript:alert(1)';portfolio.sections[0].entries[0].roles[0].blocks.push({type:'text',text:'',style:'body'},{type:'resource',resource:''});

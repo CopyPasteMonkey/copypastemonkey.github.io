@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {blankEntry,editorData,validateDraft,unfinishedEntries,templateMetadata,readTemplateIDs} from '../editor/templates.mjs';
 import {validate} from '../lib/schema.mjs';
 import {render} from '../lib/render.mjs';
-const baseline=JSON.parse(fs.readFileSync('content/portfolio.json')).portfolio;
+const baseline=JSON.parse(fs.readFileSync('tests/fixtures/editor-content.json')).portfolio;
 function draft(){const data=structuredClone(baseline),entry=blankEntry(data);data.sections[0].entries.push(entry);return {data,entry,ids:new Set([entry.id])};}
 test('blank templates contain no sample text and remain invalid for public rendering until completed',()=>{
  const {data,entry,ids}=draft();assert.equal(entry.title,'');assert.equal(entry.intro,'');assert.deepEqual(entry.image,[]);assert.deepEqual(entry.roles[0].blocks,[]);assert.ok(validate(data).length);assert.throws(()=>render(data));assert.deepEqual(validateDraft(data,ids),[]);assert.equal(unfinishedEntries(data,ids).length,1);assert.equal(editorData(data,ids,{visitor:true}).sections[0].entries.length,baseline.sections[0].entries.length);assert.equal(data.sections[0].entries.at(-1).title,'');
