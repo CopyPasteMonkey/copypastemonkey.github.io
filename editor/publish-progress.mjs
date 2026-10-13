@@ -24,7 +24,7 @@ export function createPublishProgress({anchor,checkDeployment,interval=10000,max
  }
  retry.onclick=()=>{if(pending){pending.started=Date.now();remember();}return refresh();};
  return {
-  review(){stop();pending=null;failed=false;remember();show(0,'Checking your draft…','Checking the saved draft and required GitHub validation. This can take a few seconds.');},
+  review(){stop();pending=null;failed=false;remember();show(0,'Checking your draft…','Waiting for GitHub to validate your saved draft. This usually takes under a minute. Checking automatically; no need to click Publish again.');},
   ready(){show(1,'Ready to publish','Your draft passed validation. Confirm Publish reviewed draft in the review window to continue.');},
   merging(){show(1,'Publishing your draft…','Sending the reviewed draft to GitHub. Please wait; do not click Publish again.');},
   error(detail){show(0,'Publication could not continue',detail,true);},
