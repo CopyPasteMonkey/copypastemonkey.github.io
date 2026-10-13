@@ -148,7 +148,7 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
    if(required.length===1&&required[0].status==='completed'&&required[0].conclusion==='success')break;
    if(required.length>1)throw Error('GitHub returned conflicting validation results. Review the draft checks in GitHub.');
    if(required.length===1&&required[0].status==='completed')throw Error('The draft validation check did not pass ('+required[0].conclusion+'). Open Review public draft to see the check details. Your changes are saved.');
-   if(!wait||attempt>=36){const error=Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');error.pending=true;throw error;}
+   if(!wait||attempt>=72){const error=Error('GitHub is still validating your saved draft. Nothing has failed or been published. Wait a moment, then click Publish again.');error.pending=true;throw error;}
    await pause(10000);check();
   }
   // Like check-runs, read public readiness without the app's restricted status visibility.
