@@ -1,3 +1,4 @@
+import {createPublishProgress} from './publish-progress.mjs';
 import {createForms} from './forms-first.mjs';
 import {createCanvas,selectionForm,at} from './canvas.mjs';
 import {resumeForm} from './resume.mjs';
@@ -14,6 +15,7 @@ const $=s=>document.querySelector(s),clone=structuredClone;
 let data,baseline,active='work',saved='',history=[],future=[],prior='',changeTimer,previewTimer,revision=0,draftRevision=0,urls=new Map(),images=new Map(),busy=false;
 let publishing,remote,remoteState,remoteAdopted=false,reviewed,lastMerge;
 const visual=document.body.classList.contains('visual-editor'),functional=document.body.classList.contains('forms-editor'),friendly=visual||functional;let canvas,forms,fieldSelection=null,templateIDs=new Set();
+const publication=createPublishProgress({anchor:$('.notice'),checkDeployment:sha=>createRemote(publishing,{apiFactory:()=>{}}).deployment(sha)});
 const setupTitle=$('#publish-dialog h2').textContent,setupMessage=$('#publish-message').innerHTML;
 function showSetup(){const enabled=publishingReady(publishing,location.origin);$('#publish-dialog h2').textContent=enabled?'Sign in to publish':setupTitle;if(enabled)$('#publish-message').replaceChildren(element('p',{text:'Sign in with GitHub, load or save the current public draft, then review it before publishing. Your local draft remains available.'}));else $('#publish-message').innerHTML=setupMessage;$('#confirm-publish').hidden=true;$('#publish-dialog').showModal();}
 const status=(message,error=false)=>{$('#status').textContent=message;$('#status').classList.toggle('error',error);updateSaveState();};
@@ -121,7 +123,7 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try
 window.addEventListener('beforeunload',event=>{if(data&&JSON.stringify(data)!==saved){event.preventDefault();event.returnValue='';}});
 window.addEventListener('storage',event=>{if(event.key===draftKey)status('Another tab saved a draft. Export your changes before reloading.',true);});
 try{
- publishing=await (await fetch('publishing.json')).json();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
+ publishing=await (await fetch('publishing.json')).json();if(publishingReady(publishing,location.origin))publication.resume();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
  if(publishingReady(publishing,location.origin))$('#publish-note').textContent='Sign in with GitHub to save public drafts and publish validated changes. Until then, drafts save only in this browser.';
  if(friendly&&!publishingReady(publishing,location.origin)){$('#signin').hidden=true;$('#publish').disabled=true;$('#publish').title='Publishing is available at https://www.elidoggart.com/editor/.';$('#mode-label').textContent='Local preview';$('#publish-note').textContent='Save Draft keeps your work in this browser. The live website stays unchanged. To publish, open the editor at www.elidoggart.com.';}
  const response=await fetch('../content/portfolio.json');if(!response.ok)throw Error('Could not load portfolio content.');baseline=(await response.json()).portfolio;data=clone(baseline);
@@ -160,10 +162,10 @@ $('#load-remote').onclick=async()=>{
 };
 $('#logout').onclick=()=>{remote?.end();signedOut();status('Signed out. Your local draft remains available.');};
 async function reviewPublish(){
+ if(publication.isPending()){publication.refresh();return;}
  if(friendly){const incomplete=unfinishedEntries(data,templateIDs),errors=validate(data);if(incomplete.length||errors.length){status(incomplete.length?'Not ready to publish: fill in the name and summary for '+incomplete[0].name+'. Save Draft can keep your unfinished work.':'Not ready to publish: '+describeError(errors[0],data,true),true);return;}}
  if(!remote?.isConnected()){showSetup();return;}
- $('#publish').disabled=true;try{reviewed=await remote.review(data);$('#publish-dialog h2').textContent='Publish this reviewed draft?';$('#publish-message').replaceChildren(element('p',{text:'Validation passed for draft '+reviewed.head.slice(0,12)+'. Publishing merges this public draft into main. Deployment runs separately.'}),element('a',{href:reviewed.url,target:'_blank',rel:'noopener',text:'Review the GitHub pull request'}));$('#confirm-publish').hidden=false;$('#publish-dialog').showModal();}catch(e){status(e.message,true);}finally{$('#publish').disabled=false;}
+ $('#publish').disabled=true;publication.review();try{reviewed=await remote.review(data);publication.ready();$('#publish-dialog h2').textContent='Publish this reviewed draft?';$('#publish-message').replaceChildren(element('p',{text:'Validation passed for draft '+reviewed.head.slice(0,12)+'. After you confirm, the website usually updates in 1–2 minutes. Progress will appear in the editor.'}),element('a',{href:reviewed.url,target:'_blank',rel:'noopener',text:'Review the GitHub pull request'}));$('#confirm-publish').hidden=false;$('#publish-dialog').showModal();}catch(e){publication.error(e.message);status(e.message,true);}finally{$('#publish').disabled=false;}
 }
-$('#confirm-publish').onclick=async()=>{const button=$('#confirm-publish');button.disabled=true;try{lastMerge=await remote.publish(data,reviewed);$('#publish-dialog').close();$('#deployment').hidden=false;status('GitHub confirmed the merge. Live deployment has not yet been confirmed.');await refreshDeployment();}catch(e){status(e.message,true);}finally{button.disabled=false;}};
-async function refreshDeployment(){try{const result=await remote.deployment(lastMerge.sha);if(result.state==='success')status('GitHub Pages reports a successful deployment of '+lastMerge.sha.slice(0,12)+'.');else if(['failure','error'].includes(result.state))status('The draft was merged, but GitHub Pages deployment failed. Review the deployment in GitHub.',true);else status('Draft merged; GitHub Pages deployment is '+result.state+'. Refresh status shortly.');}catch(e){status('Draft merged; deployment status could not be checked. '+e.message,true);}}
-$('#deployment').onclick=refreshDeployment;
+$('#confirm-publish').onclick=async()=>{const button=$('#confirm-publish');button.disabled=true;$('#publish').disabled=true;$('#publish-dialog').close();publication.merging();try{lastMerge=await remote.publish(data,reviewed);status('Draft published. Follow the website update in the progress tracker above.');$('#deployment').hidden=false;await publication.start(lastMerge.sha);}catch(e){publication.error(e.message);status(e.message,true);}finally{button.disabled=false;$('#publish').disabled=false;}};
+$('#deployment').onclick=()=>publication.refresh();
