@@ -92,6 +92,20 @@ test('source labels discard raw URLs and query strings and explicit tags survive
   assert.equal(visitSource(base.EDITOR_ORIGIN, ''), 'direct');
 });
 
+test('OAuth and eight-hour stats sessions survive a clock tick between timestamp reads', async () => {
+  const {env, db} = database(); let time = now();
+  const tickingClock = () => time++;
+  const start = await handle(new Request(base.AUTH_ORIGIN + '/auth'), env, {now: tickingClock});
+  const cookie = start.headers.get('Set-Cookie').split(';')[0];
+  const state = new URL(start.headers.get('Location')).searchParams.get('state');
+  const fetcher = async url => Response.json(url.includes('access_token') ? {access_token: 'inert-github-token', expires_in: 28800} : url.endsWith('/user') ? {id: 456} : {id: 123, permissions: {push: true}});
+  const callback = await handle(new Request(base.AUTH_ORIGIN + '/callback?code=inert&state=' + state, {headers: {Cookie: cookie}}), env, {now: tickingClock, fetcher});
+  assert.equal(callback.status, 200);
+  const token = JSON.parse((await callback.text()).match(/target\.postMessage\((\{"type":"portfolio:authorized".*?\}),origin\)/)[1]).statsToken;
+  assert.equal((await handle(read('', token), env, {now: tickingClock})).status, 200);
+  db.close();
+});
+
 test('public counter is cookie-free, deduplicates within a load, excludes previews and swallows delivery failures', async () => {
   const events = {}, sent = [], document = {referrer: '', visibilityState: 'visible', addEventListener: (name, callback) => events[name] = callback};
   const host = {document, location: new URL(base.EDITOR_ORIGIN + '/?utm_source=linkedin'), navigator: {}, fetch(url, options) {sent.push([url, options]); return Promise.reject(Error('offline'));}};
