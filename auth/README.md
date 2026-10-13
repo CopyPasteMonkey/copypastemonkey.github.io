@@ -1,19 +1,19 @@
-> Status: the owner approved the full editor, favicon, branch-protection and Pages rollout on 2026-10-11. Earlier pending-approval notes below are historical. See [ROLLOUT-STATUS.md](../docs/ROLLOUT-STATUS.md) for current execution and verification.
+# Authentication integration
 
-# Authentication integration — editor inactive pending production-origin acceptance
+The editor and OAuth helper are deployed. Publishing is enabled for the fixed production origin and portfolio repository. Completed sign-in, draft/publish and deployment evidence is recorded in [ROLLOUT-STATUS.md](../docs/ROLLOUT-STATUS.md); the current editing workflow is in [EDITOR.md](../docs/EDITOR.md).
 
-Verified identity: `elidoggart/elidoggart.github.io`, repository ID `1412250381`, user ID `183743177`. These are non-secret values. `editor/publishing.json` remains `enabled: false`; its auth origin now records the approved Cloudflare Worker.
+Repository `elidoggart/elidoggart.github.io` (ID `1412250381`) and user ID `183743177` are non-secret configuration. The GitHub App is installed only on this repository. Its approved permissions remain Metadata read, Contents read/write and Pull requests read/write. Secrets belong in the Worker secret bindings, never source files or browser storage.
 
-The custom graphical editor is the only editing UI. It calls the secure popup client and the official Decap GitHub API module through `editor/remote.mjs`; the retired CMS demo redirects to the editor. The integration is implemented and tested with inert credentials and mocked provider responses. After explicit approvals, the Cloudflare Worker was created at `https://portfolio-editor-auth.elidoggart.workers.dev` and GitHub App `5275120` was installed only on the portfolio repository (installation `170301476`). The user entered both required secrets themselves. Normal Chrome initiation, specifically approved GitHub user authorization and the standalone helper callback now succeed; no bearer token or stored secret was read by the agent. No private key, passkey or deployment API token was created. Full editor popup delivery and write/publish compatibility remain unverified. The proposed three-file read-only diagnostic deployment is prepared locally and still needs publication approval. See [SETUP-STATUS.md](SETUP-STATUS.md) and [AUTH-TEST-PROPOSAL.md](../docs/AUTH-TEST-PROPOSAL.md).
+The checklist below preserves setup decisions from the initial rollout. Its references to separate approval describe that historical sequence; the approved rollout has already completed.
 
-## Exact setup approval
+## Historical setup checklist
 
 1. Completed after approval: create a user-owned GitHub App and install it on **only** `elidoggart/elidoggart.github.io`. Repository permissions: **Metadata read, Contents read/write, Pull requests read/write**. No Issues, Checks, Administration, Actions, Workflows, organization permissions or OAuth `repo` scope. Label operations support Pull requests write; public check/deployment status is fetched without a token. User OAuth authorization and the standalone callback also succeeded after separate specific approval. If a real operation requires more, stop and report the exact failure and proposed permission.
 2. Completed after approval: deploy `worker.mjs` on the approved default Cloudflare `workers.dev` hostname, verify the Free plan and disable automatic invocation logs. No portfolio DNS change was needed. Normal-browser reachability is confirmed; the separate direct test client remains edge-blocked. Do not bypass a security control or enable a paid service.
 3. Completed by the user: generate the app's OAuth client secret and enter `CLIENT_SECRET` and a locally generated `COOKIE_KEY` into Production Worker secret bindings. Values were not read by the agent. No GitHub App private key is needed. Non-secret bindings are already saved: `CLIENT_ID`, `AUTH_ORIGIN`, `EDITOR_ORIGIN=https://www.elidoggart.com`, `REPOSITORY_ID=1412250381`, `ALLOWED_USER_ID=183743177`. The app callback is registered as `https://portfolio-editor-auth.elidoggart.workers.dev/callback`.
 4. Verified enabled: expiring GitHub App user tokens (eight hours). The token exchange narrows to the numeric repository ID. Refresh tokens are discarded, so another sign-in is required after expiry.
-5. Separately approve repository branch rules requiring pull requests and the `validate` GitHub Actions check before merging into main, without an app bypass. GitHub authorizes every API write. Client-side path checks are defense in depth; Contents write is repository-wide and is not a server-enforced path-limited permission. If that narrower capability is required, design a server-side write gateway before connection.
-6. Separately review and approve editor publication and GitHub Pages deployment configuration. The inactive example in `docs/examples/pages.yml` validates/builds and deploys only `dist/`; it is not an enabled workflow. Changing Pages from branch/root serving to GitHub Actions is an administrative user action, not an app permission.
+5. Completed in the approved rollout: repository branch rules requiring pull requests and the `validate` GitHub Actions check before merging into main, without an app bypass. GitHub authorizes every API write. Client-side path checks are defense in depth; Contents write is repository-wide and is not a server-enforced path-limited permission. If that narrower capability is required, design a server-side write gateway before connection.
+6. Completed in the approved rollout: editor publication and GitHub Pages Actions deployment. The inactive example in `docs/examples/pages.yml` validates/builds and deploys only `dist/`; it is not an enabled workflow. Changing Pages from branch/root serving to GitHub Actions is an administrative user action, not an app permission.
 
 ## Security behavior
 
@@ -25,7 +25,7 @@ Save Draft first saves locally, then writes content and optimized images to a pu
 
 Publish checks the actual draft content/head, permitted changed paths, one successful `validate` check from GitHub Actions on that exact SHA, and GitHub mergeability. The user then confirms the reviewed revision. The merge request supplies that SHA and rechecks everything. Merge rejection remains a rejection. A confirmed merge and a successful Pages deployment are reported separately.
 
-## Acceptance after approval
+## Acceptance checklist for future integration changes
 
 - Review the helper, configured origins, numeric identities, permission list and branch rules.
 - Test the actual installed App user token: sign-in, repository read, optimized image upload, public draft/PR creation and update, labels, another-computer draft reload, publish, 403/revoked-token behavior, expiry/relogin and popup cancellation.
