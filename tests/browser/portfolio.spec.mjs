@@ -25,7 +25,7 @@ test('editor save/reload, undo, validation, import/export and faithful interacti
  await page.getByRole('button',{name:'Site & contact',exact:true}).click();const name=page.getByRole('textbox',{name:'Name',exact:true});await name.fill('Eli Draft Test');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');await page.reload();await expect(page.locator('#status')).toContainText('Restored');
  await page.getByRole('button',{name:'Site & contact',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Eli Draft Test');
  await page.getByRole('textbox',{name:'Name',exact:true}).fill('Second name');await page.waitForTimeout(450);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.getByRole('textbox',{name:'Name',exact:true})).toHaveValue('Eli Draft Test');
- await page.getByRole('textbox',{name:'Name',exact:true}).fill('');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('not saved');await page.getByRole('textbox',{name:'Name',exact:true}).fill('Eli Draft Test');await page.getByRole('button',{name:'Refresh',exact:true}).click();
+ await page.getByRole('textbox',{name:'Name',exact:true}).fill('');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved in this browser, including unfinished edits');await page.getByRole('textbox',{name:'Name',exact:true}).fill('Eli Draft Test');await page.getByRole('button',{name:'Refresh',exact:true}).click();
  const frame=page.frameLocator('#preview');await expect(frame.locator('.name')).toHaveText('Eli Draft Test');await frame.locator('nav [data-section=projects]').click();await expect(frame.locator('#view-projects')).toBeVisible();
  const downloaded=page.waitForEvent('download');await page.getByRole('button',{name:'Export draft',exact:true}).click();const file=await downloaded;await file.saveAs('.local/draft.zip');expect(fs.statSync('.local/draft.zip').size).toBeGreaterThan(1000);
  await page.locator('#import').setInputFiles('.local/draft.zip');await expect(page.locator('#status')).toContainText('Imported draft');await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('No GitHub login or publication');await page.getByRole('button',{name:'Back to editing'}).click();
@@ -37,8 +37,8 @@ test('entry removal undo, reorder and stable ID',async({page})=>{
  await page.getByRole('button',{name:'Remove Nimbus Power Systems',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(0);await page.waitForTimeout(400);await page.getByRole('button',{name:'Undo',exact:true}).click();await expect(page.locator('#fields summary').filter({hasText:'Nimbus Power Systems'})).toHaveCount(1);
 });
 test('image upload creates optimized stable media and draft package',async({page})=>{
- await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('#status')).toContainText('Image optimized');await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
- await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export draft',exact:true}).click();await (await download).saveAs('.local/with-image.zip');await page.reload();await page.getByRole('button',{name:'Media',exact:true}).click();await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(1);
+ await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();const previous=await page.locator('.media-card').filter({hasText:'upload-'}).count();await page.getByLabel('Upload image').setInputFiles('assets/media/mott-permeability-chart.jpg');await expect(page.locator('#status')).toContainText('Image optimized');await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(previous+1);
+ await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export draft',exact:true}).click();await (await download).saveAs('.local/with-image.zip');await page.reload();await page.getByRole('button',{name:'Media',exact:true}).click();await expect(page.locator('.media-card').filter({hasText:'upload-'})).toHaveCount(previous+1);
 });
 test('default forms editor keeps local publishing gated and preserves compatible routes',async({page})=>{
  for(const path of ['/editor/','/editor/cms.html']){await page.goto(path);await expect(page).toHaveURL(/\/editor\/$/);await expect(page.locator('body')).toHaveClass(/forms-editor/);await expect(page.getByRole('button',{name:'Publish…',exact:true})).toBeDisabled();await expect(page.locator('#publish-note')).toContainText('www.elidoggart.com');}await page.goto('/editor/visual.html');await expect(page.locator('body')).toHaveClass(/visual-editor/);
@@ -49,20 +49,27 @@ test('editor keyboard focus survives automatic preview updates and mobile editin
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:'.local/editor-mobile.png',fullPage:false});
 });
 test('two open editor tabs detect stale draft saves instead of overwriting',async({page,context})=>{
- await page.goto('/editor/form.html');const other=await context.newPage();await other.goto('/editor/form.html');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await other.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('First tab');await other.getByRole('textbox',{name:'Name',exact:true}).fill('Second tab');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await other.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(other.locator('#status')).toContainText('newer draft');expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio.site.name)).toBe('First tab');
+ await page.goto('/editor/form.html');const other=await context.newPage();await other.goto('/editor/form.html');await page.getByRole('button',{name:'Site & contact',exact:true}).click();await other.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('First tab');await other.getByRole('textbox',{name:'Name',exact:true}).fill('Second tab');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved');await expect(page.locator('#save')).toBeEnabled();await other.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(other.getByRole('dialog')).toContainText('Another tab saved a draft');await other.getByRole('button',{name:'Cancel',exact:true}).click();expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('eli-portfolio-draft-v1')).portfolio.site.name)).toBe('First tab');
 });
 test('invalid image and draft paths are refused without changing content',async({page})=>{
  await page.goto('/editor/form.html');await page.getByRole('button',{name:'Media',exact:true}).click();await page.getByLabel('Upload image').setInputFiles({name:'fake.png',mimeType:'image/png',buffer:Buffer.from('<svg onload="alert(1)"></svg>')});await expect(page.locator('#status')).toContainText('not a supported image');
  await page.locator('#import').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"portfolio":{"html":"<script>bad</script>"}}')});await expect(page.locator('#status')).toContainText('Import failed');
 });
 
-test('frozen migration content retains visual parity with its archived HTML',async({page})=>{
- fs.copyFileSync('tests/fixtures/published.html','dist/approved-baseline.html');
- fs.writeFileSync('dist/migration-generated.html',render(JSON.parse(fs.readFileSync('tests/fixtures/published-content.json')).portfolio));
- try{for(const width of [1440,390]){await page.setViewportSize({width,height:width===390?844:1000});for(const hash of ['work','work/nimbus-internship','projects/mqp','passions/film','contact']){
+test('frozen migration content retains visual parity with its archived HTML',async({page,browserName})=>{
+ // WebKit can downsample the same decoded photo differently between visits.
+ // Compare its image identity, dimensions, placement and fit directly, then mask
+ // photo pixels for the layout comparison. Chromium retains full pixel parity.
+ const imageLayout=()=>[...document.images].flatMap(i=>{const r=i.getBoundingClientRect(),s=getComputedStyle(i);return r.width&&r.top<innerHeight&&r.bottom>0?[{src:i.currentSrc,alt:i.alt,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,x:r.x,y:r.y,width:r.width,height:r.height,fit:s.objectFit,position:s.objectPosition}]:[];});
+ const screenshotOptions=()=>browserName==='webkit'?{mask:[page.locator('img')]}:{};
+ await page.route('**/approved-baseline.html',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync('tests/fixtures/published.html')}));
+ await page.route('**/migration-generated.html',r=>r.fulfill({contentType:'text/html',body:render(JSON.parse(fs.readFileSync('tests/fixtures/published-content.json')).portfolio)}));
+ for(const width of [1440,390]){await page.setViewportSize({width,height:width===390?844:1000});for(const hash of ['work','work/nimbus-internship','projects/mqp','passions/film','contact']){
   await page.goto('/approved-baseline.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
   const baselinePosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
-  const baseline=await page.screenshot({path:'.local/parity-baseline.png'});
+  const baselineImages=await page.evaluate(imageLayout);
+  expect(baselineImages.every(i=>i.naturalWidth>0)).toBe(true);
+  const baseline=await page.screenshot({path:'.local/parity-baseline.png',...screenshotOptions()});
   await page.goto('/migration-generated.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
   const generatedPosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
   // Initial font loading can round the existing hash scroll by one pixel.
@@ -70,7 +77,8 @@ test('frozen migration content retains visual parity with its archived HTML',asy
   expect(generatedPosition.x).toBe(baselinePosition.x);
   expect(Math.abs(generatedPosition.y-baselinePosition.y),`${width}px ${hash} scroll parity`).toBeLessThanOrEqual(1);
   await page.evaluate(async position=>{scrollTo({left:position.x,top:position.y,behavior:'instant'});await new Promise(requestAnimationFrame);},baselinePosition);
-  const generated=await page.screenshot({path:'.local/parity-generated.png'});expect(generated.equals(baseline),`${width}px ${hash} visual parity`).toBe(true);
+  expect(await page.evaluate(imageLayout)).toEqual(baselineImages);
+  const generated=await page.screenshot({path:'.local/parity-generated.png',...screenshotOptions()});expect(generated.equals(baseline),`${width}px ${hash} visual parity`).toBe(true);
   if(hash==='work')await page.screenshot({path:'.local/portfolio-'+(width===390?'mobile':'desktop')+'.png'});
- }}}finally{fs.unlinkSync('dist/approved-baseline.html');fs.unlinkSync('dist/migration-generated.html');}
+ }}
 });
