@@ -30,10 +30,10 @@ test('one editor signs in, saves a public draft, explicitly publishes, checks de
   if(path==='/deployments')return json([]);
   throw Error('Unexpected GitHub UI request '+method+' '+path);
  });
- await page.goto(editorPath);await page.getByRole('button',{name:'Sign in with GitHub',exact:true}).click();await expect(page.locator('#status')).toContainText('Connected. Local edits');
- await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Remote UI draft');await page.getByRole('button',{name:'Save Draft',exact:true}).click();await expect(page.locator('#status')).toContainText('Draft saved to a public GitHub branch');expect(content.site.name).toBe('Remote UI draft');expect(original.site.name).toBe('Eli Doggart');expect(mergeCalls).toBe(0);
- await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Validation passed for draft 222222222222');expect(mergeCalls).toBe(0);
- await page.getByRole('button',{name:'Publish reviewed draft',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Updating your website');expect(mergeCalls).toBe(1);
+ await page.goto(editorPath);
+ await page.getByRole('button',{name:'Site & contact',exact:true}).click();await page.getByRole('textbox',{name:'Name',exact:true}).fill('Remote UI draft');expect(original.site.name).toBe('Eli Doggart');expect(mergeCalls).toBe(0);
+ await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).toContainText('Your changes are saved and checks have passed');expect(content.site.name).toBe('Remote UI draft');expect(mergeCalls).toBe(0);
+ await page.getByRole('button',{name:'Publish now',exact:true}).click();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Updating your website');expect(mergeCalls).toBe(1);
  await page.getByRole('button',{name:'Sign out',exact:true}).click();await expect(page.locator('#mode-label')).toHaveText('Local draft mode');await page.getByRole('button',{name:'Publish…',exact:true}).click();await expect(page.getByRole('dialog')).not.toBeVisible();await expect(page.getByRole('region',{name:'Publication progress'})).toContainText('Updating your website');expect(mergeCalls).toBe(1);
  expect(writes.some(w=>w.path.endsWith('/main')||w.body?.force===true)).toBe(false);expect(await page.evaluate(()=>Object.values(localStorage).some(v=>v.includes('inert-ui-test-token')))).toBe(false);
 });
