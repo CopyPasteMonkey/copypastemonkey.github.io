@@ -28,10 +28,10 @@
             "date": "",
             "image": [
               {
-                "media": "nimbus-12",
-                "alt": "Extruded-aluminum test-cart frame built during the Nimbus internship.",
-                "caption": "Test-cart construction · Internship",
-                "credit": "",
+                "media": "upload-4fa1301100205415a558",
+                "alt": "Image of 70 cell nimbus fuel cell",
+                "caption": "",
+                "credit": "https://www.businesswire.com/news/home/20241211265773/en/Blue-Origin-Licenses-Nimbus-Power-Systems-Fuel-Cell-Technology-for-Development-of-Space-Power-Systems",
                 "linked": false,
                 "linkLabel": "",
                 "lazy": false
@@ -4095,6 +4095,12 @@
         "src": "assets/images/photo-42.webp",
         "width": 640,
         "height": 153
+      },
+      {
+        "id": "upload-4fa1301100205415a558",
+        "src": "assets/images/upload-4fa1301100205415a558.png",
+        "width": 920,
+        "height": 514
       }
     ],
     "resources": [
