@@ -1,4 +1,4 @@
-// Wired into the editor, but disabled until the separately approved live setup.
+// Credentials stay in memory; popup identity is checked on every message.
 export function trustedMessage(event,popup,origin){return event.source===popup&&event.origin===origin&&event.data&&typeof event.data==='object';}
 export function signIn(authOrigin,{host=window,timeoutMs=180000}={}){
  const origin=new URL(authOrigin);if(origin.protocol!=='https:'||origin.origin!==authOrigin)throw Error('Use the exact approved HTTPS authentication origin.');
@@ -12,7 +12,7 @@ export function signIn(authOrigin,{host=window,timeoutMs=180000}={}){
    if(!trustedMessage(event,popup,authOrigin))return;
    if(event.data.type==='portfolio:ready'){ready=true;popup.postMessage({type:'portfolio:ack'},authOrigin);return;}
    const d=event.data;
-   if(ready&&d.type==='portfolio:authorized'&&d.provider==='github'&&typeof d.token==='string'&&d.token.length<1024&&Number.isFinite(d.expiresAt)&&d.expiresAt>Date.now()&&d.expiresAt<=Date.now()+28800000)finish(null,{token:d.token,provider:d.provider,expiresAt:d.expiresAt});
+   if(ready&&d.type==='portfolio:authorized'&&d.provider==='github'&&typeof d.token==='string'&&d.token.length<1024&&Number.isFinite(d.expiresAt)&&d.expiresAt>Date.now()&&d.expiresAt<=Date.now()+28800000)finish(null,{token:d.token,provider:d.provider,expiresAt:d.expiresAt,...(typeof d.statsToken==='string'&&/^[A-Za-z0-9_.-]{1,2048}$/.test(d.statsToken)?{statsToken:d.statsToken}:{})});
   };
   host.addEventListener('message',receive);
   const poll=setInterval(()=>{if(popup.closed)finish(Error('Sign-in was cancelled. Your draft is still available.'));},500);
