@@ -5,9 +5,9 @@
       "name": "Eli Doggart",
       "profession": "Mechanical Design & Manufacturing Engineer",
       "description": "Engineering work, projects, skills, and photography by Eli Doggart.",
-      "introduction": "I design, build, and test mechanical systems. My work spans fuel-cell development, prototype fabrication, and laboratory improvements.",
-      "resume": "assets/documents/Eli-Doggart-Resume.pdf",
-      "resumeFilename": "Eli-Doggart-Resume.pdf",
+      "introduction": "I am a mechanical engineer with design manufacturing, and lab experience. This website includes deeper information than my resume (or at least it will when I'm finished).",
+      "resume": "assets/documents/resume-68597ad7e549c03f98bd.pdf",
+      "resumeFilename": "Resume2.pdf",
       "resumeLabel": "Download resume, one-page PDF",
       "email": "elidoggart@gmail.com",
       "phone": "(860) 235-1046",
@@ -28,9 +28,9 @@
             "date": "",
             "image": [
               {
-                "media": "nimbus-fuel-cell-stack",
-                "alt": "Fuel-cell stack beside a Nimbus Power Systems sign.",
-                "caption": "Fuel-cell stack · Nimbus Power Systems",
+                "media": "nimbus-12",
+                "alt": "Extruded-aluminum test-cart frame built during the Nimbus internship.",
+                "caption": "Test-cart construction · Internship",
                 "credit": "",
                 "linked": false,
                 "linkLabel": "",
@@ -732,264 +732,6 @@
                     "type": "text",
                     "text": "Images open at full size.",
                     "style": "source"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "accelerate",
-            "title": "Accelerate Design LLC",
-            "intro": "Optical-component prototyping, CAD, 3D printing, and practical improvements to the lab.",
-            "divider": "",
-            "role": "",
-            "date": "",
-            "image": [
-              {
-                "media": "accelerate-00",
-                "alt": "Printed optical component from work at Accelerate Design.",
-                "caption": "",
-                "credit": "",
-                "linked": false,
-                "linkLabel": "",
-                "lazy": false
-              }
-            ],
-            "placeholder": "",
-            "roles": [
-              {
-                "id": "accelerate",
-                "label": "",
-                "role": "Design Engineering Intern",
-                "date": "January–March 2022",
-                "blocks": [
-                  {
-                    "type": "text",
-                    "text": "Accelerate Design LLC · Selected work",
-                    "style": "context"
-                  },
-                  {
-                    "type": "section",
-                    "title": "3D printing",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I used SLA printing for optical components and FDM printing for other parts. I also printed a fixture to hold a part at an angle while it was worked with hand tools.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "grid",
-                        "images": [
-                          {
-                            "media": "accelerate-00",
-                            "alt": "3D printing: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D printing: archived work image 1",
-                            "lazy": true
-                          },
-                          {
-                            "media": "accelerate-01",
-                            "alt": "3D printing: archived work image 2",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D printing: archived work image 2",
-                            "lazy": true
-                          },
-                          {
-                            "media": "accelerate-02",
-                            "alt": "3D printing: archived work image 3",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D printing: archived work image 3",
-                            "lazy": true
-                          },
-                          {
-                            "media": "accelerate-03",
-                            "alt": "3D printing: archived work image 4",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D printing: archived work image 4",
-                            "lazy": true
-                          },
-                          {
-                            "media": "accelerate-04",
-                            "alt": "3D printing: archived work image 5",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D printing: archived work image 5",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "3D Printer Maintenance",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I maintained the resin printer, replacing its FEP film, LCD, and screen protector.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "single",
-                        "images": [
-                          {
-                            "media": "accelerate-05",
-                            "alt": "3D Printer Maintenance: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: 3D Printer Maintenance: archived work image 1",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "CAD",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I used SOLIDWORKS and Onshape to prepare printable files, machining quotes, and customer drawings.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "single",
-                        "images": [
-                          {
-                            "media": "accelerate-06",
-                            "alt": "CAD: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: CAD: archived work image 1",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Lab Improvements",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I arranged a dedicated printing workspace, made a resin-draining stand, assembled desks, and reorganized the office.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "grid",
-                        "images": [
-                          {
-                            "media": "accelerate-07",
-                            "alt": "Lab Improvements: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Lab Improvements: archived work image 1",
-                            "lazy": true
-                          },
-                          {
-                            "media": "accelerate-08",
-                            "alt": "Lab Improvements: archived work image 2",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Lab Improvements: archived work image 2",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "text",
-                    "text": "Images open at full size.",
-                    "style": "source"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "electric-boat",
-            "title": "General Dynamics Electric Boat",
-            "intro": "Reviewed supplier requests against design specifications in the pumps department.",
-            "divider": "",
-            "role": "",
-            "date": "",
-            "image": [
-              {
-                "media": "columbia-class",
-                "alt": "U.S. Navy concept rendering of a Columbia-class submarine.",
-                "caption": "",
-                "credit": "",
-                "linked": false,
-                "linkLabel": "",
-                "lazy": false
-              }
-            ],
-            "placeholder": "",
-            "roles": [
-              {
-                "id": "electric-boat",
-                "label": "",
-                "role": "Engineering Intern",
-                "date": "June–August 2021",
-                "blocks": [
-                  {
-                    "type": "text",
-                    "text": "General Dynamics Electric Boat · Selected work",
-                    "style": "context"
-                  },
-                  {
-                    "type": "section",
-                    "title": "Component engineering",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I worked with a group specializing in pumps and heat exchangers for the Columbia-class submarine. I reviewed vendor information requests against specifications, originated part numbers, and helped with training activities.",
-                        "style": "body"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Workplace documentation",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "The archived description stays high-level because the work was partly confidential. The representative class rendering above is a public U.S. Navy illustration.",
-                        "style": "body"
-                      }
-                    ]
                   }
                 ]
               }
@@ -1752,6 +1494,67 @@
             ]
           },
           {
+            "id": "electric-boat",
+            "title": "General Dynamics Electric Boat",
+            "intro": "Reviewed supplier requests against design specifications in the pumps department.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "columbia-class",
+                "alt": "U.S. Navy concept rendering of a Columbia-class submarine.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "electric-boat",
+                "label": "",
+                "role": "Engineering Intern",
+                "date": "June–August 2021",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "General Dynamics Electric Boat · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "Component engineering",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I worked with a group specializing in pumps and heat exchangers for the Columbia-class submarine. I reviewed vendor information requests against specifications, originated part numbers, and helped with training activities.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Workplace documentation",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "The archived description stays high-level because the work was partly confidential. The representative class rendering above is a public U.S. Navy illustration.",
+                        "style": "body"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "id": "ecpm",
             "title": "East Coast Precision Manufacturing",
             "intro": "Operated CNC lathes and mills, inspected polymer parts, and adjusted work offsets.",
@@ -1951,6 +1754,203 @@
                             "credit": "",
                             "linked": true,
                             "linkLabel": "Open image: Deburring: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "text": "Images open at full size.",
+                    "style": "source"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "accelerate",
+            "title": "Accelerate Design LLC",
+            "intro": "Optical-component prototyping, CAD, 3D printing, and practical improvements to the lab.",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "accelerate-00",
+                "alt": "Printed optical component from work at Accelerate Design.",
+                "caption": "",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "accelerate",
+                "label": "",
+                "role": "Design Engineering Intern",
+                "date": "January–March 2022",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Accelerate Design LLC · Selected work",
+                    "style": "context"
+                  },
+                  {
+                    "type": "section",
+                    "title": "3D printing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used SLA printing for optical components and FDM printing for other parts. I also printed a fixture to hold a part at an angle while it was worked with hand tools.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "accelerate-00",
+                            "alt": "3D printing: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-01",
+                            "alt": "3D printing: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-02",
+                            "alt": "3D printing: archived work image 3",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 3",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-03",
+                            "alt": "3D printing: archived work image 4",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 4",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-04",
+                            "alt": "3D printing: archived work image 5",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D printing: archived work image 5",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "3D Printer Maintenance",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I maintained the resin printer, replacing its FEP film, LCD, and screen protector.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "accelerate-05",
+                            "alt": "3D Printer Maintenance: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: 3D Printer Maintenance: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "CAD",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I used SOLIDWORKS and Onshape to prepare printable files, machining quotes, and customer drawings.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "single",
+                        "images": [
+                          {
+                            "media": "accelerate-06",
+                            "alt": "CAD: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: CAD: archived work image 1",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Lab Improvements",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "I arranged a dedicated printing workspace, made a resin-draining stand, assembled desks, and reorganized the office.",
+                        "style": "body"
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "accelerate-07",
+                            "alt": "Lab Improvements: archived work image 1",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Lab Improvements: archived work image 1",
+                            "lazy": true
+                          },
+                          {
+                            "media": "accelerate-08",
+                            "alt": "Lab Improvements: archived work image 2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open image: Lab Improvements: archived work image 2",
                             "lazy": true
                           }
                         ]
@@ -4095,12 +4095,6 @@
         "src": "assets/images/photo-42.webp",
         "width": 640,
         "height": 153
-      },
-      {
-        "id": "nimbus-fuel-cell-stack",
-        "src": "assets/images/nimbus-fuel-cell-stack.webp",
-        "width": 600,
-        "height": 337
       }
     ],
     "resources": [
