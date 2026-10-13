@@ -28,9 +28,9 @@
             "date": "",
             "image": [
               {
-                "media": "nimbus-12",
-                "alt": "Extruded-aluminum test-cart frame built during the Nimbus internship.",
-                "caption": "Test-cart construction · Internship",
+                "media": "upload-4fa1301100205415a558",
+                "alt": "Image of 70 cell nimbus fuel cell",
+                "caption": "",
                 "credit": "",
                 "linked": false,
                 "linkLabel": "",
@@ -3191,6 +3191,104 @@
                 ]
               }
             ]
+          },
+          {
+            "id": "entry-4d222f6e-eeed-40d9-8c64-578fff726c66",
+            "title": "Creative Field Notes — Publishing Test",
+            "intro": "A temporary Passions collection built entirely with the graphical editor to test headings, photographs, detailed text, saving, and publication.",
+            "divider": "",
+            "role": "Editor workflow test",
+            "date": "October 2026",
+            "image": [
+              {
+                "media": "photo-10",
+                "alt": "A light-colored dog photographed close up.",
+                "caption": "A photograph from the existing collection, reused to test the new entry’s cover.",
+                "credit": "",
+                "linked": false,
+                "linkLabel": "",
+                "lazy": true
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "entry-4d222f6e-eeed-40d9-8c64-578fff726c66",
+                "label": "Behind the collection",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "style": "body",
+                    "text": "This entry is a live test of the portfolio editor. It brings together a cover photograph, structured notes, and a second details section to exercise the same workflow used for a finished interest."
+                  },
+                  {
+                    "type": "section",
+                    "title": "Looking closely",
+                    "level": 4,
+                    "chapter": true,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Small details reward a closer look: the direction of the light, a quiet expression, or the contrast between a subject and its surroundings.",
+                        "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Notes from the frame",
+                    "level": 5,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "This nested note checks that a subheading keeps its own text and remains inside the correct parent section when the entry is rendered.",
+                        "style": "body"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "role-9744b308-7c96-4f3d-b9f3-c799cbf67944",
+                "label": "Collection notes",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "style": "body",
+                    "text": "This second section tests that separate groups of content stay together. The photographs are reused from the existing site library; this temporary entry can be removed after the publishing test."
+                  },
+                  {
+                    "type": "gallery",
+                    "layout": "grid",
+                    "images": [
+                      {
+                        "media": "photo-00",
+                        "alt": "Stars above a dark tree line and illuminated grass.",
+                        "caption": "Night sky study — reused from the existing photography collection for this test.",
+                        "credit": "",
+                        "linked": false,
+                        "linkLabel": "",
+                        "lazy": true
+                      },
+                      {
+                        "media": "photo-34",
+                        "alt": "A lake framed by trees at dusk.",
+                        "caption": "Water at dusk — a second photograph to test the gallery layout.",
+                        "credit": "",
+                        "linked": false,
+                        "linkLabel": "",
+                        "lazy": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -4095,6 +4193,12 @@
         "src": "assets/images/photo-42.webp",
         "width": 640,
         "height": 153
+      },
+      {
+        "id": "upload-4fa1301100205415a558",
+        "src": "assets/images/upload-4fa1301100205415a558.png",
+        "width": 920,
+        "height": 514
       }
     ],
     "resources": [
