@@ -2,7 +2,8 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-const root=await fs.realpath('dist');const port=Number(process.env.PORT||4173);
+const browserTest=process.argv.includes('--browser-test');
+const root=await fs.realpath(browserTest?'.local/browser-dist':'dist');const port=browserTest?4175:Number(process.env.PORT||4173);
 const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.mjs':'text/javascript','.json':'application/json','.webp':'image/webp','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.ico':'image/x-icon','.woff2':'font/woff2','.pdf':'application/pdf','.csv':'text/csv'};
 http.createServer(async(req,res)=>{
  try{
