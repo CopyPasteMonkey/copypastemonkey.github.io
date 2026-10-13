@@ -1,3 +1,4 @@
+import {loadLocalDraft,missingDraftAssets} from './storage.mjs';
 import {createPublishProgress} from './publish-progress.mjs';
 import {createForms} from './forms-first.mjs';
 import {createCanvas,selectionForm,at} from './canvas.mjs';
@@ -43,7 +44,7 @@ function form(){
   }});return;
  }
  if(active==='media'){
-  root.append(element('p',{class:'help',text:functional?'Images already on your website are shown below. To add or replace a photo, open the job, project, skill group or interest and use its Upload image button.':visual?'Images already on your website are shown below. Select a company, role or photo on the page, then choose Add image or Replace image to use one or upload from your device.':'Upload a JPEG, PNG or WebP (up to 12 MB / 40 megapixels). It is resized to 2400 px and converted to WebP with metadata removed. Add alt text and credits when placing it in an entry.'}));
+  root.append(element('p',{class:'help',text:functional?'Images already on your website are shown below. To add or replace a photo, open the job, project, skill group or interest and use its Upload image button.':visual?'Images already on your website are shown below. Select a company, role or photo on the page, then choose Add image or Replace image to use one or upload from your device.':'Upload a JPEG, PNG or WebP (up to 12 MB / 40 megapixels). It is resized to 2400 px and optimized as WebP or PNG. Add alt text and credits when placing it in an entry.'}));
   const upload=element('input',{type:'file',accept:'.jpg,.jpeg,.png,.webp','aria-label':'Upload image'});
   upload.addEventListener('change',async()=>{if(!upload.files[0])return;busy=true;try{
    const {record,blob}=await optimizeImage(upload.files[0]);await putImage(record.src,blob);images.set(record.src,blob);urls.set(record.src,URL.createObjectURL(blob));
@@ -100,7 +101,7 @@ async function saveLocked({localOnly=false}={}){
 async function download(){
  if(busy){status('Wait for the file operation to finish.',true);return;}
  const errors=valid();if(errors.length){status('Backup not downloaded: '+describeError(errors[0],data,friendly),true);return;}
- if(data.site.resume!==baseline.site.resume&&!images.has(data.site.resume)){status('Export blocked: resume PDF is missing. Upload it again or load the GitHub draft.',true);return;}
+ const missing=missingDraftAssets(data,baseline,images);if(missing.length){status('Backup cannot include '+missing.length+' missing uploaded file(s). Load saved version from GitHub or upload the missing files again before downloading a backup.',true);return;}
  const files=new Map([['content/portfolio.json',new Blob([JSON.stringify({portfolio:data,...(friendly&&unfinishedEntries(data,templateIDs).length?{editor:templateMetadata(data,templateIDs)}:{})},null,2)+'\n'],{type:'application/json'})]]);
  for(const src of assetPaths(data))if(images.has(src))files.set(src,images.get(src));
  const zip=await makeZip(files),url=URL.createObjectURL(zip),a=element('a',{href:url,download:'portfolio-draft.zip'});a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);status(friendly?'Backup downloaded with your draft and uploaded files. Use Restore backup to open it on this or another computer.':'Exported content and uploaded files. Existing site assets remain referenced. Nothing has been published.');
@@ -112,7 +113,7 @@ $('#undo').onclick=()=>{settleHistory();if(!history.length)return;future.push(JS
 $('#redo').onclick=()=>{if(!future.length)return;history.push(JSON.stringify(data));data=JSON.parse(future.pop());prior=JSON.stringify(data);revision++;updateButtons();form();updatePreview();status('Restored the next change.');};
 $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{
  if(file.size>100_000_000)throw Error('Draft package is too large.');let next,files,wrapper,nextTemplates;
- if(file.name.endsWith('.zip')){files=await readZip(file);wrapper=JSON.parse(await files.get('content/portfolio.json').text());next=wrapper.portfolio;}
+ if(/\.zip$/i.test(file.name)){files=await readZip(file);wrapper=JSON.parse(await files.get('content/portfolio.json').text());next=wrapper.portfolio;}
  else{if(file.size>2_000_000)throw Error('Content JSON must be smaller than 2 MB.');wrapper=JSON.parse(await file.text());next=wrapper.portfolio;}
  nextTemplates=friendly?readTemplateIDs(wrapper.editor):new Set();const errors=friendly?validateDraft(next,nextTemplates):validate(next);if(errors.length)throw Error(describeError(errors[0],next,friendly));
  for(const m of next.media){if(!baseline.media.some(x=>x.src===m.src)&&!images.has(m.src)&&!files?.has(m.src))throw Error('Missing uploaded image '+m.src+'. Import the complete exported ZIP.');}
@@ -130,12 +131,14 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;try
 window.addEventListener('beforeunload',event=>{if(data&&JSON.stringify(data)!==saved){event.preventDefault();event.returnValue='';}});
 window.addEventListener('storage',event=>{if(event.key===draftKey)status('Another tab saved a draft. Export your changes before reloading.',true);});
 try{
- publishing=await (await fetch('publishing.json')).json();if(publishingReady(publishing,location.origin))publication.resume();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
+ try{const configResponse=await fetch('publishing.json');if(configResponse.ok)publishing=await configResponse.json();}catch{}if(publishingReady(publishing,location.origin))publication.resume();$('#signin').textContent=publishingReady(publishing,location.origin)?'Sign in with GitHub':'GitHub setup';
  if(publishingReady(publishing,location.origin))$('#publish-note').textContent='Click Publish when you are ready. It handles sign-in, saving and checks, then asks you to confirm.';
  if(friendly&&!publishingReady(publishing,location.origin)){$('#signin').hidden=true;$('#publish').disabled=true;$('#publish').title='Publishing is available at https://www.elidoggart.com/editor/.';$('#mode-label').textContent='Local preview';$('#publish-note').textContent='Save Draft keeps your work in this browser. The live website stays unchanged. To publish, open the editor at www.elidoggart.com.';}
  const response=await fetch('../content/portfolio.json');if(!response.ok)throw Error('Could not load portfolio content.');baseline=(await response.json()).portfolio;data=clone(baseline);
- let draft;try{draft=localStorage.getItem(draftKey);}catch{status('Browser draft storage is unavailable. Use Export draft to keep your changes.',true);}
- if(draft){const stored=JSON.parse(draft);const storedTemplates=friendly?readTemplateIDs(stored.editor):new Set();if(!(friendly?validateDraft(stored.portfolio,storedTemplates):validate(stored.portfolio)).length){templateIDs=storedTemplates;data=stored.portfolio;draftRevision=stored.draftRevision;status('Restored the draft saved in this browser. Nothing has been published.');}else status('Saved draft is invalid. Loaded the published content.',true);}else status(friendly?'Ready to edit. Save Draft keeps your changes on this computer.':'Ready. Changes stay in this browser until you save or export.');
+ let local;try{local=loadLocalDraft(localStorage,stored=>!(friendly?validateDraft(stored.portfolio,readTemplateIDs(stored.editor)):validate(stored.portfolio)).length);}catch{local={warning:'Browser draft storage is unavailable. Download backup to keep your edits.'};}
+ if(local.stored){const stored=local.stored;templateIDs=friendly?readTemplateIDs(stored.editor):new Set();data=stored.portfolio;draftRevision=stored.draftRevision;status('Restored the draft saved in this browser. Nothing has been published.');}
+ else status(friendly?'Ready to edit. Save Draft keeps your changes on this computer.':'Ready. Changes stay in this browser until you save or export.');
+ if(local.warning){const notice=element('p',{class:'notice',role:'alert',text:local.warning});if(local.recovery){notice.append(' ',element('button',{type:'button',text:'Download recovery copy',onclick:()=>{const url=URL.createObjectURL(new Blob([local.recovery],{type:'application/json'}));element('a',{href:url,download:'portfolio-draft-recovery.json'}).click();setTimeout(()=>URL.revokeObjectURL(url),10000);}}));}$('.notice').after(notice);}
  try{images=await getImages();}catch{status('Uploaded-file storage is unavailable in this browser. Existing content can still be edited and exported.',true);}
  for(const [src,blob] of images)urls.set(src,URL.createObjectURL(blob));saved=JSON.stringify(data);prior=saved;
  for(const key of ['work','projects','skills','passions','resume','site','education','media','resources']){
