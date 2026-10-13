@@ -63,19 +63,35 @@ test('frozen migration content retains visual parity with its archived HTML',asy
  // photo pixels so resampling cannot hide or falsely report layout changes.
  const imageLayout=()=>[...document.images].flatMap(i=>{const r=i.getBoundingClientRect(),s=getComputedStyle(i);return r.width&&r.top<innerHeight&&r.bottom>0?[{src:i.currentSrc,alt:i.alt,naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,x:r.x,y:r.y,width:r.width,height:r.height,fit:s.objectFit,position:s.objectPosition}]:[];});
  const screenshotOptions=()=>({mask:[page.locator('img')]});
+ const visitForComparison=async(url,hash)=>{
+  // Compare settled layouts: a cold font load can move the initial hash target
+  // before its first scroll. Direct-link behavior has separate routing coverage.
+  await page.goto(url);await page.evaluate(()=>document.fonts.ready);
+  await page.evaluate(hash=>{location.hash=hash;},hash);
+  const [section,entry]=hash.split('/');
+  await expect(page.locator(`#view-${section}`)).toBeVisible();
+  if(entry)await expect(page.locator('#details-'+entry)).toBeVisible();
+  else if(await page.locator('#section-select').isVisible())await page.locator('#section-select').selectOption(section);
+  else await page.locator(`nav [data-section="${section}"]`).click();
+  await page.evaluate(async()=>{
+   await document.fonts.ready;
+   await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));
+   await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+  });
+ };
  await page.route('**/approved-baseline.html',r=>r.fulfill({contentType:'text/html',body:fs.readFileSync('tests/fixtures/published.html')}));
  await page.route('**/migration-generated.html',r=>r.fulfill({contentType:'text/html',body:render(JSON.parse(fs.readFileSync('tests/fixtures/published-content.json')).portfolio)}));
  for(const width of [1440,390]){await page.setViewportSize({width,height:width===390?844:1000});for(const hash of ['work','work/nimbus-internship','projects/mqp','passions/film','contact']){
-  await page.goto('/approved-baseline.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
+  await visitForComparison('/approved-baseline.html',hash);
   const baselinePosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
   const baselineImages=await page.evaluate(imageLayout);
   expect(baselineImages.every(i=>i.naturalWidth>0)).toBe(true);
   const baseline=await page.screenshot({path:'.local/parity-baseline.png',...screenshotOptions()});
   const name=`migration-${width}-${hash.replaceAll('/','-')}.png`,snapshot=test.info().snapshotPath(name);
   fs.mkdirSync(path.dirname(snapshot),{recursive:true});fs.writeFileSync(snapshot,baseline);
-  await page.goto('/migration-generated.html#'+hash);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.images].filter(i=>{const r=i.getBoundingClientRect();return r.width&&r.top<innerHeight&&r.bottom>0;}).map(i=>i.decode().catch(()=>{})));});await page.waitForTimeout(80);
+  await visitForComparison('/migration-generated.html',hash);
   const generatedPosition=await page.evaluate(()=>({x:scrollX,y:scrollY}));
-  // Initial font loading can round the existing hash scroll by one pixel.
+  // Browser scroll coordinates can round fractional layout positions by one pixel.
   // Check navigation separately, then compare the exact same viewport pixels.
   expect(generatedPosition.x).toBe(baselinePosition.x);
   expect(Math.abs(generatedPosition.y-baselinePosition.y),`${width}px ${hash} scroll parity`).toBeLessThanOrEqual(1);
