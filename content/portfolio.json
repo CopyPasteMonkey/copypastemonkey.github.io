@@ -6,8 +6,8 @@
       "profession": "Mechanical Design & Manufacturing Engineer",
       "description": "Engineering work, projects, skills, and photography by Eli Doggart.",
       "introduction": "I am a mechanical engineer with design manufacturing, and lab experience. This website includes deeper information than my resume (or at least it will when I'm finished).",
-      "resume": "assets/documents/resume-8b5e31b723273b5292c3.pdf",
-      "resumeFilename": "Resume3.pdf",
+      "resume": "assets/documents/resume-68597ad7e549c03f98bd.pdf",
+      "resumeFilename": "Resume2.pdf",
       "resumeLabel": "Download resume, one-page PDF",
       "email": "elidoggart@gmail.com",
       "phone": "(860) 235-1046",
@@ -28,8 +28,8 @@
             "date": "",
             "image": [
               {
-                "media": "upload-4fa1301100205415a558",
-                "alt": "Image of 70 cell nimbus fuel cell",
+                "media": "upload-d894e10c77d8b3be1d53",
+                "alt": "Eli standing in front of prototype stack",
                 "caption": "",
                 "credit": "",
                 "linked": false,
@@ -4079,6 +4079,12 @@
         "src": "assets/images/upload-4fa1301100205415a558.png",
         "width": 920,
         "height": 514
+      },
+      {
+        "id": "upload-d894e10c77d8b3be1d53",
+        "src": "assets/images/upload-d894e10c77d8b3be1d53.png",
+        "width": 1169,
+        "height": 878
       }
     ],
     "resources": [
