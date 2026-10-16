@@ -2603,22 +2603,42 @@
                 "blocks": [
                   {
                     "type": "section",
-                    "title": "Listed training",
+                    "title": "Six Sigma Black Belt",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": []
+                  },
+                  {
+                    "type": "section",
+                    "title": "TriMech SOLIDWORKS Flow Simulation",
                     "level": 4,
                     "chapter": false,
                     "blocks": [
                       {
-                        "type": "list",
-                        "items": [
-                          "Six Sigma Black Belt",
-                          "Trimech SOLIDWORKS Flow",
-                          "Summit Toyotalift Forklift"
-                        ]
+                        "type": "text",
+                        "text": "August 29, 2024",
+                        "style": "body"
                       },
                       {
+                        "type": "resource",
+                        "resource": "solidworks-flow-certificate"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Summit Toyota Lift — OSHA PIT Operator Safety Training",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
                         "type": "text",
-                        "text": "Certificate details and images to come.",
-                        "style": "note"
+                        "text": "May 23, 2024",
+                        "style": "body"
+                      },
+                      {
+                        "type": "resource",
+                        "resource": "forklift-certificate"
                       }
                     ]
                   }
@@ -4101,6 +4121,22 @@
         "url": "https://docs.google.com/document/d/17YpoSgoDXrykJU90CeElKGVNWEDx73TRvWXSDun6jd0/preview",
         "label": "Read the IQP report draft (Google Docs)",
         "note": "Original document: Full Report Draft",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "solidworks-flow-certificate",
+        "url": "assets/documents/Eli-Doggart-SOLIDWORKS-Flow-Simulation-Certificate.pdf",
+        "label": "View certificate (PDF)",
+        "note": "",
+        "download": "",
+        "newTab": true
+      },
+      {
+        "id": "forklift-certificate",
+        "url": "assets/documents/Eli-Doggart-Forklift-Operator-Training-Certificate.pdf",
+        "label": "View certificate (PDF)",
+        "note": "",
         "download": "",
         "newTab": true
       }
