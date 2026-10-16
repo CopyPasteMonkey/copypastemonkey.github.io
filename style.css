@@ -29,6 +29,11 @@
 .archive-section{padding:24px 0 30px;border-bottom:1px solid #ddd;max-width:100%}
 .archive-section h4,.archive-section h5,.archive-section h6{font-size:23px;line-height:1.25;font-weight:700;margin:0 0 13px}
 .archive-section p{max-width:770px}.archive-section .empty-note{margin-top:14px}
+.section-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);gap:28px;align-items:start;margin-top:16px}
+.section-copy,.section-media{min-width:0}.section-copy>p:empty{min-height:5rem}
+.section-media>.section-images,.section-media>.recovered-chart{margin-top:0;max-width:none}
+.section-media>.section-images img{max-height:none}
+@media(max-width:640px){.section-split{grid-template-columns:1fr;gap:16px}.section-copy:not(:has(> :not(p:empty))){display:none}}
 .archive-section.chapter{padding:25px 0 5px;border:0}.archive-section.chapter h4{color:var(--crimson)}
 .archive-section.chapter h5{font-size:24px}.archive-section.chapter+section{padding-top:17px}
 .section-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:22px;margin-top:22px}
