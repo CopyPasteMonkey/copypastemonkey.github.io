@@ -58,6 +58,7 @@ export function createContentTree({getData,mount,imageEditor,photoList,prepareBl
       settings.append(element('p',{class:'help',text:'Moving a heading also moves its paragraphs, images and lower headings. Subheadings appear indented below their parent.'}));
       if(b.type==='section'){
        settings.append(choice('Section format',String(b.chapter),{false:'Content section with a divider',true:'Group heading'},value=>{b.chapter=value==='true';ownChanged();},p+'.chapter'));
+       settings.append(choice('Text and image layout',b.layout||'stacked',{stacked:'Stacked',split:'Text beside images'},value=>{b.layout=value;ownChanged();},p+'.layout'));
        const content=element('div',{class:'heading-content'});if(!b.blocks.length&&node.children.length){const intro=element('details',{class:'heading-intro'},element('summary',{text:'Add introductory text or images'}),content);body.append(intro);}else body.append(element('h4',{class:'content-owner',text:'Text & images'}),content);list(content,b.blocks,p+'.blocks',{baseLevel:b.level,label:b.title||'this heading',notify:ownChanged,allowHeadings:false});
       }else body.append(element('p',{class:'help',text:'A heading without a section wrapper. The items below belong to this heading until the next heading at this level.'}));
      }else if(b.type==='text'){

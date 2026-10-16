@@ -284,7 +284,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -321,7 +322,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -358,7 +360,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -485,7 +488,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -513,7 +517,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -541,7 +546,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -578,7 +584,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -606,7 +613,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -681,7 +689,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -718,7 +727,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -746,7 +756,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -942,7 +953,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1285,7 +1297,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1610,7 +1623,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1638,7 +1652,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -1770,7 +1785,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1798,7 +1814,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1835,7 +1852,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -1903,7 +1921,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -1940,7 +1959,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -2008,7 +2028,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -2036,7 +2057,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -2121,7 +2143,8 @@
                         "type": "resource",
                         "resource": "resource-3"
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -2158,7 +2181,8 @@
                           }
                         ]
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "section",
@@ -2246,7 +2270,8 @@
                         "type": "resource",
                         "resource": "resource-6"
                       }
-                    ]
+                    ],
+                    "layout": "split"
                   },
                   {
                     "type": "text",
@@ -2289,6 +2314,71 @@
                         "type": "text",
                         "text": "Evenly distributed flow in two dimensions across the active area is extremely important for performance. Constrained by manufacturing limitations and legacy tooling, I reduced the maldistribution in reactants from over 40% to less than 2%. Properly loading flow fields in the active area of the hydrogen fuel cell leads to lower electrical resistance, but too much pressure can restrict fluid flow. I used flow and structural simulation to ensure acceptable levels of pressure and electrical resistance despite a reduction in landing area. After designing this fuel cell, I worked with component suppliers across the globe as well as scaled up in house procedures and facilities in order to produce an engine sized prototype.",
                         "style": "body"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Flow distribution optimization",
+                    "level": 4,
+                    "chapter": false,
+                    "layout": "split",
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "style": "body",
+                        "text": ""
+                      },
+                      {
+                        "type": "figure",
+                        "layout": "chart",
+                        "image": {
+                          "media": "upload-6ee8db13873fc7ad9ca0",
+                          "alt": "Simulated hydrogen utilization by channel before and after optimization",
+                          "caption": "",
+                          "credit": "",
+                          "linked": true,
+                          "linkLabel": "Open full-size image: Simulated hydrogen utilization by channel before and after optimization",
+                          "lazy": true
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Vacuum chuck and dust collection",
+                    "level": 4,
+                    "chapter": false,
+                    "layout": "split",
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "style": "body",
+                        "text": ""
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "upload-438203655909113d0f00",
+                            "alt": "Custom machined vacuum chuck fixture inside the Haas VF-2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open full-size image: Custom machined vacuum chuck fixture inside the Haas VF-2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "upload-0994a249d579a97d9ad6",
+                            "alt": "Custom dust collection system on the Haas VF-2, with proprietary flow-field geometry concealed",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open full-size image: Custom dust collection system on the Haas VF-2, with proprietary flow-field geometry concealed",
+                            "lazy": true
+                          }
+                        ]
                       }
                     ]
                   }
@@ -4258,6 +4348,24 @@
         "src": "assets/images/outdoor-6da4ef72997ba5959118.webp",
         "width": 2049,
         "height": 1536
+      },
+      {
+        "id": "upload-6ee8db13873fc7ad9ca0",
+        "src": "assets/images/upload-6ee8db13873fc7ad9ca0.webp",
+        "width": 2400,
+        "height": 1131
+      },
+      {
+        "id": "upload-438203655909113d0f00",
+        "src": "assets/images/upload-438203655909113d0f00.webp",
+        "width": 2002,
+        "height": 1502
+      },
+      {
+        "id": "upload-0994a249d579a97d9ad6",
+        "src": "assets/images/upload-0994a249d579a97d9ad6.webp",
+        "width": 1086,
+        "height": 1448
       }
     ],
     "resources": [
