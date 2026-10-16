@@ -133,3 +133,10 @@ footer{padding-top:28px}
  .archive-section h4,.archive-section h5,.archive-section h6{font-size:19px}
 }
 @media print{.portfolio-entry{padding:10pt 0;margin:0}.entry-summary.with-image{grid-template-columns:1fr 90pt}.entry-details{border-left:0;padding-left:0}}
+
+/* Keep both resume actions together across toolbar sizes. */
+.resume-actions{display:flex;align-items:center;gap:20px;flex-shrink:0}
+.resume-view{display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:700;white-space:nowrap}
+@media(max-width:1000px){.resume-view{font-size:14px}.resume-actions{gap:16px}}
+@media(min-width:641px) and (max-width:850px){.site-toolbar .header-bottom{flex-wrap:wrap;gap:0 20px}}
+@media(max-width:480px){.site-toolbar .header-bottom{flex-wrap:wrap;gap:0 14px}.site-toolbar nav{flex-basis:100%}.resume-actions{margin-left:auto}}
