@@ -437,7 +437,7 @@
         "intro": {
           "type": "string",
           "maxLength": 3000,
-          "minLength": 1
+          "minLength": 0
         },
         "divider": {
           "type": "string",
