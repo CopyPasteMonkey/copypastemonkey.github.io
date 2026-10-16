@@ -153,6 +153,13 @@
             "chapter": {
               "type": "boolean"
             },
+            "layout": {
+              "type": "string",
+              "enum": [
+                "stacked",
+                "split"
+              ]
+            },
             "blocks": {
               "type": "array",
               "items": {
@@ -206,7 +213,7 @@
             "text": {
               "type": "string",
               "maxLength": 10000,
-              "minLength": 1
+              "minLength": 0
             },
             "style": {
               "type": "string",

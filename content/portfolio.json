@@ -2291,6 +2291,71 @@
                         "style": "body"
                       }
                     ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Flow distribution optimization",
+                    "level": 4,
+                    "chapter": false,
+                    "layout": "split",
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "style": "body",
+                        "text": ""
+                      },
+                      {
+                        "type": "figure",
+                        "layout": "chart",
+                        "image": {
+                          "media": "upload-6ee8db13873fc7ad9ca0",
+                          "alt": "Simulated hydrogen utilization by channel before and after optimization",
+                          "caption": "",
+                          "credit": "",
+                          "linked": true,
+                          "linkLabel": "Open full-size image: Simulated hydrogen utilization by channel before and after optimization",
+                          "lazy": true
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Vacuum chuck and dust collection",
+                    "level": 4,
+                    "chapter": false,
+                    "layout": "split",
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "style": "body",
+                        "text": ""
+                      },
+                      {
+                        "type": "gallery",
+                        "layout": "grid",
+                        "images": [
+                          {
+                            "media": "upload-438203655909113d0f00",
+                            "alt": "Custom machined vacuum chuck fixture inside the Haas VF-2",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open full-size image: Custom machined vacuum chuck fixture inside the Haas VF-2",
+                            "lazy": true
+                          },
+                          {
+                            "media": "upload-0994a249d579a97d9ad6",
+                            "alt": "Custom dust collection system on the Haas VF-2, with proprietary flow-field geometry concealed",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open full-size image: Custom dust collection system on the Haas VF-2, with proprietary flow-field geometry concealed",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -4258,6 +4323,24 @@
         "src": "assets/images/outdoor-6da4ef72997ba5959118.webp",
         "width": 2049,
         "height": 1536
+      },
+      {
+        "id": "upload-6ee8db13873fc7ad9ca0",
+        "src": "assets/images/upload-6ee8db13873fc7ad9ca0.webp",
+        "width": 2400,
+        "height": 1131
+      },
+      {
+        "id": "upload-438203655909113d0f00",
+        "src": "assets/images/upload-438203655909113d0f00.webp",
+        "width": 2002,
+        "height": 1502
+      },
+      {
+        "id": "upload-0994a249d579a97d9ad6",
+        "src": "assets/images/upload-0994a249d579a97d9ad6.webp",
+        "width": 1086,
+        "height": 1448
       }
     ],
     "resources": [
