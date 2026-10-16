@@ -3100,7 +3100,17 @@
             "divider": "",
             "role": "",
             "date": "",
-            "image": [],
+            "image": [
+              {
+                "media": "outdoor-82fc9e55e74fc0ba65a2",
+                "alt": "A group of hikers beside the Mount Washington summit sign.",
+                "caption": "",
+                "credit": "",
+                "linked": true,
+                "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
+                "lazy": false
+              }
+            ],
             "placeholder": "",
             "roles": [
               {
@@ -3153,6 +3163,15 @@
                             "credit": "",
                             "linked": true,
                             "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-6da4ef72997ba5959118",
+                            "alt": "A backpacker with trekking poles walking across red sandstone above a desert valley.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A backpacker with trekking poles walking across red sandstone above a desert valley.",
                             "lazy": true
                           }
                         ]
@@ -4232,6 +4251,12 @@
         "id": "outdoor-82fc9e55e74fc0ba65a2",
         "src": "assets/images/outdoor-82fc9e55e74fc0ba65a2.webp",
         "width": 2048,
+        "height": 1536
+      },
+      {
+        "id": "outdoor-6da4ef72997ba5959118",
+        "src": "assets/images/outdoor-6da4ef72997ba5959118.webp",
+        "width": 2049,
         "height": 1536
       }
     ],
