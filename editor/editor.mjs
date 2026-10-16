@@ -3,8 +3,8 @@ import {createRecovery,readableDraft,storageMessage} from './recovery.mjs';
 import {createPublishProgress} from './publish-progress.mjs';
 import {createForms} from './forms-first.mjs';
 import {createCanvas,selectionForm,at} from './canvas.mjs';
-import {resumeForm} from './resume.mjs';
-import {assetPaths,matchesImageUpload,isResumeUpload,verifyResume} from '../lib/pdf.mjs';
+import {resumeForm,pdfUpload} from './resume.mjs';
+import {assetPaths,documentPaths,matchesImageUpload,isResumeUpload,verifyResume} from '../lib/pdf.mjs';
 import {schema,validate,validateLocalDraft} from '../lib/schema.mjs';
 import {createRemote,publishingReady} from './remote.mjs';
 import {signIn} from './auth-client.mjs';
@@ -84,7 +84,21 @@ function form(){
  }
  const section=data.sections.find(s=>s.id===active);const value=section||data[active];const def=section?(visual?{type:'object',properties:{subtitle:schema.$defs.section.properties.subtitle}}:schema.$defs.section):schema.$defs.portfolio.properties[active];const path=section?`portfolio.sections[${data.sections.indexOf(section)}]`:`portfolio.${active}`;
  root.append(element('p',{class:'help',text:friendly?(active==='resources'?'Edit the links used on your page, or add a new link. To place one, open a role or details section and choose Add content → Link.':'Edit the fields below. Your website’s fonts, colors and layout are taken care of.'):(section?'Expand an entry to edit. Move up/down to reorder. Undo restores removed items. Stable IDs preserve existing links.':'Edit content fields below. The portfolio’s typography, colors and layout remain controlled by templates.')}));
- const body=element('div');root.append(body);mountForm(body,{data:value,def,path,referenceData:data,onChange:changed,friendly,labels:friendly&&active==='resources'?{label:'Link text'}:{},omit:['portfolio.site.resume','portfolio.site.resumeFilename','portfolio.site.resumeLabel']});
+ const body=element('div');root.append(body);mountForm(body,{data:value,def,path,referenceData:data,onChange:changed,friendly,labels:friendly&&active==='resources'?{label:'Link text'}:{},renderField:active==='resources'?resourceField:undefined,omit:['portfolio.site.resume','portfolio.site.resumeFilename','portfolio.site.resumeLabel']});
+}
+function resourceField({key,value,path,set}){
+ if(key!=='url')return;
+ const resource=data.resources[Number(path.match(/resources\[(\d+)\]/)[1])];
+ const host=element('div',{class:'resource-file'}),input=element('input',{type:'text',value,'aria-label':'Website address','data-path':path});
+ input.oninput=()=>set(input.value);
+ host.append(element('label',{class:'field'},element('span',{text:'Website address or uploaded file'}),input));
+ if(/^https:\/\//.test(value)||/^assets\/[a-zA-Z0-9_./-]+$/.test(value)&&!value.includes('..'))host.append(element('a',{href:urls.get(value)||(value.startsWith('assets/')?'../':'')+value,target:'_blank',rel:'noopener',text:'Open current link or PDF'}));
+ host.append(element('label',{class:'field'},element('span',{text:'Upload PDF'}),pdfUpload({status,setBusy:v=>{busy+=v?1:-1;},onAccept:async candidate=>{
+  await putImage(candidate.src,candidate.blob);images.set(candidate.src,candidate.blob);
+  if(urls.has(candidate.src))URL.revokeObjectURL(urls.get(candidate.src));urls.set(candidate.src,URL.createObjectURL(candidate.blob));
+  settleHistory();resource.download=candidate.filename;set(candidate.src);form();const details=[...$('#fields').querySelectorAll('details[data-path]')].find(d=>d.dataset.path===path.replace(/\.url$/,''));if(details)details.open=true;updatePreview();status('PDF added to the draft. Save Draft to keep it; Publish updates the website.');
+ }})),element('p',{class:'help',text:'Certificates and reports: PDF, up to 5 MB and 20 pages. Add or select this link in a job, project or skill group to show it on your website.'}));
+ return host;
 }
 function updatePreview(){
  clearTimeout(previewTimer);const errors=valid();
@@ -119,12 +133,22 @@ async function save(options={}){
  try{
   const result=navigator.locks?await navigator.locks.request('portfolio-draft',{ifAvailable:true},lock=>{if(lock)return saveLocked();status('Another editor tab is saving a draft. Wait for it to finish, then click Save Draft again, or Download backup to keep this version. Your edits are still here.',true);return false;}):await saveLocked();
   if(result&&!options.localOnly&&remote?.isConnected()&&remoteAdopted){const snapshot=JSON.parse(saved);if(!validate(snapshot).length&&!unfinishedEntries(snapshot,templateIDs).length&&!missingDraftAssets(snapshot,baseline,images).length){
-   try{const result=await remote.saveDraft(snapshot,images);showDraft(result);knownRemote={published:remoteState.publishedHead,draft:result.head};await saveLocked();status(JSON.stringify(data)!==saved?'The earlier version is saved locally and on GitHub. You have newer unsaved edits; click Save Draft again.':'Draft saved to a public GitHub branch. The live site has not changed.'+(result.warning?' '+result.warning:''));}
+   try{const result=await remote.saveDraft(snapshot,images);showDraft(result);knownRemote={published:remoteState.publishedHead,draft:result.head};await rememberRemoteVersion();status(JSON.stringify(data)!==saved?'The earlier version is saved locally and on GitHub. You have newer unsaved edits; click Save Draft again.':'Draft saved to a public GitHub branch. The live site has not changed.'+(result.warning?' '+result.warning:''));}
    catch(e){status('The earlier version is saved locally. '+e.message+(JSON.stringify(data)!==saved?' You also have newer unsaved edits; click Save Draft again.':''),true);}
   }}
   return result;
  }
  finally{saving=false;blocked.forEach(([node,disabled])=>{node.disabled=disabled;});button.disabled=!!operation;button.textContent='Save Draft';}
+}
+// Update only the revision witness of the snapshot that was actually sent.
+// Do not save edits made during the request or overwrite another tab's save.
+async function rememberRemoteVersion(){
+ const remember=()=>{
+  const raw=localStorage.getItem(draftKey);if(!raw)return;
+  const stored=JSON.parse(raw);if(stored.draftRevision!==draftRevision||JSON.stringify(stored.portfolio)!==saved)return;
+  localStorage.setItem(draftKey,JSON.stringify({...stored,knownRemote}));
+ };
+ if(navigator.locks)await navigator.locks.request('portfolio-draft',{ifAvailable:true},lock=>{if(lock)remember();});else remember();
 }
 async function saveLocked(){
  settleHistory();
@@ -163,10 +187,10 @@ $('#import').onchange=async e=>{const file=e.target.files[0];if(!file)return;if(
  else{if(file.size>2_000_000)throw Error('Content JSON must be smaller than 2 MB.');wrapper=JSON.parse(await file.text());next=wrapper.portfolio;}
  nextTemplates=friendly?readTemplateIDs(wrapper.editor):new Set();const errors=validateLocalDraft(next);if(errors.length)throw Error(describeError(errors[0],next,friendly));
  for(const m of next.media){if(!wrapper.recoveryOnly&&!baseline.media.some(x=>x.src===m.src)&&!images.has(m.src)&&!files?.has(m.src))throw Error('Missing uploaded image '+m.src+'. Import the complete exported ZIP.');}
- if(!wrapper.recoveryOnly&&next.site.resume!==baseline.site.resume&&!images.has(next.site.resume)&&!files?.has(next.site.resume))throw Error('Missing resume PDF. Import the complete exported ZIP.');
+ if(!wrapper.recoveryOnly)for(const src of documentPaths(next))if(!documentPaths(baseline).includes(src)&&!images.has(src)&&!files?.has(src))throw Error('Missing PDF. Import the complete exported ZIP.');
  if(friendly&&!await confirmChange('Restore this backup?',(wrapper.recoveryOnly?'This is a text-only recovery copy. You may need to upload missing images or PDFs again. ':'')+'This replaces the draft you are editing. You can use Undo to return to it. The live website stays unchanged.','Restore backup'))return;
  if(files)for(const [p,blob] of files)if(p!=='content/portfolio.json'){
-  if(isResumeUpload(p)){if(p!==next.site.resume)throw Error('Unreferenced resume PDF in draft package.');await verifyResume(p,blob);await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));continue;}
+  if(isResumeUpload(p)){if(!documentPaths(next).includes(p))throw Error('Unreferenced PDF in draft package.');await verifyResume(p,blob);await putImage(p,blob);images.set(p,blob);urls.set(p,URL.createObjectURL(blob));continue;}
   if(blob.size>2_000_000)throw Error('Uploaded images must be smaller than 2 MB.');
   const bytes=new Uint8Array(await blob.arrayBuffer());const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,20);if(!matchesImageUpload(p,bytes,hash))throw Error('Uploaded image does not match its stable filename or image format.');
   const bitmap=await createImageBitmap(blob);const record=next.media.find(m=>m.src===p);const ok=record&&bitmap.width===record.width&&bitmap.height===record.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!ok)throw Error('Image dimensions do not match the draft.');
