@@ -28,8 +28,8 @@
             "date": "",
             "image": [
               {
-                "media": "upload-4fa1301100205415a558",
-                "alt": "Image of 70 cell nimbus fuel cell",
+                "media": "upload-329b086f50a4c12eeef7",
+                "alt": "Standing beside a Nimbus fuel-cell system in the laboratory.",
                 "caption": "",
                 "credit": "",
                 "linked": false,
@@ -4079,6 +4079,12 @@
         "src": "assets/images/upload-4fa1301100205415a558.png",
         "width": 920,
         "height": 514
+      },
+      {
+        "id": "upload-329b086f50a4c12eeef7",
+        "src": "assets/images/upload-329b086f50a4c12eeef7.webp",
+        "width": 1559,
+        "height": 1170
       }
     ],
     "resources": [
