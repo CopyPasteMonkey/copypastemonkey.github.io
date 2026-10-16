@@ -140,3 +140,14 @@ footer{padding-top:28px}
 @media(max-width:1000px){.resume-view{font-size:14px}.resume-actions{gap:16px}}
 @media(min-width:641px) and (max-width:850px){.site-toolbar .header-bottom{flex-wrap:wrap;gap:0 20px}}
 @media(max-width:480px){.site-toolbar .header-bottom{flex-wrap:wrap;gap:0 14px}.site-toolbar nav{flex-basis:100%}.resume-actions{margin-left:auto}}
+
+/* Consistent entry preview frames across all portfolio sections. */
+@media screen {
+ .entry-summary.with-image{grid-template-columns:minmax(0,1fr) 240px;gap:24px}
+ .entry-photo img{width:100%;height:160px;max-height:none;object-fit:cover;object-position:center;background:#f3f2ef}
+ .entry-intro{max-width:650px}
+}
+@media screen and (max-width:640px){
+ .entry-summary.with-image{grid-template-columns:minmax(0,1fr) 112px;gap:16px}
+ .entry-photo img{height:112px}
+}
