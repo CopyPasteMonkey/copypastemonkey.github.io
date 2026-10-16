@@ -408,52 +408,6 @@
                   },
                   {
                     "type": "section",
-                    "title": "Anti-smell plug",
-                    "level": 5,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I made a printed adapter and trap loop for a shop-machine drain.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "grid",
-                        "images": [
-                          {
-                            "media": "nimbus-19",
-                            "alt": "Anti-smell plug: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Anti-smell plug: archived work image 1",
-                            "lazy": true
-                          },
-                          {
-                            "media": "nimbus-20",
-                            "alt": "Anti-smell plug: archived work image 2",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Anti-smell plug: archived work image 2",
-                            "lazy": true
-                          },
-                          {
-                            "media": "nimbus-21",
-                            "alt": "Anti-smell plug: archived work image 3",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Anti-smell plug: archived work image 3",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
                     "title": "Safety Tag System",
                     "level": 5,
                     "chapter": false,
@@ -648,80 +602,6 @@
                             "credit": "",
                             "linked": true,
                             "linkLabel": "Open image: Insulating Jacket: archived work image 1",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Workbenches",
-                    "level": 5,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I built shop workbenches using plans found online.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "grid",
-                        "images": [
-                          {
-                            "media": "nimbus-31",
-                            "alt": "Workbenches: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Workbenches: archived work image 1",
-                            "lazy": true
-                          },
-                          {
-                            "media": "nimbus-32",
-                            "alt": "Workbenches: archived work image 2",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Workbenches: archived work image 2",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Crates for Carts",
-                    "level": 5,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I fabricated protective plywood enclosures so two test carts could be shipped to customers.",
-                        "style": "body"
-                      },
-                      {
-                        "type": "gallery",
-                        "layout": "grid",
-                        "images": [
-                          {
-                            "media": "nimbus-33",
-                            "alt": "Crates for Carts: archived work image 1",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Crates for Carts: archived work image 1",
-                            "lazy": true
-                          },
-                          {
-                            "media": "nimbus-34",
-                            "alt": "Crates for Carts: archived work image 2",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open image: Crates for Carts: archived work image 2",
                             "lazy": true
                           }
                         ]
@@ -2381,14 +2261,47 @@
       },
       {
         "id": "projects",
-        "subtitle": "WPI qualifying projects",
+        "subtitle": "Selected engineering and personal projects",
         "entries": [
           {
-            "id": "mqp",
-            "title": "Active-suspension longboard",
-            "intro": "A team project to design, build, and optimize an active suspension system for a longboard.",
+            "id": "fuel-cell-design",
+            "title": "Fuel cell design and fabrication",
+            "intro": "Designed, simulated, and optimized a 4 fluid hydrogen fuel cell for automotive and aerospace applications.",
             "divider": "",
-            "role": "MQP · Major Qualifying Project",
+            "role": "Nimbus Power Systems",
+            "date": "2023–2026",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "fuel-cell-design",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Fuel cell design and fabrication",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "text",
+                        "text": "Evenly distributed flow in two dimensions across the active area is extremely important for performance. Constrained by manufacturing limitations and legacy tooling, I reduced the maldistribution in reactants from over 40% to less than 2%. Properly loading flow fields in the active area of the hydrogen fuel cell leads to lower electrical resistance, but too much pressure can restrict fluid flow. I used flow and structural simulation to ensure acceptable levels of pressure and electrical resistance despite a reduction in landing area. After designing this fuel cell, I worked with component suppliers across the globe as well as scaled up in house procedures and facilities in order to produce an engine sized prototype.",
+                        "style": "body"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "mqp",
+            "title": "Capstone Project",
+            "intro": "Worked as designer and fabricator on team to produce, and optimize an active suspension system for a longboard.",
+            "divider": "",
+            "role": "WPI",
             "date": "March–December 2022",
             "image": [],
             "placeholder": "",
@@ -2401,15 +2314,10 @@
                 "blocks": [
                   {
                     "type": "section",
-                    "title": "MQP · WPI capstone",
+                    "title": "Active-suspension longboard",
                     "level": 4,
                     "chapter": false,
                     "blocks": [
-                      {
-                        "type": "text",
-                        "text": "I worked in a team of four on the design, fabrication, and optimization of the suspension system.",
-                        "style": "body"
-                      },
                       {
                         "type": "resources",
                         "blocks": [
@@ -2432,11 +2340,39 @@
                             "resource": "resource-8"
                           }
                         ]
-                      },
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "camper-van",
+            "title": "Camper Van Build",
+            "intro": "Designed and fabricated a camper build for a Ram ProMaster including an off grid electrical system, plumbing, innovative bed and floor design.",
+            "divider": "",
+            "role": "Home",
+            "date": "2025–Present",
+            "image": [],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "camper-van",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Camper Van Build",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
                       {
                         "type": "text",
-                        "text": "Project photographs to come.",
-                        "style": "note"
+                        "text": "It is modular and easily adaptable due to use of extruded aluminum profiles.",
+                        "style": "body"
                       }
                     ]
                   }
