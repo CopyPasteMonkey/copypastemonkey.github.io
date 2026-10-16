@@ -15,3 +15,8 @@ export function missingDraftAssets(data,baseline,images){
  const known=new Set([...baseline.media.map(m=>m.src),baseline.site.resume]);
  return [...new Set([...data.media.map(m=>m.src),data.site.resume])].filter(src=>!known.has(src)&&!images.has(src));
 }
+
+// A content edit is not a conflict when the remote revisions are still the
+// ones this draft last loaded or saved. New remote revisions still need review.
+export function remoteVersion(state){return {published:state.publishedHead,draft:state.draft?.head||null};}
+export function sameRemoteVersion(known,state){return !!known&&known.published===state.publishedHead&&known.draft===(state.draft?.head||null);}
