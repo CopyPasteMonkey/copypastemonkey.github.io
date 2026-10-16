@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {loadLocalDraft,missingDraftAssets} from '../editor/storage.mjs';
+import {loadLocalDraft,missingDraftAssets,remoteVersion,sameRemoteVersion} from '../editor/storage.mjs';
 import {draftKey,makeZip,readZip} from '../editor/drafts.mjs';
 function storage(raw){const map=new Map(raw===undefined?[]:[[draftKey,raw]]);return {map,getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)};}
 test('damaged draft is preserved before fallback, without blocking next save',()=>{
@@ -26,4 +26,17 @@ test('backup writer will not produce a package its reader rejects for size',asyn
  await assert.rejects(makeZip(new Map([['content/portfolio.json',new Blob([new Uint8Array(2_000_001)])]])),/allowed size/);
  const image=new Blob([new Uint8Array(2_000_000)]),files=new Map([['content/portfolio.json',new Blob(['{}'])]]);for(let i=0;i<50;i++)files.set('assets/images/upload-'+i.toString(16).padStart(20,'0')+'.png',image);
  await assert.rejects(makeZip(files),/100 MB/);
+});
+
+test('publishing recognizes its saved remote version across reloads but detects concurrent changes',()=>{
+ const state={publishedHead:'main-1',draft:{head:'draft-1'}};
+ const known=JSON.parse(JSON.stringify(remoteVersion(state)));
+ assert.equal(sameRemoteVersion(known,state),true);
+ assert.equal(sameRemoteVersion(known,{...state,draft:{head:'draft-2'}}),false);
+ assert.equal(sameRemoteVersion(known,{...state,publishedHead:'main-2'}),false);
+ assert.equal(sameRemoteVersion(known,{...state,draft:null}),false);
+ assert.equal(sameRemoteVersion(null,state),false);
+ const published={publishedHead:'main-1',draft:null};
+ assert.equal(sameRemoteVersion(remoteVersion(published),published),true);
+ assert.equal(sameRemoteVersion(remoteVersion(published),state),false);
 });
