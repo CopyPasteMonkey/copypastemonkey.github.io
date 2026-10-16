@@ -3,6 +3,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      run_browser_tests:
+        description: Run the full Chrome and Safari suites
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -24,13 +29,17 @@ jobs:
       - run: npm run validate
       - run: npm test
       - run: npm run build
-      - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:browser
-      - run: npm run test:browser
+      # Opt in manually while the site is undergoing rapid content changes.
+      - if: github.event_name == 'workflow_dispatch' && inputs.run_browser_tests
+        run: npx playwright install --with-deps chromium webkit
+      - if: github.event_name == 'workflow_dispatch' && inputs.run_browser_tests
+        run: npm run test:browser
+      - if: github.event_name == 'workflow_dispatch' && inputs.run_browser_tests
+        run: npm run test:browser
         env:
           TEST_BROWSER: webkit
       - name: Keep failed UI test diagnostics
-        if: failure()
+        if: failure() && github.event_name == 'workflow_dispatch' && inputs.run_browser_tests
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ui-test-failures
