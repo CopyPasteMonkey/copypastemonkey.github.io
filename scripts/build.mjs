@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {render} from '../lib/render.mjs';
+import {createContact} from '../lib/contact.mjs';
 import {assertValid,schema} from '../lib/schema.mjs';
 import {validateAssets} from './assets.mjs';
 const root=path.resolve(fileURLToPath(new URL('..',import.meta.url)));
@@ -16,6 +17,13 @@ const output=path.join(root,browserTest?'.local/browser-dist':'dist');await fs.r
 for(const f of ['assets','style.css','app.js','stats-client.mjs','l','CNAME','.nojekyll','README.txt','accelerate.html','mott.html','nimbus.html','favicon-flow.svg','favicon-32.png','favicon.ico','apple-touch-icon.png','editor','lib','content'])await fs.cp(path.join(root,f),path.join(output,f),{recursive:true});
 await fs.writeFile(path.join(output,'content/portfolio.json'),raw);
 await fs.writeFile(path.join(output,'index.html'),render(data,{stats:true}));
+// Regenerate the contact whenever the published email or phone changes.
+const portrait=await fs.readFile(path.join(root,'assets/images/contact-portrait.jpg'));
+const [firstName,...lastName]=data.site.name.trim().split(/\s+/);
+const contact=createContact({firstName,lastName:lastName.join(' '),email:data.site.email,phone:data.site.phoneLink.replace(/^tel:/,''),website:'https://'+(await fs.readFile(path.join(root,'CNAME'),'utf8')).trim()+'/',photo:portrait});
+await fs.mkdir(path.join(output,'assets/documents'),{recursive:true});
+await fs.writeFile(path.join(output,'assets/documents/eli-doggart.vcf'),contact);
+
 await fs.writeFile(path.join(output,'content/schema.json'),JSON.stringify(schema,null,2)+'\n');
 // Build the narrow, pinned Decap backend from source; no prebuilt CMS bundle/CDN.
 const {build}=await import('esbuild');
