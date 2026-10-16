@@ -1,4 +1,4 @@
-import {matchesImageUpload,imageUploadType,isResumeUpload,isImageUpload,verifyResume,maxResumeBytes} from '../lib/pdf.mjs';
+import {matchesImageUpload,imageUploadType,documentPaths,isResumeUpload,isImageUpload,verifyResume,maxResumeBytes} from '../lib/pdf.mjs';
 import {assertValid} from '../lib/schema.mjs';
 const contentPath='content/portfolio.json';
 const base64=bytes=>{let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(binary);};
@@ -96,9 +96,11 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
     if(bytes.length>2_000_000||!matchesImageUpload(m.src,bytes,hash))throw Error('Only optimized, hash-verified WebP or PNG uploads are accepted.');
     assets.push({path:m.src,toBase64:async()=>base64(bytes)});
    }
-   if(images.has(data.site.resume)){
-    const blob=images.get(data.site.resume);await verifyResume(data.site.resume,blob);const bytes=new Uint8Array(await blob.arrayBuffer());assets.push({path:data.site.resume,toBase64:async()=>base64(bytes)});
-   }else if(data.site.resume!==JSON.parse(publishedData).site.resume&&data.site.resume!==current?.data.site.resume)throw Error('Missing uploaded resume PDF. Upload it or load the complete GitHub draft.');
+   const knownDocuments=new Set([...documentPaths(JSON.parse(publishedData)),...(current?documentPaths(current.data):[])]);
+   for(const src of documentPaths(data)){
+    if(images.has(src)){const blob=images.get(src);await verifyResume(src,blob);const bytes=new Uint8Array(await blob.arrayBuffer());assets.push({path:src,toBase64:async()=>base64(bytes)});}
+    else if(!knownDocuments.has(src))throw Error('Missing uploaded PDF. Upload it or load the complete GitHub draft.');
+   }
    const files=[{path:contentPath,slug:draftBranch.split('/').at(-1),raw}];
    let writeError;needsReconcile=true;
    try{if(current){
@@ -179,8 +181,8 @@ export function createRemote(config,{apiFactory,fetcher=fetch,now=()=>Date.now()
   if(bytes.length>2_000_000||m.id!=='upload-'+hash||!matchesImageUpload(m.src,bytes,hash))throw Error('GitHub image bytes do not match their stable filename.');
   const blob=new Blob([bytes],{type:imageUploadType(m.src)}),bitmap=await createImageBitmap(blob);const valid=bitmap.width===m.width&&bitmap.height===m.height&&bitmap.width<=2400&&bitmap.height<=2400;bitmap.close();if(!valid)throw Error('GitHub image dimensions do not match the draft.');results.set(m.src,blob);
  }
- if(isResumeUpload(data.site.resume)){
-  const bytes=await fileBytes(data.site.resume,ref,maxResumeBytes,'resume PDF');const blob=new Blob([bytes],{type:'application/pdf'});await verifyResume(data.site.resume,blob);results.set(data.site.resume,blob);
+ for(const src of documentPaths(data).filter(isResumeUpload)){
+  const bytes=await fileBytes(src,ref,maxResumeBytes,'PDF');const blob=new Blob([bytes],{type:'application/pdf'});await verifyResume(src,blob);results.set(src,blob);
  }
  return results;}
  return {connect,adopt,snapshot,saveDraft,review,publish,deployment,media,end,isConnected:()=>!!token&&expires>now()};

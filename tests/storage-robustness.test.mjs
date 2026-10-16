@@ -40,3 +40,11 @@ test('publishing recognizes its saved remote version across reloads but detects 
  assert.equal(sameRemoteVersion(remoteVersion(published),published),true);
  assert.equal(sameRemoteVersion(remoteVersion(published),state),false);
 });
+
+test('certificate PDFs are included in missing-asset detection and deduplicated against the resume',()=>{
+ const pdf='assets/documents/resume-01234567890123456789.pdf';
+ const baseline={media:[],site:{resume:'published.pdf'},resources:[{url:'assets/documents/certificate.pdf'}]};
+ const data={...baseline,resources:[...baseline.resources,{url:pdf},{url:pdf}]};
+ assert.deepEqual(missingDraftAssets(data,baseline,new Map()),[pdf]);
+ assert.deepEqual(missingDraftAssets(data,baseline,new Map([[pdf,new Blob()]])),[]);
+});

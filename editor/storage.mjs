@@ -1,4 +1,5 @@
 import {draftKey} from './drafts.mjs';
+import {assetPaths} from '../lib/pdf.mjs';
 // Recover from a damaged saved draft without discarding the original bytes.
 export function loadLocalDraft(storage,validate){
  let raw;
@@ -12,8 +13,8 @@ export function loadLocalDraft(storage,validate){
  }
 }
 export function missingDraftAssets(data,baseline,images){
- const known=new Set([...baseline.media.map(m=>m.src),baseline.site.resume]);
- return [...new Set([...data.media.map(m=>m.src),data.site.resume])].filter(src=>!known.has(src)&&!images.has(src));
+ const known=new Set(assetPaths(baseline));
+ return assetPaths(data).filter(src=>!known.has(src)&&!images.has(src));
 }
 
 // A content edit is not a conflict when the remote revisions are still the
