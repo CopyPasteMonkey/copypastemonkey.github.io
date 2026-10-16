@@ -2653,6 +2653,196 @@
         "subtitle": "",
         "entries": [
           {
+            "id": "hiking",
+            "title": "Outdoor Adventures",
+            "intro": "",
+            "divider": "",
+            "role": "",
+            "date": "",
+            "image": [
+              {
+                "media": "outdoor-82fc9e55e74fc0ba65a2",
+                "alt": "A group of hikers beside the Mount Washington summit sign.",
+                "caption": "",
+                "credit": "",
+                "linked": true,
+                "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
+                "lazy": false
+              }
+            ],
+            "placeholder": "",
+            "roles": [
+              {
+                "id": "hiking",
+                "label": "",
+                "role": "",
+                "date": "",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "title": "Hiking",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "gallery",
+                        "layout": "photos",
+                        "images": [
+                          {
+                            "media": "outdoor-24ba6e3c6c01496ee12d",
+                            "alt": "A group of hikers on a misty rocky summit.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A group of hikers on a misty rocky summit.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-24f41a0d2943a2700290",
+                            "alt": "A frosty mountain ridge above a forested valley.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A frosty mountain ridge above a forested valley.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-b48c864676ca57f64be5",
+                            "alt": "Two hikers on a rocky trail surrounded by autumn foliage.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: Two hikers on a rocky trail surrounded by autumn foliage.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-82fc9e55e74fc0ba65a2",
+                            "alt": "A group of hikers beside the Mount Washington summit sign.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-6da4ef72997ba5959118",
+                            "alt": "A backpacker with trekking poles walking across red sandstone above a desert valley.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A backpacker with trekking poles walking across red sandstone above a desert valley.",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Biking",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "gallery",
+                        "layout": "photos",
+                        "images": [
+                          {
+                            "media": "outdoor-3ee68bf2e5c18aa2a552",
+                            "alt": "Two cyclists with loaded bicycles at a rocky overlook.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: Two cyclists with loaded bicycles at a rocky overlook.",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Rock climbing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "gallery",
+                        "layout": "photos",
+                        "images": [
+                          {
+                            "media": "outdoor-643fbf6bd96b61cac1ec",
+                            "alt": "Climbers wearing helmets beside a tall rock formation.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: Climbers wearing helmets beside a tall rock formation.",
+                            "lazy": true
+                          },
+                          {
+                            "media": "outdoor-74cc212346395fce9992",
+                            "alt": "Climbers resting on a ledge above a forested valley.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: Climbers resting on a ledge above a forested valley.",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Canoe camping",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "gallery",
+                        "layout": "photos",
+                        "images": [
+                          {
+                            "media": "outdoor-fbe690df03722cc6bdfd",
+                            "alt": "Two paddlers in a canoe beside a wooded shoreline.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: Two paddlers in a canoe beside a wooded shoreline.",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "title": "Backcountry skiing",
+                    "level": 4,
+                    "chapter": false,
+                    "blocks": [
+                      {
+                        "type": "gallery",
+                        "layout": "photos",
+                        "images": [
+                          {
+                            "media": "outdoor-1795f1468b202427f28f",
+                            "alt": "A winter outing in a snow-covered forest.",
+                            "caption": "",
+                            "credit": "",
+                            "linked": true,
+                            "linkLabel": "Open photo: A winter outing in a snow-covered forest.",
+                            "lazy": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "id": "film",
             "title": "Photography",
             "intro": "Film and digital photographs from my original collections.",
@@ -3088,196 +3278,6 @@
                       "linkLabel": "",
                       "lazy": true
                     }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "id": "hiking",
-            "title": "Outdoor Adventures",
-            "intro": "",
-            "divider": "",
-            "role": "",
-            "date": "",
-            "image": [
-              {
-                "media": "outdoor-82fc9e55e74fc0ba65a2",
-                "alt": "A group of hikers beside the Mount Washington summit sign.",
-                "caption": "",
-                "credit": "",
-                "linked": true,
-                "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
-                "lazy": false
-              }
-            ],
-            "placeholder": "",
-            "roles": [
-              {
-                "id": "hiking",
-                "label": "",
-                "role": "",
-                "date": "",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "title": "Hiking",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "gallery",
-                        "layout": "photos",
-                        "images": [
-                          {
-                            "media": "outdoor-24ba6e3c6c01496ee12d",
-                            "alt": "A group of hikers on a misty rocky summit.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: A group of hikers on a misty rocky summit.",
-                            "lazy": true
-                          },
-                          {
-                            "media": "outdoor-24f41a0d2943a2700290",
-                            "alt": "A frosty mountain ridge above a forested valley.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: A frosty mountain ridge above a forested valley.",
-                            "lazy": true
-                          },
-                          {
-                            "media": "outdoor-b48c864676ca57f64be5",
-                            "alt": "Two hikers on a rocky trail surrounded by autumn foliage.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: Two hikers on a rocky trail surrounded by autumn foliage.",
-                            "lazy": true
-                          },
-                          {
-                            "media": "outdoor-82fc9e55e74fc0ba65a2",
-                            "alt": "A group of hikers beside the Mount Washington summit sign.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: A group of hikers beside the Mount Washington summit sign.",
-                            "lazy": true
-                          },
-                          {
-                            "media": "outdoor-6da4ef72997ba5959118",
-                            "alt": "A backpacker with trekking poles walking across red sandstone above a desert valley.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: A backpacker with trekking poles walking across red sandstone above a desert valley.",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Biking",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "gallery",
-                        "layout": "photos",
-                        "images": [
-                          {
-                            "media": "outdoor-3ee68bf2e5c18aa2a552",
-                            "alt": "Two cyclists with loaded bicycles at a rocky overlook.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: Two cyclists with loaded bicycles at a rocky overlook.",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Rock climbing",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "gallery",
-                        "layout": "photos",
-                        "images": [
-                          {
-                            "media": "outdoor-643fbf6bd96b61cac1ec",
-                            "alt": "Climbers wearing helmets beside a tall rock formation.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: Climbers wearing helmets beside a tall rock formation.",
-                            "lazy": true
-                          },
-                          {
-                            "media": "outdoor-74cc212346395fce9992",
-                            "alt": "Climbers resting on a ledge above a forested valley.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: Climbers resting on a ledge above a forested valley.",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Canoe camping",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "gallery",
-                        "layout": "photos",
-                        "images": [
-                          {
-                            "media": "outdoor-fbe690df03722cc6bdfd",
-                            "alt": "Two paddlers in a canoe beside a wooded shoreline.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: Two paddlers in a canoe beside a wooded shoreline.",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "title": "Backcountry skiing",
-                    "level": 4,
-                    "chapter": false,
-                    "blocks": [
-                      {
-                        "type": "gallery",
-                        "layout": "photos",
-                        "images": [
-                          {
-                            "media": "outdoor-1795f1468b202427f28f",
-                            "alt": "A winter outing in a snow-covered forest.",
-                            "caption": "",
-                            "credit": "",
-                            "linked": true,
-                            "linkLabel": "Open photo: A winter outing in a snow-covered forest.",
-                            "lazy": true
-                          }
-                        ]
-                      }
-                    ]
                   }
                 ]
               }
