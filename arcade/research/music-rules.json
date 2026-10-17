@@ -1,0 +1,279 @@
+{
+  "source": "https://nintendo.fandom.com/wiki/Tanks!#Audio",
+  "retrieved": "2026-10-16",
+  "columns": [
+    "snare",
+    "metronome",
+    "timpaniA",
+    "cymbals",
+    "timpaniB",
+    "bassDrum",
+    "tuba",
+    "bells",
+    "synth"
+  ],
+  "rows": [
+    {
+      "count": "1+",
+      "instruments": [
+        0
+      ],
+      "name": "Brown",
+      "rank": 1
+    },
+    {
+      "count": "1+",
+      "instruments": [
+        0,
+        1
+      ],
+      "name": "Ash\n(Gray)",
+      "rank": 2
+    },
+    {
+      "count": "3+",
+      "instruments": [
+        0,
+        1,
+        2
+      ],
+      "name": "Ash\n(Gray)",
+      "rank": 2
+    },
+    {
+      "count": "1",
+      "instruments": [
+        1,
+        2,
+        3
+      ],
+      "name": "Marine\n(Teal)",
+      "rank": 3
+    },
+    {
+      "count": "2+",
+      "instruments": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "name": "Marine\n(Teal)",
+      "rank": 3
+    },
+    {
+      "count": "4+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "name": "Marine\n(Teal)",
+      "rank": 3
+    },
+    {
+      "count": "1",
+      "instruments": [
+        0,
+        4
+      ],
+      "name": "Pink",
+      "rank": 4
+    },
+    {
+      "count": "2",
+      "instruments": [
+        0,
+        3,
+        4
+      ],
+      "name": "Pink",
+      "rank": 4
+    },
+    {
+      "count": "3+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "name": "Pink",
+      "rank": 4
+    },
+    {
+      "count": "1",
+      "instruments": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "name": "Yellow",
+      "rank": 5
+    },
+    {
+      "count": "2",
+      "instruments": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "name": "Yellow",
+      "rank": 5
+    },
+    {
+      "count": "3+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4,
+        5
+      ],
+      "name": "Yellow",
+      "rank": 5
+    },
+    {
+      "count": "1",
+      "instruments": [
+        2,
+        3,
+        6
+      ],
+      "name": "Violet\n(Purple)",
+      "rank": 6
+    },
+    {
+      "count": "2",
+      "instruments": [
+        0,
+        2,
+        3,
+        5,
+        6
+      ],
+      "name": "Violet\n(Purple)",
+      "rank": 6
+    },
+    {
+      "count": "3+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "name": "Violet\n(Purple)",
+      "rank": 6
+    },
+    {
+      "count": "1",
+      "instruments": [
+        2,
+        3,
+        6,
+        7
+      ],
+      "name": "Green",
+      "rank": 7
+    },
+    {
+      "count": "2",
+      "instruments": [
+        2,
+        3,
+        5,
+        6,
+        7
+      ],
+      "name": "Green",
+      "rank": 7
+    },
+    {
+      "count": "3",
+      "instruments": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7
+      ],
+      "name": "Green",
+      "rank": 7
+    },
+    {
+      "count": "4+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "name": "Green",
+      "rank": 7
+    },
+    {
+      "count": "1",
+      "instruments": [
+        0,
+        2,
+        6,
+        8
+      ],
+      "name": "White",
+      "rank": 8
+    },
+    {
+      "count": "2",
+      "instruments": [
+        0,
+        1,
+        4,
+        5,
+        6,
+        8
+      ],
+      "name": "White",
+      "rank": 8
+    },
+    {
+      "count": "3+",
+      "instruments": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "name": "White",
+      "rank": 8
+    },
+    {
+      "count": "1+",
+      "instruments": [
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "name": "Black",
+      "rank": 9
+    }
+  ]
+}

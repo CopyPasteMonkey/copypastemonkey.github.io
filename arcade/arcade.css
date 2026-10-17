@@ -1,0 +1,34 @@
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#232421;font-family:Arial,Helvetica,sans-serif}
+.arcade-header{position:absolute;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px 32px}
+.arcade-header h1{margin:0;font-size:20px;font-weight:400}
+.portfolio-return{color:#777873;font-size:12px;text-decoration:none;padding:8px 0;border-bottom:2px solid transparent}
+.portfolio-return:hover,.portfolio-return:focus-visible{color:#c73136}
+
+.arcade{min-height:100vh;min-height:100dvh;padding:100px 24px;display:flex;flex-wrap:wrap;align-content:center;align-items:center;justify-content:center;gap:32px}
+.game-icon{display:block;width:min(440px,100%);padding:24px 16px;color:inherit;border:1px solid #232421;transition:background .15s}
+.game-icon span,.game-icon svg{display:block;width:100%;height:auto}
+.game-icon:hover{background:#fafaf7}
+.game-icon:focus-visible{outline:2px solid #c73136;outline-offset:6px}
+@media(prefers-reduced-motion:reduce){.game-icon{transition:none}}
+@media(max-width:480px){.arcade-header{padding:20px;gap:16px}.portfolio-return{font-size:10px}}
+
+.game-card{position:relative;width:min(440px,100%);border:1px solid #232421;outline-offset:5px}
+.game-card .game-icon{width:100%;border:0;padding:24px 16px}
+.game-card:hover,.game-card:focus-within{background:#fafaf7}
+.game-options{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:center;padding:24px;background:#fffffff2;opacity:0;pointer-events:none;transition:opacity .15s}
+.game-card:hover .game-options,.game-card:focus-within .game-options{opacity:1;pointer-events:auto}
+.launch-choices{display:flex;justify-content:center;gap:8px}
+.launch-choices a{flex:1;padding:12px 8px;border:1px solid #232421;text-align:center;color:inherit;text-decoration:none;font:13px Arial,sans-serif;background:white}
+.launch-choices small{margin-left:5px;color:#777873;font-size:11px}
+.launch-choices a:hover,.launch-choices a:focus-visible{border-color:#c73136;color:#c73136}
+.scores-link{display:block;width:max-content;margin:14px auto 0;color:#777873;font-size:11px}
+
+@media(prefers-reduced-motion:reduce){.game-options{transition:none}}
+
+.game-card{cursor:pointer}.game-card:focus-visible{outline:2px solid #c73136}.game-options .launch-choices{width:100%}
+
+.portfolio-return{position:relative}
+.portfolio-return::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:#c73136;transform:scaleX(1);transform-origin:center;opacity:0}
+.portfolio-return.holding::after{opacity:1;animation:return-countdown var(--return-hold-duration,1000ms) linear forwards}
+@keyframes return-countdown{from{transform:scaleX(1)}to{transform:scaleX(0)}}

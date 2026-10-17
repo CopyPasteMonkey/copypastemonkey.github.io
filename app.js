@@ -112,3 +112,27 @@
   window.addEventListener('hashchange', () => renderRoute());
   renderRoute({ initial: true });
 })();
+
+// The arcade is a separate page: no game code or audio loads on the portfolio.
+(() => {
+  if (window.top !== window.self) return;
+  const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight'];
+  let recent = [], lastKey = 0;
+  const reset = () => { recent = []; lastKey = 0; };
+  window.addEventListener('keydown', event => {
+    if (event.repeat) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
+        event.target.closest('input,textarea,select,button,[contenteditable]:not([contenteditable="false"]),[role="textbox"],[role="slider"],[role="menu"],dialog') || document.querySelector('dialog[open]')) { reset(); return; }
+    const now = performance.now();
+    if (now - lastKey > 2500) recent = [];
+    lastKey = now;
+    recent.push(event.code);
+    recent = recent.slice(-sequence.length);
+    if (recent.length === sequence.length && recent.every((key, i) => key === sequence[i])) {
+      reset();
+      location.assign(new URL('arcade/', document.baseURI).href);
+    }
+  });
+  window.addEventListener('blur', reset);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) reset(); });
+})();

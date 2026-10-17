@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "validate": "node scripts/build.mjs --validate",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs arcade/tests/*.test.js",
     "test:browser": "playwright test",
     "dev": "node scripts/serve.mjs",
     "media": "node scripts/import-media.mjs",

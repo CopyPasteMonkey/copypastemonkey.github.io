@@ -1,0 +1,4 @@
+const KEY='tanks-highscores-v2';
+export function validTankScores(value){return (Array.isArray(value)?value:[]).filter(s=>s&&/^[A-Z]{3}$/.test(s.initials)&&Number.isSafeInteger(s.score)&&s.score>=0&&s.score<1e9&&Number.isInteger(s.mission)&&s.mission>=1&&s.mission<=100&&typeof s.complete==='boolean').map(({initials,score,mission,complete})=>({initials,score,mission,complete})).sort((a,b)=>b.score-a.score||Number(b.complete)-Number(a.complete)||b.mission-a.mission).slice(0,10);}
+export function readTankScores(storage){try{return validTankScores(JSON.parse(storage.getItem(KEY)||'[]'));}catch{return [];}}
+export function saveTankScore(storage,entry){if(validTankScores([entry]).length!==1)return {ok:false,scores:readTankScores(storage)};const scores=validTankScores([...readTankScores(storage),entry]);try{storage.setItem(KEY,JSON.stringify(scores));return {ok:true,scores};}catch{return {ok:false,scores};}}
